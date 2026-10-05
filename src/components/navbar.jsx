@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import GlassSurface from "./GlassSurface";
 import { sections } from "../section";
 
 export default function Navbar({ show, active }) {
@@ -9,9 +8,8 @@ export default function Navbar({ show, active }) {
   const lens = useRef();
   const tabs = useRef({});
   const hovering = useRef(false);
-  const [open, setOpen] = useState(false); 
+  const [open, setOpen] = useState(false);
 
-  
   const moveLens = (id, scale = 1) => {
     const el = tabs.current[id];
     if (!el) return;
@@ -58,13 +56,13 @@ export default function Navbar({ show, active }) {
     <nav ref={nav} className="fixed inset-x-3 top-3 z-50 text-white md:inset-x-6 md:top-4">
       {/* main bar */}
       <div className="relative flex items-center justify-between rounded-full px-5 py-2 md:px-6">
-        {/* glass bar */}
-        <GlassSurface
-          edge={20}
-          strength={30}
-          aberration={5}
-          blur={1.5}
-          className="absolute inset-0 rounded-full border border-white/25 bg-white/6 shadow-[inset_0_1px_0_rgba(255,255,255,0.5),inset_0_-1px_0_rgba(255,255,255,0.12),0_8px_32px_rgba(0,0,0,0.3)]"
+        {/* glass bar (plain div: no refraction, background stays untouched) */}
+        <div
+          className="absolute inset-0 rounded-full border border-white/25 bg-white/[0.07] backdrop-blur-[3px] backdrop-saturate-150 shadow-[inset_0_1px_0_rgba(255,255,255,0.6),inset_0_-1px_0_rgba(255,255,255,0.15),inset_0_0_18px_rgba(255,255,255,0.12),0_8px_32px_rgba(0,0,0,0.3)]"
+        />
+        {/* sheen: diagonal light streak, no distortion */}
+        <div
+          className="pointer-events-none absolute inset-0 rounded-full bg-[linear-gradient(115deg,rgba(255,255,255,0.22)_0%,rgba(255,255,255,0.03)_30%,rgba(255,255,255,0)_60%,rgba(255,255,255,0.14)_100%)]"
         />
 
         {/* logo */}
@@ -83,17 +81,10 @@ export default function Navbar({ show, active }) {
             moveLens(active);
           }}
         >
-          {/* liquid glass lens */}
-          <GlassSurface
-            innerRef={lens}
-            observe={false}
-            edge={16}
-            strength={60}
-            aberration={8}
-            blur={1}
-            saturate={2}
-            brightness={1.15}
-            className="pointer-events-none absolute left-0 top-0 h-full w-24 rounded-full bg-white/10 shadow-[inset_2px_2px_4px_rgba(255,255,255,0.75),inset_-2px_-2px_4px_rgba(255,255,255,0.35),0_8px_24px_rgba(0,0,0,0.3)]"
+          {/* glass lens: plain div, no refraction, background stays untouched */}
+          <div
+            ref={lens}
+            className="pointer-events-none absolute left-0 top-0 h-full w-24 rounded-full border border-white/30 bg-[linear-gradient(135deg,rgba(255,255,255,0.28)_0%,rgba(255,255,255,0.08)_50%,rgba(255,255,255,0.16)_100%)] shadow-[inset_2px_2px_4px_rgba(255,255,255,0.75),inset_-2px_-2px_4px_rgba(255,255,255,0.35),inset_0_0_12px_rgba(255,255,255,0.15),0_8px_24px_rgba(0,0,0,0.3)]"
           />
 
           {sections.map(({ id, label }) => (
@@ -131,13 +122,12 @@ export default function Navbar({ show, active }) {
           open ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-2 opacity-0"
         }`}
       >
-        <GlassSurface
-          radius={24}
-          edge={18}
-          strength={25}
-          aberration={4}
-          blur={3}
-          className="absolute inset-0 rounded-3xl border border-white/25 bg-white/[0.08] shadow-[inset_0_1px_0_rgba(255,255,255,0.5),0_8px_32px_rgba(0,0,0,0.3)]"
+        {/* plain div: no refraction */}
+        <div
+          className="absolute inset-0 rounded-3xl border border-white/25 bg-white/[0.08] backdrop-blur-[3px] backdrop-saturate-150 shadow-[inset_0_1px_0_rgba(255,255,255,0.6),inset_0_0_18px_rgba(255,255,255,0.12),0_8px_32px_rgba(0,0,0,0.3)]"
+        />
+        <div
+          className="pointer-events-none absolute inset-0 rounded-3xl bg-[linear-gradient(115deg,rgba(255,255,255,0.22)_0%,rgba(255,255,255,0.03)_30%,rgba(255,255,255,0)_60%,rgba(255,255,255,0.14)_100%)]"
         />
         <ul className="relative flex flex-col p-2 text-base font-medium">
           {sections.map(({ id, label }) => (

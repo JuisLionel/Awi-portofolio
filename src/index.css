@@ -1,7 +1,22 @@
 @import "tailwindcss";
 
+/* Hide viewport and nested scrollbars without disabling scrolling. */
+html,
+body,
+* {
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+*::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+}
+
 @theme {
-    --font-display: "Manrope", sans-serif;
     --font-sans: "Inter", sans-serif;
     --font-display: "Syne", sans-serif;
     --font-mono: "JetBrains Mono", monospace;

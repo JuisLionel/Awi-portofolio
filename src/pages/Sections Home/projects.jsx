@@ -1,12 +1,12 @@
 // src/pages/About.jsx
 import Section from "../../components/sections";
 
-export default function About() {
+export default function Projects() {
     return (
-        <Section id="about">
+        <Section id="projects">
             <div className="flex flex-col items-center justify-center w-full h-screen text-white">
-                <h2>About</h2>
-                <p>This is the About section.</p>
+                <h2>Projects</h2>
+                <p>This is the Projects section.</p>
             </div>
         </Section>
     );

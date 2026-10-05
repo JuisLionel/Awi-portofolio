@@ -1,8 +1,13 @@
 import { useEffect, useState } from "react";
+import { sections } from "../section";
+
 import Navbar from "../components/navbar";
+import Footer from "../components/Footers";
+
 import Welcome from "./Sections Home/Welcome";
 import About from "./Sections Home/About";
-import { sections } from "../section";
+import Projects from "./Sections Home/projects";
+import Contact from "./Sections Home/Contact";
 
 export default function Home({ show }) {
   const [active, setActive] = useState(sections[0].id);
@@ -38,8 +43,12 @@ export default function Home({ show }) {
         <main>
           <Welcome show={show} />
           <About />
+          <Projects />
+          <Contact />
         </main>
       </div>
+
+      <Footer />
     </>
   );
 }
