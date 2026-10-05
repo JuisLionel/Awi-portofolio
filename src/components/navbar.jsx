@@ -1,38 +1,46 @@
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
+import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { useGSAP } from "@gsap/react";
 import { sections } from "../section";
+
+gsap.registerPlugin(ScrollToPlugin);
 
 export default function Navbar({ show, active }) {
   const nav = useRef();
   const lens = useRef();
   const tabs = useRef({});
   const hovering = useRef(false);
+  const scrolling = useRef(false);
+  const HOVER_DURATION = 0.95;
   const [open, setOpen] = useState(false);
 
-  const moveLens = (id, scale = 1) => {
+  const moveLens = (id, scale = 1, duration = 0.45) => {
     const el = tabs.current[id];
     if (!el) return;
     gsap.to(lens.current, {
       x: el.offsetLeft,
       width: el.offsetWidth,
       scale,
-      duration: 0.45,
+      duration,
       ease: "power3.out",
       overwrite: "auto",
     });
   };
 
-  useGSAP(() => {
-    if (!show) {
-      gsap.set(nav.current, { y: -200 });
-      return;
-    }
-    gsap.fromTo(nav.current, { y: -200 }, { y: 0, duration: 1.1, ease: "power4.out" });
-  }, { scope: nav, dependencies: [show] });
+  useGSAP(
+    () => {
+      if (!show) {
+        gsap.set(nav.current, { y: -200 });
+        return;
+      }
+      gsap.fromTo(nav.current, { y: -200 }, { y: 0, duration: 1.1, ease: "power4.out" });
+    },
+    { scope: nav, dependencies: [show] }
+  );
 
   useEffect(() => {
-    if (hovering.current) return;
+    if (hovering.current || scrolling.current) return;
     moveLens(active, 1.12);
     gsap.to(lens.current, { scale: 1, duration: 0.35, delay: 0.2 });
   }, [active]);
@@ -49,7 +57,35 @@ export default function Navbar({ show, active }) {
 
   const go = (id) => {
     setOpen(false);
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+    const target = document.getElementById(id);
+    if (!target) return;
+
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    // bubble jumps to the clicked tab right away and stays there during the scroll
+    moveLens(id, 1);
+
+    gsap.to(window, {
+      duration: reduced ? 0 : 0.9,
+      scrollTo: {
+        y: target,
+        autoKill: true,
+        // user scrolled manually mid-animation: hand control back
+        onAutoKill: () => {
+          scrolling.current = false;
+          moveLens(active, 1);
+        },
+      },
+      ease: "power2.inOut",
+      overwrite: "auto",
+      onComplete: () => {
+        scrolling.current = false;
+        moveLens(id, 1);
+      },
+    });
+
+    // set after creating the tween, because overwrite may kill a previous scroll
+    scrolling.current = true;
   };
 
   return (
@@ -78,7 +114,8 @@ export default function Navbar({ show, active }) {
           className="relative hidden text-sm font-medium md:flex"
           onMouseLeave={() => {
             hovering.current = false;
-            moveLens(active);
+            if (scrolling.current) return;
+            moveLens(active, 1, HOVER_DURATION);
           }}
         >
           {/* glass lens: plain div, no refraction, background stays untouched */}
@@ -94,7 +131,8 @@ export default function Navbar({ show, active }) {
                 onClick={() => go(id)}
                 onMouseEnter={() => {
                   hovering.current = true;
-                  moveLens(id, 1.08);
+                  if (scrolling.current) return; // keep the bubble on the clicked tab while scrolling
+                  moveLens(id, 1.08, HOVER_DURATION);
                 }}
                 className="relative z-10 block cursor-pointer px-5 py-2.5"
               >
@@ -118,9 +156,8 @@ export default function Navbar({ show, active }) {
 
       {/* phone menu */}
       <div
-        className={`absolute inset-x-0 top-full mt-2 rounded-3xl transition-all duration-300 md:hidden ${
-          open ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-2 opacity-0"
-        }`}
+        className={`absolute inset-x-0 top-full mt-2 rounded-3xl transition-all duration-300 md:hidden ${open ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-2 opacity-0"
+          }`}
       >
         {/* plain div: no refraction */}
         <div
@@ -134,9 +171,8 @@ export default function Navbar({ show, active }) {
             <li key={id}>
               <button
                 onClick={() => go(id)}
-                className={`w-full cursor-pointer rounded-2xl px-4 py-3 text-left transition-colors ${
-                  active === id ? "bg-white/15" : ""
-                }`}
+                className={`w-full cursor-pointer rounded-2xl px-4 py-3 text-left transition-colors ${active === id ? "bg-white/15" : ""
+                  }`}
               >
                 {label}
               </button>
