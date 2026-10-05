@@ -33,7 +33,7 @@ body::-webkit-scrollbar,
 .portfolio-background {
     min-height: 100vh;
     background-color: #050505;
-    background-image: url("https://static.vecteezy.com/system/resources/thumbnails/003/703/565/small_2x/futuristic-digital-surface-space-blank-gray-black-color-background-with-white-grid-space-line-color-surfaces-vector.jpg");
+    background-image: url("/background.png");
     background-position: center top;
     background-size: cover;
     background-attachment: fixed;
