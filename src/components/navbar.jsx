@@ -1,0 +1,159 @@
+import { useEffect, useRef, useState } from "react";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import GlassSurface from "./GlassSurface";
+import { sections } from "../section";
+
+export default function Navbar({ show, active }) {
+  const nav = useRef();
+  const lens = useRef();
+  const tabs = useRef({});
+  const hovering = useRef(false);
+  const [open, setOpen] = useState(false); 
+
+  
+  const moveLens = (id, scale = 1) => {
+    const el = tabs.current[id];
+    if (!el) return;
+    gsap.to(lens.current, {
+      x: el.offsetLeft,
+      width: el.offsetWidth,
+      scale,
+      duration: 0.45,
+      ease: "power3.out",
+      overwrite: "auto",
+    });
+  };
+
+  useGSAP(() => {
+    if (!show) {
+      gsap.set(nav.current, { y: -200 });
+      return;
+    }
+    gsap.fromTo(nav.current, { y: -200 }, { y: 0, duration: 1.1, ease: "power4.out" });
+  }, { scope: nav, dependencies: [show] });
+
+  useEffect(() => {
+    if (hovering.current) return;
+    moveLens(active, 1.12);
+    gsap.to(lens.current, { scale: 1, duration: 0.35, delay: 0.2 });
+  }, [active]);
+
+  useEffect(() => {
+    const onResize = () => {
+      const el = tabs.current[active];
+      if (el) gsap.set(lens.current, { x: el.offsetLeft, width: el.offsetWidth });
+      if (window.innerWidth >= 768) setOpen(false);
+    };
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, [active]);
+
+  const go = (id) => {
+    setOpen(false);
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  return (
+    <nav ref={nav} className="fixed inset-x-3 top-3 z-50 text-white md:inset-x-6 md:top-4">
+      {/* main bar */}
+      <div className="relative flex items-center justify-between rounded-full px-5 py-2 md:px-6">
+        {/* glass bar */}
+        <GlassSurface
+          edge={20}
+          strength={30}
+          aberration={5}
+          blur={1.5}
+          className="absolute inset-0 rounded-full border border-white/25 bg-white/6 shadow-[inset_0_1px_0_rgba(255,255,255,0.5),inset_0_-1px_0_rgba(255,255,255,0.12),0_8px_32px_rgba(0,0,0,0.3)]"
+        />
+
+        {/* logo */}
+        <button
+          onClick={() => go(sections[0].id)}
+          className="relative z-10 cursor-pointer text-lg font-semibold tracking-tight"
+        >
+          Awi<span className="opacity-60">.dev</span>
+        </button>
+
+        {/* desktop links */}
+        <ul
+          className="relative hidden text-sm font-medium md:flex"
+          onMouseLeave={() => {
+            hovering.current = false;
+            moveLens(active);
+          }}
+        >
+          {/* liquid glass lens */}
+          <GlassSurface
+            innerRef={lens}
+            observe={false}
+            edge={16}
+            strength={60}
+            aberration={8}
+            blur={1}
+            saturate={2}
+            brightness={1.15}
+            className="pointer-events-none absolute left-0 top-0 h-full w-24 rounded-full bg-white/10 shadow-[inset_2px_2px_4px_rgba(255,255,255,0.75),inset_-2px_-2px_4px_rgba(255,255,255,0.35),0_8px_24px_rgba(0,0,0,0.3)]"
+          />
+
+          {sections.map(({ id, label }) => (
+            <li key={id}>
+              <button
+                ref={(el) => (tabs.current[id] = el)}
+                onClick={() => go(id)}
+                onMouseEnter={() => {
+                  hovering.current = true;
+                  moveLens(id, 1.08);
+                }}
+                className="relative z-10 block cursor-pointer px-5 py-2.5"
+              >
+                {label}
+              </button>
+            </li>
+          ))}
+        </ul>
+
+        {/* hamburger (phone) */}
+        <button
+          onClick={() => setOpen((o) => !o)}
+          aria-label="Toggle menu"
+          className="relative z-10 flex h-9 w-9 cursor-pointer items-center justify-center md:hidden"
+        >
+          <span className={`absolute h-0.5 w-5 rounded bg-current transition-all duration-300 ${open ? "rotate-45" : "-translate-y-1.5"}`} />
+          <span className={`absolute h-0.5 w-5 rounded bg-current transition-all duration-300 ${open ? "opacity-0" : "opacity-100"}`} />
+          <span className={`absolute h-0.5 w-5 rounded bg-current transition-all duration-300 ${open ? "-rotate-45" : "translate-y-1.5"}`} />
+        </button>
+      </div>
+
+      {/* phone menu */}
+      <div
+        className={`absolute inset-x-0 top-full mt-2 rounded-3xl transition-all duration-300 md:hidden ${
+          open ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-2 opacity-0"
+        }`}
+      >
+        <GlassSurface
+          radius={24}
+          edge={18}
+          strength={25}
+          aberration={4}
+          blur={3}
+          className="absolute inset-0 rounded-3xl border border-white/25 bg-white/[0.08] shadow-[inset_0_1px_0_rgba(255,255,255,0.5),0_8px_32px_rgba(0,0,0,0.3)]"
+        />
+        <ul className="relative flex flex-col p-2 text-base font-medium">
+          {sections.map(({ id, label }) => (
+            <li key={id}>
+              <button
+                onClick={() => go(id)}
+                className={`w-full cursor-pointer rounded-2xl px-4 py-3 text-left transition-colors ${
+                  active === id ? "bg-white/15" : ""
+                }`}
+              >
+                {label}
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </nav>
+  );
+}
