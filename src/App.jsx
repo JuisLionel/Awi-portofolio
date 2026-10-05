@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
+import { Routes, Route } from 'react-router'
+
+
 import Intro from "./components/Intro";
 import Home from "./pages/Home";
+
 
 export default function App() {
   const [done, setDone] = useState(false);
@@ -21,7 +25,12 @@ export default function App() {
   return (
     <>
       {!done && <Intro onDone={() => setDone(true)} />}
-      <Home show={done} />
+
+      <Routes>
+        <Route path="/" element={<Home show={done} />} />
+        <Route path="/projects" element={<h1>Projects page</h1>} />
+        <Route path="*" element={<h1>Page not found</h1>} />
+      </Routes>
     </>
   );
 }

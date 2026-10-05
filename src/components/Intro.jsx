@@ -38,7 +38,7 @@ export default function Intro({ onDone }) {
   return (
     <div
       ref={root}
-      className="fixed inset-0 z-999 grid place-items-center overflow-hidden pointer-events-none"
+      className="fixed inset-0 z-999 grid place-items-center overflow-hidden pointer-events-none intro-stack"
     >
       <div className="box relative h-77.5 w-62.5 overflow-hidden bg-white shadow-[0_0_0_200vmax_#fff]">
         <div className="stack absolute inset-0">

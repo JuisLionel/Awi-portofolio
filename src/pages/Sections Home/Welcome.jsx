@@ -3,6 +3,7 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 
 import Section from "../../components/sections";
+import IdCard from "../../components/IdCard";
 
 gsap.registerPlugin(useGSAP);
 
@@ -25,8 +26,7 @@ export default function Welcome({ show }) {
         ref={welcomeRef}
         className="flex h-screen w-full flex-col items-center justify-center text-white opacity-0"
       >
-        <h2>Welcome</h2>
-        <p>This is the Welcome section.</p>
+        <IdCard />
       </div>
     </Section>
   );

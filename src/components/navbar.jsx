@@ -62,7 +62,6 @@ export default function Navbar({ show, active }) {
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    // bubble jumps to the clicked tab right away and stays there during the scroll
     moveLens(id, 1);
 
     gsap.to(window, {
@@ -70,7 +69,6 @@ export default function Navbar({ show, active }) {
       scrollTo: {
         y: target,
         autoKill: true,
-        // user scrolled manually mid-animation: hand control back
         onAutoKill: () => {
           scrolling.current = false;
           moveLens(active, 1);
@@ -89,14 +87,13 @@ export default function Navbar({ show, active }) {
   };
 
   return (
-    <nav ref={nav} className="fixed inset-x-3 top-3 z-50 text-white md:inset-x-6 md:top-4">
+    <nav ref={nav} className="fixed inset-x-3 top-3 z-50 text-white md:inset-x-6 md:top-4 navbar-stack">
       {/* main bar */}
-      <div className="relative flex items-center justify-between rounded-full px-5 py-2 md:px-6">
-        {/* glass bar (plain div: no refraction, background stays untouched) */}
+      <div className="relative flex items-center justify-between rounded-full px-5 py-2 md:px-3">
+        {/* glass bar */}
         <div
           className="absolute inset-0 rounded-full border border-white/25 bg-white/[0.07] backdrop-blur-[3px] backdrop-saturate-150 shadow-[inset_0_1px_0_rgba(255,255,255,0.6),inset_0_-1px_0_rgba(255,255,255,0.15),inset_0_0_18px_rgba(255,255,255,0.12),0_8px_32px_rgba(0,0,0,0.3)]"
         />
-        {/* sheen: diagonal light streak, no distortion */}
         <div
           className="pointer-events-none absolute inset-0 rounded-full bg-[linear-gradient(115deg,rgba(255,255,255,0.22)_0%,rgba(255,255,255,0.03)_30%,rgba(255,255,255,0)_60%,rgba(255,255,255,0.14)_100%)]"
         />
@@ -109,7 +106,7 @@ export default function Navbar({ show, active }) {
           Awi<span className="opacity-60">.dev</span>
         </button>
 
-        {/* desktop links */}
+        {/* links */}
         <ul
           className="relative hidden text-sm font-medium md:flex"
           onMouseLeave={() => {
@@ -118,7 +115,7 @@ export default function Navbar({ show, active }) {
             moveLens(active, 1, HOVER_DURATION);
           }}
         >
-          {/* glass lens: plain div, no refraction, background stays untouched */}
+          {/* glass lens */}
           <div
             ref={lens}
             className="pointer-events-none absolute left-0 top-0 h-full w-24 rounded-full border border-white/30 bg-[linear-gradient(135deg,rgba(255,255,255,0.28)_0%,rgba(255,255,255,0.08)_50%,rgba(255,255,255,0.16)_100%)] shadow-[inset_2px_2px_4px_rgba(255,255,255,0.75),inset_-2px_-2px_4px_rgba(255,255,255,0.35),inset_0_0_12px_rgba(255,255,255,0.15),0_8px_24px_rgba(0,0,0,0.3)]"
@@ -131,7 +128,7 @@ export default function Navbar({ show, active }) {
                 onClick={() => go(id)}
                 onMouseEnter={() => {
                   hovering.current = true;
-                  if (scrolling.current) return; // keep the bubble on the clicked tab while scrolling
+                  if (scrolling.current) return;
                   moveLens(id, 1.08, HOVER_DURATION);
                 }}
                 className="relative z-10 block cursor-pointer px-5 py-2.5"
@@ -159,7 +156,6 @@ export default function Navbar({ show, active }) {
         className={`absolute inset-x-0 top-full mt-2 rounded-3xl transition-all duration-300 md:hidden ${open ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-2 opacity-0"
           }`}
       >
-        {/* plain div: no refraction */}
         <div
           className="absolute inset-0 rounded-3xl border border-white/25 bg-white/[0.08] backdrop-blur-[3px] backdrop-saturate-150 shadow-[inset_0_1px_0_rgba(255,255,255,0.6),inset_0_0_18px_rgba(255,255,255,0.12),0_8px_32px_rgba(0,0,0,0.3)]"
         />
