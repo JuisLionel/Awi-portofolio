@@ -8,7 +8,7 @@ export default function IdCard() {
             {/* LEFT panel */}
             <div className="flex flex-1 flex-col items-center bg-[repeating-linear-gradient(45deg,#00000007_0_1px,transparent_1px_4px)] px-4 pt-5">
               <img
-                src="/photo.webp"
+                src="/picture/photo.webp"
                 alt="Lionel Juis Gerardo"
                 className="h-44 w-full rounded-3xl bg-paper-line object-cover shadow-[inset_0_0_0_1px_rgba(0,0,0,0.1)]"
               />

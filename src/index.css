@@ -19,8 +19,54 @@ body::-webkit-scrollbar,
     height: 0 !important;
 }
 
+/* Pattanakarn (files live in public/assets/fonts) */
+@font-face {
+  font-family: "Pattanakarn";
+  src: url("/assets/fonts/fonnts.com-Pattanakarn_Thin.ttf") format("truetype");
+  font-weight: 100;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Pattanakarn";
+  src: url("/assets/fonts/fonnts.com-Pattanakarn_Light.ttf") format("truetype");
+  font-weight: 300;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Pattanakarn";
+  src: url("/assets/fonts/fonnts.com-Pattanakarn_Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Pattanakarn";
+  src: url("/assets/fonts/fonnts.com-Pattanakarn_Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Pattanakarn";
+  src: url("/assets/fonts/fonnts.com-Pattanakarn_ExtraBold.ttf") format("truetype");
+  font-weight: 800;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Pattanakarn";
+  src: url("/assets/fonts/fonnts.com-Pattanakarn_Black.ttf") format("truetype");
+  font-weight: 900;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Pattanakarn";
+  src: url("/assets/fonts/fonnts.com-Pattanakarn_Black_Italic.ttf") format("truetype");
+  font-weight: 900;
+  font-style: italic;
+  font-display: swap;
+}
+
 @theme {
     --font-display: "Syne", sans-serif;
+    --font-title: "Pattanakarn", ui-monospace, sans-serif;
     --font-mono: "JetBrains Mono", monospace;
     --font-sans: "Space Mono", monospace;
     
