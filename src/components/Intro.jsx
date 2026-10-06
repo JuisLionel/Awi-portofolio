@@ -25,8 +25,8 @@ export default function Intro({ onDone }) {
     }, "+=0.3")
       .set(".box", { backgroundColor: "rgba(255,255,255,0)" })
       .to(".stack", { yPercent: -100, duration: 0.8, ease: "power3.inOut" }, "+=0.25")
-      .from(".name-line", { yPercent: 100, opacity: 0, duration: 0.6, stagger: 0.1, ease: "power3.out" }, "-=0.3")
-      .to(".name-line", { opacity: 0, duration: 0.3 }, "+=0.5")
+      .from(".name-block", { yPercent: 100, opacity: 0, duration: 0.6, ease: "power3.out" }, "-=0.3")
+      .to(".name-block", { opacity: 0, duration: 0.3 }, "+=0.5")
       .to(".box", {
         width: "100vw",
         height: "100vh",
@@ -52,12 +52,14 @@ export default function Intro({ onDone }) {
           ))}
         </div>
 
-        <h1 className="absolute bottom-6 left-6 text-4xl font-light leading-[0.95] tracking-tight text-white mix-blend-difference">
-          {lines.map((l) => (
-            <span key={l} className="block overflow-hidden">
-              <span className="name-line block">{l}</span>
-            </span>
-          ))}
+        <h1 className="absolute bottom-6 left-6 block overflow-hidden text-4xl font-light leading-[0.95] tracking-tight text-white mix-blend-difference">
+          <span className="name-block block">
+            {lines.map((l) => (
+              <span key={l} className="block">
+                {l}
+              </span>
+            ))}
+          </span>
         </h1>
       </div>
     </div>

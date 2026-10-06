@@ -82,7 +82,7 @@ body::-webkit-scrollbar,
 .portfolio-background {
     min-height: 100vh;
     background-color: #050505;
-    background-image: url("/background.png");
+    background-image: url("/picture/background.png");
     background-position: center top;
     background-size: cover;
     background-attachment: fixed;

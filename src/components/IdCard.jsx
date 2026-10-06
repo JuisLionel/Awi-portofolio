@@ -1,7 +1,7 @@
 export default function IdCard() {
 
   return (
-    <div className="origin-center scale-70 sm:scale-85 md:scale-100 xl:scale-110 2xl:scale-125">
+    <div className="origin-center scale-70 sm:scale-85 md:scale-100 xl:scale-110 2xl:scale-125 rotate-10">
       <div className="hover-3d">
         <div className="card relative h-112 w-96 overflow-hidden rounded-4xl bg-paper font-sans text-night ring-1 ring-black/10 shadow-[0_2px_2px_rgba(0,0,0,0.5),0_18px_30px_-10px_rgba(0,0,0,0.7),0_50px_90px_-30px_rgba(0,0,0,0.8)]">
           <div className="relative flex h-full w-full">
@@ -29,10 +29,6 @@ export default function IdCard() {
                   <span className="font-bold">Email:</span>{" "}
                   <span className="font-mono text-xs">PadcoTrial@gmail.com</span>
                 </p>
-                <p>
-                  <span className="font-bold">Status:</span>{" "}
-                  <span className="font-mono text-xs">Available For Work</span>
-                </p>
               </div>
 
               {/* barcode */}
@@ -46,7 +42,7 @@ export default function IdCard() {
             <div className="relative z-10 flex w-[27%] items-center justify-center border-l border-night-line bg-linear-to-b from-night-2 to-night shadow-[-8px_0_14px_-6px_rgba(0,0,0,0.45)]">
               <div className="pointer-events-none absolute inset-0 bg-[repeating-linear-gradient(90deg,#ffffff0a_0_1px,transparent_1px_3px)]" />
               <span className="relative whitespace-nowrap font-display text-2xl font-extrabold text-lime [writing-mode:vertical-rl]">
-                Front End Developer
+                Work card
               </span>
             </div>
           </div>
