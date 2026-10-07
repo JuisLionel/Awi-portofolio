@@ -93,6 +93,31 @@ body::-webkit-scrollbar,
     background-attachment: fixed;
 }
 
+.pixel-transition {
+  grid-template-columns: repeat(16, minmax(0, 1fr));
+  grid-template-rows: repeat(9, minmax(0, 1fr));
+}
+
+.pixel-transition-cover {
+  animation: pixel-transition-cover 120ms steps(1, end) forwards;
+  animation-delay: var(--pixel-delay);
+}
+
+.pixel-transition-reveal {
+  animation: pixel-transition-reveal 120ms steps(1, end) forwards;
+  animation-delay: var(--pixel-delay);
+}
+
+@keyframes pixel-transition-cover {
+  from { transform: scale(0); }
+  to { transform: scale(1); }
+}
+
+@keyframes pixel-transition-reveal {
+  from { transform: scale(1); }
+  to { transform: scale(0); }
+}
+
 @layer base {
     body {
         font-family: var(--font-sans);

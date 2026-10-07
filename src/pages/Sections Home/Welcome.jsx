@@ -104,20 +104,18 @@ export default function Welcome({ show }) {
   const welcomeRef = useRef(null);
   const { available, labels } = useProfile();
 
-  // Slow, eased scroll to the About section (falls back to one screen down)
   const scrollToAbout = () => {
     const target = document.getElementById("about");
     gsap.to(window, {
       scrollTo: {
         y: target ?? `+=${window.innerHeight}`,
-        autoKill: true, // stops if the user scrolls manually
+        autoKill: true, 
       },
       duration: 1.8,
       ease: "power2.inOut",
     });
   };
 
-  // Scale the fixed stage to fit any desktop screen
   useEffect(() => {
     const update = () => {
       const s = Math.min(
@@ -156,7 +154,6 @@ export default function Welcome({ show }) {
     { dependencies: [show], scope: welcomeRef }
   );
 
-  // Slow neon pulse on "Developer" (skipped if the user prefers reduced motion)
   useGSAP(
     () => {
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -182,10 +179,9 @@ export default function Welcome({ show }) {
         ref={welcomeRef}
         className="relative min-h-screen w-full overflow-hidden text-paper opacity-0 lg:h-screen"
       >
-        {/* Stage: fluid below lg, fixed 1440x810 and scaled at lg+ */}
-        <div className="flex w-full flex-col items-center justify-center gap-16 px-6 pt-32 pb-24 lg:absolute lg:top-1/2 lg:left-1/2 lg:h-[810px] lg:w-[1440px] lg:origin-center lg:flex-row lg:justify-between lg:gap-0 lg:px-20 lg:pt-14 lg:pb-0 lg:[transform:translate(-50%,-50%)_scale(var(--s,1))]">
+        <div className="flex w-full flex-col items-center justify-center gap-16 px-6 pt-32 pb-24 lg:absolute lg:top-1/2 lg:left-1/2 lg:h-202.5 lg:w-360 lg:origin-center lg:flex-row lg:justify-between lg:gap-0 lg:px-20 lg:pt-14 lg:pb-0 lg:[transform:translate(-50%,-50%)_scale(var(--s,1))]">
           {/* Left: text */}
-          <div className="flex w-full min-w-0 max-w-xl flex-col items-center text-center lg:w-[640px] lg:max-w-none lg:items-start lg:text-left">
+          <div className="flex w-full min-w-0 max-w-xl flex-col items-center text-center lg:w-160 lg:max-w-none lg:items-start lg:text-left">
             {/* Availability badge (text comes from profile.js) */}
             <div className="welcome-item">
               <Magnetic>
