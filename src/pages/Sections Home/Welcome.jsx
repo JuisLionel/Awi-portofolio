@@ -5,7 +5,8 @@ import { useGSAP } from "@gsap/react";
 
 import Section from "../../components/sections";
 import IdCard from "../../components/IdCard";
-import GlassSurface from "../../components/GlassSurface";
+import GlassPill from "../../components/GlassPill";
+import Magnetic from "../../components/Magnetic";
 import { useProfile } from "../../../Data/profile";
 
 gsap.registerPlugin(useGSAP, ScrollToPlugin);
@@ -22,69 +23,7 @@ const NEON_ON =
 const NEON_SOFT =
   "0 0 4px rgba(198,244,50,0.7), 0 0 14px rgba(198,244,50,0.4), 0 0 30px rgba(198,244,50,0.25)";
 
-// Liquid glass pill: GlassSurface is the layer behind, content sits on top
-function GlassPill({ children, className = "", textClassName = "" }) {
-  return (
-    <span
-      className={`relative inline-flex items-center rounded-full shadow-[0_6px_20px_rgba(0,0,0,0.4)] ${className}`}
-    >
-      <GlassSurface
-        className="absolute inset-0 rounded-full border border-white/20 bg-linear-to-b from-white/15 to-white/5 shadow-[inset_0_1px_0_rgba(255,255,255,0.35),inset_0_-1px_0_rgba(255,255,255,0.08),inset_0_0_12px_rgba(255,255,255,0.06)]"
-        radius={999}
-        edge={14}
-        strength={50}
-        aberration={6}
-        blur={3}
-        saturate={1.8}
-        brightness={1.25}
-      />
-      <span
-        className={`relative z-10 inline-flex items-center gap-2 whitespace-nowrap font-mono text-paper ${textClassName}`}
-      >
-        {children}
-      </span>
-    </span>
-  );
-}
 
-// Leans toward the cursor while hovered, settles back on leave
-function Magnetic({ children, strength = 0.35 }) {
-  const ref = useRef(null);
-
-  useGSAP(
-    () => {
-      const el = ref.current;
-      const xTo = gsap.quickTo(el, "x", { duration: 0.6, ease: "power3.out" });
-      const yTo = gsap.quickTo(el, "y", { duration: 0.6, ease: "power3.out" });
-
-      const move = (e) => {
-        const r = el.getBoundingClientRect();
-        xTo((e.clientX - (r.left + r.width / 2)) * strength);
-        yTo((e.clientY - (r.top + r.height / 2)) * strength);
-      };
-      const leave = () => {
-        xTo(0);
-        yTo(0);
-      };
-
-      el.addEventListener("mousemove", move);
-      el.addEventListener("mouseleave", leave);
-      return () => {
-        el.removeEventListener("mousemove", move);
-        el.removeEventListener("mouseleave", leave);
-      };
-    },
-    { scope: ref }
-  );
-
-  return (
-    <span ref={ref} className="inline-block">
-      {children}
-    </span>
-  );
-}
-
-// Every letter lifts and changes color on hover (nowrap keeps the word on one line)
 function HoverWord({ word, hoverClass }) {
   return (
     <span className="block whitespace-nowrap" aria-hidden="true">
@@ -140,9 +79,10 @@ export default function Welcome({ show }) {
       if (show) {
         gsap.fromTo(
           ".welcome-item",
-          { y: 24, opacity: 0 },
+          { y: 24, scale: 0.96, opacity: 0 },
           {
             y: 0,
+            scale: 1,
             opacity: 1,
             duration: 0.8,
             stagger: 0.12,
@@ -182,7 +122,7 @@ export default function Welcome({ show }) {
         <div className="flex w-full flex-col items-center justify-center gap-16 px-6 pt-32 pb-24 lg:absolute lg:top-1/2 lg:left-1/2 lg:h-202.5 lg:w-360 lg:origin-center lg:flex-row lg:justify-between lg:gap-0 lg:px-20 lg:pt-14 lg:pb-0 lg:[transform:translate(-50%,-50%)_scale(var(--s,1))]">
           {/* Left: text */}
           <div className="flex w-full min-w-0 max-w-xl flex-col items-center text-center lg:w-160 lg:max-w-none lg:items-start lg:text-left">
-            {/* Availability badge (text comes from profile.js) */}
+            {/* Availability badge */}
             <div className="welcome-item">
               <Magnetic>
                 <GlassPill textClassName="px-4 py-1.5 text-xs lg:px-5 lg:py-2">

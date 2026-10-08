@@ -4,9 +4,11 @@ import { Routes, Route, useLocation } from 'react-router'
 
 import Intro from "./components/Intro";
 import PixelTransition from "./components/PixelTransition";
+
 import Home from "./pages/Home";
-import ProjectDetail from "./pages/ProjectDetail";
+import Secrets from "./pages/Secret";
 import NotFound from "./pages/NotFound";
+import ProjectDetail from "./pages/ProjectDetail";
 
 
 export default function App() {
@@ -37,6 +39,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home show={done || isReturningToSection} />} />
         <Route path="/projects/:slug" element={<ProjectDetail />} />
+        <Route path="/secret" element={<Secrets />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </>

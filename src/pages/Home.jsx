@@ -3,7 +3,7 @@ import { useLocation } from "react-router";
 import { sections } from "../section";
 
 import Navbar from "../components/navbar";
-import Footer from "../components/Footers";
+import ClickSpark from "../components/ClickSpark";
 
 import Welcome from "./Sections Home/Welcome";
 import About from "./Sections Home/About";
@@ -63,17 +63,23 @@ export default function Home({ show }) {
   return (
     <>
       <Navbar show={show} active={active} />
+      <ClickSpark
+        sparkColor="#bef264"  // color
+        sparkSize={10}        // line length
+        sparkRadius={18}      // how far they fly
+        sparkCount={8}        // how many
+        duration={400}        // ms
+      >
 
-      <div className="portfolio-background relative z-0">
-        <main>
-          <Welcome show={show} />
-          <About />
-          <Projects />
-          <Contact />
-        </main>
-      </div>
-
-      <Footer />
+        <div className="portfolio-background relative z-0">
+          <main>
+            <Welcome show={show} />
+            <About />
+            <Projects />
+            <Contact />
+          </main>
+        </div>
+      </ClickSpark>
     </>
   );
 }

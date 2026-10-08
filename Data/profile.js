@@ -6,6 +6,11 @@ export const profile = {
   },
 };
 
+export const available = profile.available;
+export const labels = profile.labels;
+
 export function useProfile() {
   return profile;
 }
+
+export default profile;
