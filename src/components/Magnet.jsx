@@ -1,6 +1,8 @@
-'use client';
-
 import { useState, useEffect, useRef } from 'react';
+
+// On touch devices (phones/tablets) there's no cursor — skip all magnet logic entirely.
+const isTouchDevice =
+  typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches;
 
 const Magnet = ({
   children,
@@ -18,7 +20,8 @@ const Magnet = ({
   const magnetRef = useRef(null);
 
   useEffect(() => {
-    if (disabled) {
+    // Skip on touch devices or when explicitly disabled.
+    if (disabled || isTouchDevice) {
       setPosition({ x: 0, y: 0 });
       return;
     }
@@ -35,7 +38,6 @@ const Magnet = ({
 
       if (distX < width / 2 + padding && distY < height / 2 + padding) {
         setIsActive(true);
-
         const offsetX = (e.clientX - centerX) / magnetStrength;
         const offsetY = (e.clientY - centerY) / magnetStrength;
         setPosition({ x: offsetX, y: offsetY });
@@ -46,9 +48,7 @@ const Magnet = ({
     };
 
     window.addEventListener('mousemove', handleMouseMove);
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-    };
+    return () => window.removeEventListener('mousemove', handleMouseMove);
   }, [padding, disabled, magnetStrength]);
 
   const transitionStyle = isActive ? activeTransition : inactiveTransition;
@@ -64,8 +64,10 @@ const Magnet = ({
         className={innerClassName}
         style={{
           transform: `translate3d(${position.x}px, ${position.y}px, 0)`,
+          // Only hint will-change while the effect is active so we don't hold
+          // a compositing layer open permanently for every Magnet on the page.
           transition: transitionStyle,
-          willChange: 'transform'
+          willChange: isActive ? 'transform' : 'auto',
         }}
       >
         {children}

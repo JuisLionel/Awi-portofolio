@@ -267,7 +267,7 @@ export default function Projects() {
           </p>
           <BlurText
             text="Projects"
-            delay={90}
+            delay={0}
             animateBy="letters"
             direction="top"
             className="mt-2 font-display text-4xl text-paper 2xl:text-6xl"

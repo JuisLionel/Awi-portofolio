@@ -1,6 +1,5 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
-import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { useGSAP } from "@gsap/react";
 
 import Section from "../../components/sections";
@@ -9,7 +8,7 @@ import GlassPill from "../../components/GlassPill";
 import Magnetic from "../../components/Magnetic";
 import { useProfile } from "../../../Data/profile";
 
-gsap.registerPlugin(useGSAP, ScrollToPlugin);
+gsap.registerPlugin(useGSAP);
 
 const techs = ["Typescript", "React.js", "Tailwind"];
 

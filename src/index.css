@@ -88,99 +88,14 @@ body::-webkit-scrollbar,
     background-image: url("/picture/background.png");
     background-position: center top;
     background-size: cover;
-    background-attachment: fixed;
 }
 
-.secret-page {
-  background:
-    radial-gradient(ellipse at 50% 45%, rgba(211, 180, 119, 0.32), transparent 65%),
-    #8f744b;
-}
-
-.turntable-deck {
-  background: #092407;
-}
-
-.record-disc {
-  display: block;
-  height: auto;
-  filter: drop-shadow(0 10px 15px rgb(0 0 0 / 45%));
-}
-
-.record-center-hole {
-  z-index: 1;
-  transform: translate(-50%, -50%);
-  background: #10220b;
-  box-shadow: 0 0 0 1px rgb(0 0 0 / 20%);
-}
-
-.tonearm-asset {
-  position: absolute;
-  z-index: 2;
-  transform-origin: 50% 20%;
-  filter: drop-shadow(2px 3px 3px rgb(0 0 0 / 35%));
-  pointer-events: none;
-}
-
-.music-player {
-  transform-style: preserve-3d;
-  will-change: transform;
-}
-
-.music-progress,
-.music-volume {
-  height: 4px;
-  cursor: pointer;
-  accent-color: #36c8b5;
-}
-
-.music-progress:disabled {
-  cursor: default;
-  opacity: 0.45;
-}
-
-.player-control {
-  display: grid;
-  width: 36px;
-  height: 36px;
-  place-items: center;
-  color: #f4f5f2;
-  transition: color 150ms ease, transform 150ms ease;
-}
-
-.player-control:hover:not(:disabled) {
-  color: #71e6d5;
-  transform: scale(1.1);
-}
-
-.player-control:disabled {
-  cursor: not-allowed;
-  opacity: 0.35;
-}
-
-.player-play {
-  display: grid;
-  width: 52px;
-  height: 52px;
-  place-items: center;
-  border-radius: 50%;
-  background: #f3f4f2;
-  color: #172019;
-  transition: transform 150ms ease, background-color 150ms ease;
-}
-
-.player-play:hover {
-  transform: scale(1.06);
-  background: #fff;
-}
-
-.player-play:focus-visible,
-.player-control:focus-visible,
-.secret-page a:focus-visible,
-.secret-page button:focus-visible,
-.secret-page input:focus-visible {
-  outline: 2px solid #71e6d5;
-  outline-offset: 3px;
+/* background-attachment: fixed forces a repaint on every scroll frame on mobile
+   (no GPU compositing). Only enable it on large screens where it's smooth. */
+@media (min-width: 1024px) {
+    .portfolio-background {
+        background-attachment: fixed;
+    }
 }
 
 .pixel-transition {
