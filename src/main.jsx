@@ -6,6 +6,8 @@ import 'aos/dist/aos.css'
 import './index.css'
 import App from './App.jsx'
 
+window.history.scrollRestoration = 'manual'
+
 AOS.init({
   duration: 700,
   easing: 'ease-out-cubic',

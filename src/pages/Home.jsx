@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { useLocation } from "react-router";
 import { sections } from "../section";
 
@@ -10,13 +10,11 @@ import About from "./Sections Home/About";
 import Projects from "./Sections Home/projects";
 import Contact from "./Sections Home/Contact";
 
-export default function Home({ show }) {
+export default function Home({ show, scrollTo }) {
   const [active, setActive] = useState(sections[0].id);
   const location = useLocation();
 
-  useEffect(() => {
-    window.history.scrollRestoration = "manual";
-    const scrollTo = location.state?.scrollTo;
+  useLayoutEffect(() => {
     if (scrollTo) {
       const frame = window.requestAnimationFrame(() => {
         const target = document.getElementById(scrollTo);
@@ -27,7 +25,7 @@ export default function Home({ show }) {
       return () => window.cancelAnimationFrame(frame);
     }
     window.scrollTo(0, 0);
-  }, [location.key, location.state]);
+  }, [location.key, scrollTo]);
 
   useEffect(() => {
     let frame = 0;

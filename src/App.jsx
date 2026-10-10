@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Routes, Route, useLocation } from 'react-router'
+import { Routes, Route, useLocation, useNavigationType } from 'react-router'
 
 
 import Intro from "./components/Intro";
@@ -14,8 +14,21 @@ import ProjectDetail from "./pages/ProjectDetail";
 export default function App() {
   const [done, setDone] = useState(false);
   const location = useLocation();
+  const navigationType = useNavigationType();
+  const [initialLocationKey] = useState(location.key);
+  const [isDocumentReload] = useState(
+    () =>
+      typeof window !== "undefined" &&
+      window.performance.getEntriesByType("navigation")[0]?.type === "reload"
+  );
   const isHome = location.pathname === "/";
-  const isReturningToSection = Boolean(location.state?.scrollTo);
+  const isInitialReloadedLocation =
+    isDocumentReload && location.key === initialLocationKey;
+  const scrollTo =
+    !isInitialReloadedLocation && navigationType === "PUSH"
+      ? location.state?.scrollTo
+      : null;
+  const isReturningToSection = Boolean(scrollTo);
   const showIntro = isHome && !done && !isReturningToSection;
 
   useEffect(() => {
@@ -37,7 +50,7 @@ export default function App() {
       <PixelTransition />
 
       <Routes>
-        <Route path="/" element={<Home show={done || isReturningToSection} />} />
+        <Route path="/" element={<Home show={done || isReturningToSection} scrollTo={scrollTo} />} />
         <Route path="/projects/:slug" element={<ProjectDetail />} />
         <Route path="/secret" element={<Secrets />} />
         <Route path="*" element={<NotFound />} />
