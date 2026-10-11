@@ -16,7 +16,7 @@ import {
     SiLinux,
     SiFigma,
 } from "react-icons/si";
-import { FaArrowRight } from "react-icons/fa6";
+import { FaArrowRight, FaDownload } from "react-icons/fa6";
 
 import Section from "../../components/sections";
 import AnimatedContent from "../../components/AnimatedContent";
@@ -246,10 +246,10 @@ export default function About() {
                         style={
                             isDesktop
                                 ? {
-                                      width: DESIGN_W,
-                                      height: DESIGN_H,
-                                      transform: `translate(-50%, -50%) scale(${scale})`,
-                                  }
+                                    width: DESIGN_W,
+                                    height: DESIGN_H,
+                                    transform: `translate(-50%, -50%) scale(${scale})`,
+                                }
                                 : undefined
                         }
                     >
@@ -275,20 +275,31 @@ export default function About() {
                                     something meaningful.
                                 </p>
 
-                                <Magnet
-                                    padding={70}
-                                    magnetStrength={4}
-                                    wrapperClassName="mt-8 inline-block lg:mt-9"
-                                >
-                                    <button
-                                        type="button"
-                                        onClick={goToContact}
-                                        className="group inline-flex cursor-pointer items-center gap-3 font-mono text-sm tracking-widest text-lime lg:gap-4 lg:text-lg"
+                                <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-4 lg:mt-9">
+                                    <a
+                                        href="/assets/cv.pdf"
+                                        download="Lionel-Juis-Gerardo-CV.pdf"
+                                        className="group inline-flex items-center gap-3 border border-white/25 px-4 py-3 font-mono text-sm tracking-widest text-white transition-colors hover:border-lime hover:text-lime focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-lime lg:gap-4 lg:text-lg"
                                     >
-                                        LET&apos;S CONNECT
-                                        <FaArrowRight className="text-base transition-transform duration-300 group-hover:translate-x-2 lg:text-xl" />
-                                    </button>
-                                </Magnet>
+                                        DOWNLOAD CV
+                                        <FaDownload className="text-base transition-transform duration-300 group-hover:translate-y-1 lg:text-xl" />
+                                    </a>
+
+                                    <Magnet
+                                        padding={70}
+                                        magnetStrength={4}
+                                        wrapperClassName="inline-block"
+                                    >
+                                        <button
+                                            type="button"
+                                            onClick={goToContact}
+                                            className="group inline-flex cursor-pointer items-center gap-3 font-mono text-sm tracking-widest text-lime lg:gap-4 lg:text-lg"
+                                        >
+                                            LET&apos;S CONNECT
+                                            <FaArrowRight className="text-base transition-transform duration-300 group-hover:translate-x-2 lg:text-xl" />
+                                        </button>
+                                    </Magnet>
+                                </div>
                             </div>
 
                             {/* Photo */}
@@ -319,11 +330,10 @@ export default function About() {
                                             key={g}
                                             role="tab"
                                             onClick={() => setGroup(g)}
-                                            className={`tab text-sm lg:text-base ${
-                                                group === g
+                                            className={`tab text-sm lg:text-base ${group === g
                                                     ? "tab-active text-lime!"
                                                     : "text-white/50 hover:text-white"
-                                            }`}
+                                                }`}
                                         >
                                             {g}
                                         </button>
