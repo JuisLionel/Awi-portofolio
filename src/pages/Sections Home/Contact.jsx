@@ -12,7 +12,6 @@ import { useProfile } from "../../../Data/profile";
 
 import { Link } from "react-router";
 
-// TODO: replace with your real details
 const NAME = "Awi";
 const EMAIL = "you@example.com";
 const PHONE = "+62 800 0000 0000";
@@ -39,7 +38,6 @@ function useLocalTime(timeZone) {
     useEffect(() => {
         const id = setInterval(() => setTime(read()), 15000);
         return () => clearInterval(id);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [timeZone]);
 
     return time;

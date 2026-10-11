@@ -56,7 +56,6 @@ const SKILLS = [
 
 const GROUPS = ["All", "Frontend", "Backend", "Tools"];
 
-/* true when viewport >= 1024px (same as Tailwind's lg) */
 function useIsDesktop() {
     const query = "(min-width: 1024px)";
     const [matches, setMatches] = useState(
@@ -178,12 +177,11 @@ function RevealPhoto({ src, alt }) {
     );
 }
 
-/* Info row: cursor-following spotlight + decrypt-on-hover value */
 function InfoRow({ label, value }) {
     return (
         <div
             onMouseMove={setSpotlight}
-            className="group relative flex items-start gap-4 overflow-hidden border-b border-white/25 px-2 py-4 transition-colors duration-300 hover:border-lime/50 lg:gap-6 lg:px-4 lg:py-5
+            className="group relative flex items-start gap-4 overflow-hidden border-b border-white/10 px-2 py-4 transition-colors duration-300 hover:border-lime/50 lg:gap-6 lg:px-4 lg:py-5
             before:pointer-events-none before:absolute before:inset-0 before:opacity-0 before:transition-opacity before:duration-300
             before:bg-[radial-gradient(240px_circle_at_var(--x)_var(--y),rgba(198,244,50,0.12),transparent_70%)] hover:before:opacity-100"
         >
@@ -205,7 +203,6 @@ function InfoRow({ label, value }) {
     );
 }
 
-/* Glass pill, same glass recipe as the Navbar (bar + sheen + lens on hover) */
 function GlassPill({ name, icon: Icon, active }) {
     return (
         <button
@@ -235,7 +232,6 @@ export default function About() {
     return (
         <Section id="about">
             <AnimatedContent className="min-h-screen w-full lg:h-screen" distance={18} duration={0.65}>
-                {/* desktop: viewport-sized wrapper | mobile: normal flow */}
                 <div
                     className={
                         isDesktop
@@ -243,7 +239,6 @@ export default function About() {
                             : "relative w-full text-white"
                     }
                 >
-                    {/* desktop: fixed 1920x1080 stage, scaled | mobile: stacked column */}
                     <div
                         className={
                             isDesktop
@@ -260,11 +255,10 @@ export default function About() {
                                 : undefined
                         }
                     >
-                        {/* TOP: intro / photo / info */}
                         <div className="grid items-center gap-12 lg:grid-cols-[1.25fr_0.85fr_1fr] lg:gap-16">
                             {/* Intro */}
                             <div>
-                                <Label>02 / ABOUT ME</Label>
+                                <Label>ABOUT ME</Label>
 
                                 <h2 className="mt-6 font-display text-6xl font-bold leading-[0.95] sm:text-7xl lg:mt-8 lg:text-[112px]">
                                     Hi, I&apos;m
@@ -275,7 +269,7 @@ export default function About() {
                                 </h2>
                                 <span className="mt-5 block h-1.5 w-16 bg-lime lg:mt-6 lg:h-2 lg:w-20" />
 
-                                <p className="mt-6 max-w-xl font-mono text-sm leading-7 text-white/70 lg:mt-7 lg:max-w-[640px] lg:text-lg lg:leading-[30px]">
+                                <p className="mt-6 max-w-xl font-mono text-sm leading-7 text-white/70 lg:mt-7 lg:max-w-160 lg:text-lg lg:leading-[30px]">
                                     I&apos;m a high school graduate with a passion for technology
                                     and software development. I enjoy building websites, solving
                                     problems, and learning new things every day. I&apos;m always
@@ -300,7 +294,7 @@ export default function About() {
                             </div>
 
                             {/* Photo */}
-                            <div className="mx-auto w-full max-w-[320px] lg:w-[440px] lg:max-w-none">
+                            <div className="mx-auto w-full max-w-[320px] lg:w-110 lg:max-w-none">
                                 <RevealPhoto src="/picture/photo.webp" alt="Lionel Juis Geraldo" />
 
                                 <p className="font-mono text-[11px] tracking-[0.25em] text-white/50 lg:text-sm">
@@ -321,7 +315,6 @@ export default function About() {
                             <div>
                                 <Label>SKILLS &amp; TECHNOLOGIES</Label>
 
-                                {/* daisyUI tabs filter */}
                                 <div role="tablist" className="tabs tabs-border mt-4 font-mono">
                                     {GROUPS.map((g) => (
                                         <button
@@ -350,7 +343,7 @@ export default function About() {
                                 </div>
                             </div>
 
-                            <div className="lg:border-l lg:border-white/30 lg:pl-12">
+                            <div className="lg:border-l lg:border-white/10 lg:pl-12">
                                 <Label>CURRENT FOCUS</Label>
                                 <div className="mt-5 flex gap-4 lg:mt-6">
                                     <span className="relative mt-2 flex h-2.5 w-2.5 shrink-0 lg:h-3 lg:w-3">
