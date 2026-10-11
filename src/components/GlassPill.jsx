@@ -10,7 +10,7 @@ export default function GlassPill({
 
   return (
     <span
-      className={`relative isolate inline-flex items-center overflow-hidden rounded-full border border-white/15 bg-linear-to-b from-white/[0.08] to-white/[0.02] shadow-[0_4px_14px_rgba(0,0,0,0.24),inset_0_1px_0_rgba(255,255,255,0.2),inset_0_-1px_0_rgba(255,255,255,0.04),inset_0_0_10px_rgba(255,255,255,0.035)] ${className}`}
+      className={`relative isolate inline-flex items-center overflow-hidden rounded-full border border-white/15 bg-linear-to-b from-white/8 to-white/2 shadow-[0_4px_14px_rgba(0,0,0,0.24),inset_0_1px_0_rgba(255,255,255,0.2),inset_0_-1px_0_rgba(255,255,255,0.04),inset_0_0_10px_rgba(255,255,255,0.035)] ${className}`}
       style={glassStyle}
     >
       <span

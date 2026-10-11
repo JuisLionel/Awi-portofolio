@@ -8,6 +8,7 @@
  *   animateBy   "letters" | "words"  – granularity of stagger (default: "words")
  *   direction   "top" | "bottom"    – slide direction (default: "top" = fade-up)
  */
+
 export default function BlurText({
   text = "",
   className = "",

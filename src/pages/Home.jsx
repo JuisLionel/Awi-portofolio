@@ -62,11 +62,11 @@ export default function Home({ show, scrollTo }) {
     <>
       <Navbar show={show} active={active} />
       <ClickSpark
-        sparkColor="#bef264"  // color
-        sparkSize={10}        // line length
-        sparkRadius={18}      // how far they fly
-        sparkCount={8}        // how many
-        duration={400}        // ms
+        sparkColor="#bef264"  
+        sparkSize={10}        
+        sparkRadius={18}     
+        sparkCount={8}      
+        duration={400}       
       >
 
         <div className="portfolio-background relative z-0">

@@ -30,7 +30,7 @@ const DESIGN_W = 1920;
 const DESIGN_H = 1080;
 
 const INFO = [
-    { label: "Full Name", value: "Lionel Juis Geraldo" },
+    { label: "Full Name", value: "Lionel Juis Gerardo" },
     { label: "Date of Birth", value: "21 / 09 / 08" },
     { label: "Gender", value: "Male" },
     { label: "Religion", value: "Christian" },
@@ -43,10 +43,8 @@ const SKILLS = [
     { name: "CSS", icon: SiCss, group: "Frontend" },
     { name: "JavaScript", icon: SiJavascript, group: "Frontend" },
     { name: "React", icon: SiReact, group: "Frontend" },
-    { name: "Next.js", icon: SiNextdotjs, group: "Frontend" },
     { name: "Tailwind CSS", icon: SiTailwindcss, group: "Frontend" },
     { name: "Node.js", icon: SiNodedotjs, group: "Backend" },
-    { name: "Express", icon: SiExpress, group: "Backend" },
     { name: "PostgreSQL", icon: SiPostgresql, group: "Backend" },
     { name: "Git", icon: SiGit, group: "Tools" },
     { name: "Docker", icon: SiDocker, group: "Tools" },
@@ -148,7 +146,7 @@ function RevealPhoto({ src, alt }) {
                 <span className="absolute left-0 top-5 z-10 h-20 w-0.5 bg-lime lg:top-6 lg:h-32" />
                 <span className="absolute bottom-2.5 right-2.5 z-10 h-4 w-4 border-b-2 border-r-2 border-lime lg:bottom-3 lg:right-3 lg:h-5 lg:w-5" />
 
-                <div className="relative aspect-[4/5] w-full overflow-hidden">
+                <div className="relative aspect-4/5 w-full overflow-hidden">
                     {/* grayscale base */}
                     <img
                         src={src}
@@ -242,7 +240,7 @@ export default function About() {
                     <div
                         className={
                             isDesktop
-                                ? "absolute left-1/2 top-1/2 flex flex-col justify-center gap-12 px-16 pb-10 pt-[100px]"
+                                ? "absolute left-1/2 top-1/2 flex flex-col justify-center gap-12 px-16 pb-10 pt-25"
                                 : "flex flex-col gap-14 px-5 pb-16 pt-28 sm:px-8"
                         }
                         style={
@@ -269,7 +267,7 @@ export default function About() {
                                 </h2>
                                 <span className="mt-5 block h-1.5 w-16 bg-lime lg:mt-6 lg:h-2 lg:w-20" />
 
-                                <p className="mt-6 max-w-xl font-mono text-sm leading-7 text-white/70 lg:mt-7 lg:max-w-160 lg:text-lg lg:leading-[30px]">
+                                <p className="mt-6 max-w-xl font-mono text-sm leading-7 text-white/70 lg:mt-7 lg:max-w-160 lg:text-lg lg:leading-7.5">
                                     I&apos;m a high school graduate with a passion for technology
                                     and software development. I enjoy building websites, solving
                                     problems, and learning new things every day. I&apos;m always
@@ -295,7 +293,7 @@ export default function About() {
 
                             {/* Photo */}
                             <div className="mx-auto w-full max-w-[320px] lg:w-110 lg:max-w-none">
-                                <RevealPhoto src="/picture/photo.webp" alt="Lionel Juis Geraldo" />
+                                <RevealPhoto src="/picture/img.webp" alt="Lionel Juis Geraldo" />
 
                                 <p className="font-mono text-[11px] tracking-[0.25em] text-white/50 lg:text-sm">
                                     STUDENT / DEVELOPER
@@ -323,7 +321,7 @@ export default function About() {
                                             onClick={() => setGroup(g)}
                                             className={`tab text-sm lg:text-base ${
                                                 group === g
-                                                    ? "tab-active !text-lime"
+                                                    ? "tab-active text-lime!"
                                                     : "text-white/50 hover:text-white"
                                             }`}
                                         >

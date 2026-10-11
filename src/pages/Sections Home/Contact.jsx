@@ -1,7 +1,8 @@
 // src/pages/Sections Home/Contact.jsx
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { Link } from "react-router";
 import { ArrowUp, Check, Copy, Mail, MapPin, Phone } from "lucide-react";
-import { FaDiscord, FaGithub, FaInstagram, FaLinkedinIn } from "react-icons/fa6";
+import { FaFacebookF, FaGithub, FaInstagram, FaLinkedinIn } from "react-icons/fa6";
 
 import Section from "../../components/sections";
 import GlassSurface from "../../components/GlassSurface";
@@ -10,38 +11,12 @@ import GlassPill from "../../components/GlassPill";
 import Magnetic from "../../components/Magnetic";
 import { useProfile } from "../../../Data/profile";
 
-import { Link } from "react-router";
-
-const NAME = "Awi";
-const EMAIL = "you@example.com";
-const PHONE = "+62 800 0000 0000";
-const LOCATION = "Indonesia";
-const TIMEZONE = "Asia/Jakarta"; // used for the live local time
-const SOCIALS = [
-    { label: "GitHub", href: "https://github.com/your-username", Icon: FaGithub },
-    { label: "LinkedIn", href: "https://linkedin.com/in/your-username", Icon: FaLinkedinIn },
-    { label: "Instagram", href: "https://instagram.com/your-username", Icon: FaInstagram },
-    { label: "Discord", href: "https://discord.com/users/your-id", Icon: FaDiscord },
-];
-
-function useLocalTime(timeZone) {
-    const read = () =>
-        new Intl.DateTimeFormat("en-GB", {
-            hour: "2-digit",
-            minute: "2-digit",
-            hour12: false,
-            timeZone,
-        }).format(new Date());
-
-    const [time, setTime] = useState(read);
-
-    useEffect(() => {
-        const id = setInterval(() => setTime(read()), 15000);
-        return () => clearInterval(id);
-    }, [timeZone]);
-
-    return time;
-}
+const SOCIAL_ICONS = {
+    facebook: FaFacebookF,
+    github: FaGithub,
+    instagram: FaInstagram,
+    linkedin: FaLinkedinIn,
+};
 
 // Heading word that lifts and tilts when hovered
 function Word({ children, highlight = false }) {
@@ -110,8 +85,11 @@ function InfoRow({ Icon, children, href, copyValue, copied, onCopy, trailing }) 
 
 export default function Contact() {
     const [copiedValue, setCopiedValue] = useState(null);
-    const { available, labels } = useProfile();
-    const localTime = useLocalTime(TIMEZONE);
+    const profile = useProfile();
+    const { available, labels } = profile;
+    const { email, phone, country } = profile;
+    const socials = Array.isArray(profile.socials) ? profile.socials : [];
+    const hasContactDetails = Boolean(email || phone || country || socials.length > 0);
 
     const copy = async (value) => {
         try {
@@ -133,7 +111,7 @@ export default function Contact() {
                         </p>
                     </AnimatedContent>
 
-                    <div className="grid flex-1 items-center gap-12 py-10 lg:grid-cols-[1.25fr_0.75fr] 2xl:gap-20">
+                    <div className={`grid flex-1 items-center gap-12 py-10 2xl:gap-20 ${hasContactDetails ? "lg:grid-cols-[1.25fr_0.75fr]" : ""}`}>
                         {/* Left: badge + heading + CTA */}
                         <div className="flex flex-col items-start gap-7 2xl:gap-10">
                             <AnimatedContent distance={18} duration={0.65} delay={0.05}>
@@ -153,7 +131,7 @@ export default function Contact() {
                             </AnimatedContent>
 
                             <AnimatedContent distance={40} duration={0.9} ease="power3.out" delay={0.1}>
-                                <h2 className="font-display text-6xl font-extrabold leading-[0.98] tracking-tight text-paper sm:text-8xl 2xl:text-[10rem]">
+                                <h2 className="font-display text-[clamp(2.25rem,11vw,3rem)] font-extrabold leading-[0.98] tracking-tight text-paper sm:text-8xl 2xl:text-[10rem]">
                                     <span className="block">
                                         <Word>Let&apos;s</Word>
                                         <Word>work</Word>
@@ -171,52 +149,54 @@ export default function Contact() {
                                 </p>
                             </AnimatedContent>
 
-                            <AnimatedContent distance={18} duration={0.65} delay={0.25}>
-                                <Magnetic>
-                                    <a
-                                        href={`mailto:${EMAIL}`}
-                                        className="inline-block rounded-full transition-transform duration-150 active:scale-95"
-                                    >
-                                        <GlassPill
-                                            className="border border-lime bg-lime"
-                                            textClassName="px-8 py-2 text-night"
+                            {email && (
+                                <AnimatedContent distance={18} duration={0.65} delay={0.25}>
+                                    <Magnetic>
+                                        <a
+                                            href={`mailto:${email}`}
+                                            className="inline-block rounded-full transition-transform duration-150 active:scale-95"
                                         >
-                                            Say hello <span aria-hidden="true">↗</span>
-                                        </GlassPill>
-                                    </a>
-                                </Magnetic>
-                            </AnimatedContent>
+                                            <GlassPill
+                                                className="border border-lime bg-lime"
+                                                textClassName="px-8 py-2 text-night"
+                                            >
+                                                Say hello <span aria-hidden="true">↗</span>
+                                            </GlassPill>
+                                        </a>
+                                    </Magnetic>
+                                </AnimatedContent>
+                            )}
                         </div>
 
-                        {/* Right: glass contact panel */}
+                        {hasContactDetails && (
                         <AnimatedContent distance={40} duration={0.9} ease="power3.out" delay={0.2}>
                             <div className="relative overflow-hidden rounded-3xl border border-white/15 bg-white/[0.07] p-5 shadow-[0_20px_60px_rgba(0,0,0,0.25)] backdrop-blur-xl sm:p-6 2xl:rounded-[2rem] 2xl:p-8">
                                 <GlassSurface className="pointer-events-none absolute inset-0 rounded-3xl" />
                                 <div className="relative">
-                                    <InfoRow
+                                    {email && <InfoRow
                                         Icon={Mail}
-                                        href={`mailto:${EMAIL}`}
-                                        copyValue={EMAIL}
-                                        copied={copiedValue === EMAIL}
+                                        href={`mailto:${email}`}
+                                        copyValue={email}
+                                        copied={copiedValue === email}
                                         onCopy={copy}
                                     >
-                                        {EMAIL}
-                                    </InfoRow>
-                                    <InfoRow
+                                        {email}
+                                    </InfoRow>}
+                                    {phone && <InfoRow
                                         Icon={Phone}
-                                        href={`tel:${PHONE.replace(/\s/g, "")}`}
-                                        copyValue={PHONE}
-                                        copied={copiedValue === PHONE}
+                                        href={`tel:${phone.replace(/\s/g, "")}`}
+                                        copyValue={phone}
+                                        copied={copiedValue === phone}
                                         onCopy={copy}
                                     >
-                                        {PHONE}
-                                    </InfoRow>
-                                    <InfoRow Icon={MapPin} trailing={localTime}>
-                                        {LOCATION}
-                                    </InfoRow>
+                                        {phone}
+                                    </InfoRow>}
+                                    {country && <InfoRow Icon={MapPin}>{country}</InfoRow>}
 
                                     <div className="mt-5 flex flex-wrap gap-3">
-                                        {SOCIALS.map(({ label, href, Icon }) => (
+                                        {socials.map(({ label, href }) => {
+                                            const Icon = SOCIAL_ICONS[label?.toLowerCase()];
+                                            return (
                                             <Magnetic key={label}>
                                                 <a
                                                     href={href}
@@ -225,23 +205,25 @@ export default function Contact() {
                                                     className="inline-block transition-transform duration-200 active:scale-95"
                                                 >
                                                     <GlassPill textClassName="px-4 py-1.5 text-xs lg:px-5 lg:py-2">
-                                                        <Icon aria-hidden="true" className="size-4" />
+                                                        {Icon && <Icon aria-hidden="true" className="size-4" />}
                                                         {label}
                                                     </GlassPill>
                                                 </a>
                                             </Magnetic>
-                                        ))}
+                                            );
+                                        })}
                                     </div>
                                 </div>
                             </div>
                         </AnimatedContent>
+                        )}
                     </div>
 
                     {/* Bottom bar */}
                     <AnimatedContent distance={18} duration={0.65} delay={0.3}>
                         <div className="flex items-center justify-between gap-4 border-t border-white/10 pt-5 font-mono text-xs uppercase tracking-[0.2em] text-paper/45">
                             <span>
-                                © {new Date().getFullYear()} {NAME} Reserved. All rights reserved.
+                                © {new Date().getFullYear()} All rights reserved.
                             </span>
                             <button
                                 type="button"

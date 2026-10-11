@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 
-// Canvas spark burst on click (React Bits style, no extra dependencies).
 export default function ClickSpark({
   sparkColor = "#fff",
   sparkSize = 10,
@@ -15,7 +14,6 @@ export default function ClickSpark({
   const sparksRef = useRef([]);
   const rafRef = useRef(null);
 
-  // Keep the canvas viewport-sized instead of allocating a bitmap for the full page.
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;

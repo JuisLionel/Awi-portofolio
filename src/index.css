@@ -82,12 +82,46 @@ body::-webkit-scrollbar,
     --color-lime: #c6f432;
 }
 
+@theme {
+  --animate-lightbox-in: lightbox-in 280ms cubic-bezier(0.22, 1, 0.36, 1);
+
+  @keyframes lightbox-in {
+    from {
+      opacity: 0;
+      transform: scale(0.96);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+}
+
+@keyframes pixel-title-out {
+  to {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+
+/* Must come after .pixel-transition-title in the file */
+.pixel-transition-title-out {
+  animation: pixel-title-out 280ms ease forwards;
+}
+
 .portfolio-background {
     min-height: 100vh;
     background-color: #050505;
-    background-image: url("/picture/background.png");
+    background-image: url("/picture/background.webp");
     background-position: center top;
     background-size: cover;
+}
+
+@media (max-width: 767px) {
+    .portfolio-background {
+        background-repeat: repeat;
+        background-size: 100% auto;
+    }
 }
 
 /* background-attachment: fixed forces a repaint on every scroll frame on mobile
@@ -113,9 +147,27 @@ body::-webkit-scrollbar,
   animation-delay: var(--pixel-delay);
 }
 
+.pixel-transition-title {
+  animation: pixel-transition-title-in 280ms ease-out both;
+}
+
+.pixel-transition-title-out {
+  animation: pixel-transition-title-out 280ms ease-in both;
+}
+
 @keyframes pixel-transition-cover {
   from { transform: scale(0); }
   to { transform: scale(1); }
+}
+
+@keyframes pixel-transition-title-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pixel-transition-title-out {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(-8px); }
 }
 
 @keyframes pixel-transition-reveal {

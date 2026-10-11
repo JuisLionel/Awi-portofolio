@@ -1,16 +1,34 @@
-# React + Vite
+# Awi Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A portfolio website powered by React + Vite, now configured to read portfolio content from Supabase.
 
-Currently, two official plugins are available:
+## Setup
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+1. Copy `.env.example` to `.env` and add your Supabase values.
+2. Create the tables in Supabase using `supabase/schema.sql`.
+3. Run the app:
 
-## React Compiler
+```bash
+npm install
+npm run dev
+```
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Supabase configuration
 
-## Expanding the ESLint configuration
+Create a new project in Supabase and paste these values into your `.env` file:
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```bash
+VITE_SUPABASE_URL=
+VITE_SUPABASE_ANON_KEY=
+```
+
+Fill in the URL and anon key from your Supabase project's API settings. The Supabase `profile` table stores the availability flag, email, phone, country, and social links. The badge labels remain defined locally in `Data/profile.js`. Project titles, descriptions, images, and detail content are loaded from the `projects` table. The schema seeds the Login and Registration, To-Do List, and Typing Test projects from the provided repositories.
+
+## Included schema
+
+The SQL in `supabase/schema.sql` creates:
+
+- `public.profile`
+- `public.projects`
+
+This keeps the portfolio contact and project content editable from your Supabase dashboard without changing code.

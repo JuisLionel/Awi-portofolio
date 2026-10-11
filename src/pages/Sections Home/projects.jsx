@@ -8,8 +8,10 @@ import AnimatedContent from "../../components/AnimatedContent";
 import GlassPill from "../../components/GlassPill";
 import Magnet from "../../components/Magnet";
 import ShinyText from "../../components/ShinyText";
-import { projects } from "../../../Data/projects";
+import { useProjects } from "../../../Data/projects";
 import { startPixelTransition } from "../../lib/pixelTransition";
+
+const MAX_VISIBLE_PROJECTS = 3;
 
 function ProjectCard({ project }) {
   const navigate = useNavigate();
@@ -29,10 +31,13 @@ function ProjectCard({ project }) {
     }
 
     event.preventDefault();
-    startPixelTransition(() => {
-      navigate(destination);
-      return destination;
-    });
+    startPixelTransition(
+      () => {
+        navigate(destination);
+        return destination;
+      },
+      destination
+    );
   };
 
   // Ref is on the Link because it never tilts, so the coordinates stay stable.
@@ -119,7 +124,9 @@ function ProjectCard({ project }) {
               </p>
 
               <div className="mt-auto flex flex-wrap gap-2.5 pt-3">
-                {project.stack.map((item) => (
+                {project.stack
+                  .slice(0, project.stack.length > 5 ? 4 : 5)
+                  .map((item) => (
                   <GlassPill
                     key={item}
                     className="transition-colors duration-200 group-hover:border-lime/30"
@@ -128,6 +135,14 @@ function ProjectCard({ project }) {
                     {item}
                   </GlassPill>
                 ))}
+                {project.stack.length > 5 && (
+                  <GlassPill
+                    className="border border-lime/30"
+                    textClassName="px-4 py-1.5 text-sm text-lime 2xl:px-5 2xl:py-2 2xl:text-base"
+                  >
+                    +{project.stack.length - 4} more
+                  </GlassPill>
+                )}
               </div>
             </div>
 
@@ -160,6 +175,7 @@ function ProjectCard({ project }) {
 }
 
 export default function Projects() {
+  const { projects: projectList } = useProjects();
   const [query, setQuery] = useState("");
   const [selectedStacks, setSelectedStacks] = useState([]);
   const [showAllProjects, setShowAllProjects] = useState(false);
@@ -174,7 +190,7 @@ export default function Projects() {
   const stacks = useMemo(
     () => {
       const stackCounts = new Map();
-      projects.forEach((project) => {
+      projectList.forEach((project) => {
         project.stack.forEach((stack) => {
           stackCounts.set(stack, (stackCounts.get(stack) ?? 0) + 1);
         });
@@ -185,12 +201,12 @@ export default function Projects() {
 
       return ["All", ...mostUsedStacks];
     },
-    []
+    [projectList]
   );
 
   const visibleProjects = useMemo(() => {
     const normalizedQuery = query.trim().toLowerCase();
-    return projects.filter((project) => {
+    return projectList.filter((project) => {
       const matchesStack =
         selectedStacks.length === 0 ||
         selectedStacks.some((stack) => project.stack.includes(stack));
@@ -198,11 +214,11 @@ export default function Projects() {
         `${project.title} ${project.description} ${project.stack.join(" ")}`.toLowerCase();
       return matchesStack && searchableText.includes(normalizedQuery);
     });
-  }, [query, selectedStacks]);
+  }, [projectList, query, selectedStacks]);
 
   const displayedProjects = showAllProjects
     ? visibleProjects
-    : visibleProjects.slice(0, 6);
+    : visibleProjects.slice(0, MAX_VISIBLE_PROJECTS);
 
   useEffect(() => {
     const handlePointerMove = (event) => {
@@ -286,7 +302,7 @@ export default function Projects() {
         threshold={0.15}
       >
         <div className="relative rounded-[2rem] p-3 sm:rounded-full sm:p-2.5 2xl:p-3">
-          <GlassSurface className="pointer-events-none absolute inset-0 rounded-[2rem] border border-white/10 bg-white/[0.04] shadow-[0_10px_32px_rgba(0,0,0,0.16)] sm:rounded-full" />
+          <GlassSurface className="pointer-events-none absolute inset-0 rounded-[2rem] border border-white/10 bg-white/4 shadow-[0_10px_32px_rgba(0,0,0,0.16)] sm:rounded-full" />
           <div className="relative flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between sm:gap-5 2xl:gap-7">
             <div className="relative min-w-0 flex-1">
               <div
@@ -295,7 +311,7 @@ export default function Projects() {
                 aria-label="Filter projects by technology"
                 onPointerDown={handleFilterPointerDown}
                 onClickCapture={handleFilterClickCapture}
-                className="flex w-full cursor-grab touch-pan-x flex-nowrap gap-2 overflow-x-auto px-1 py-1 active:cursor-grabbing sm:w-[36rem] sm:flex-none [&::-webkit-scrollbar]:hidden"
+                className="flex w-full cursor-grab touch-pan-x flex-nowrap gap-2 overflow-x-auto px-1 py-1 active:cursor-grabbing sm:w-xl sm:flex-none [&::-webkit-scrollbar]:hidden"
                 style={{ scrollbarWidth: "none" }}
                 title="Drag or scroll horizontally to browse filter options"
               >
@@ -351,7 +367,7 @@ export default function Projects() {
             </div>
 
             <label className="relative block w-full shrink-0 rounded-full sm:w-64 2xl:w-80">
-              <GlassSurface className="pointer-events-none absolute inset-0 rounded-full border border-white/10 bg-white/[0.04]" />
+              <GlassSurface className="pointer-events-none absolute inset-0 rounded-full border border-white/10 bg-white/4" />
               <Search
                 aria-hidden="true"
                 className="pointer-events-none absolute left-4 top-1/2 z-20 size-4 -translate-y-1/2 text-paper/45"
@@ -455,7 +471,7 @@ export default function Projects() {
               </AnimatedContent>
             ))}
           </div>
-          {visibleProjects.length > 6 && (
+          {visibleProjects.length > MAX_VISIBLE_PROJECTS && (
             <Magnet
               padding={60}
               magnetStrength={3}
@@ -468,7 +484,7 @@ export default function Projects() {
                 className="rounded-full transition-transform duration-150 active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime"
               >
                 <GlassPill
-                  className="border border-white/20 bg-white/[0.06] transition-colors duration-200 hover:border-lime hover:bg-lime"
+                  className="border border-white/20 bg-white/6 transition-colors duration-200 hover:border-lime hover:bg-lime"
                   textClassName="px-8 py-2 text-paper transition-colors duration-200 hover:text-night"
                 >
                   {showAllProjects ? "Show less" : "Show more"}

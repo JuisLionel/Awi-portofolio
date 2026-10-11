@@ -118,7 +118,7 @@ export default function Welcome({ show }) {
         ref={welcomeRef}
         className="relative min-h-screen w-full overflow-hidden text-paper opacity-0 lg:h-screen"
       >
-        <div className="flex w-full flex-col items-center justify-center gap-16 px-6 pt-32 pb-24 lg:absolute lg:top-1/2 lg:left-1/2 lg:h-202.5 lg:w-360 lg:origin-center lg:flex-row lg:justify-between lg:gap-0 lg:px-20 lg:pt-14 lg:pb-0 lg:[transform:translate(-50%,-50%)_scale(var(--s,1))]">
+        <div className="flex w-full flex-col items-center justify-center gap-16 px-6 pt-32 pb-24 lg:absolute lg:top-1/2 lg:left-1/2 lg:h-202.5 lg:w-360 lg:origin-center lg:flex-row lg:justify-between lg:gap-0 lg:px-20 lg:pt-14 lg:pb-0 lg:transform-[translate(-50%,-50%)_scale(var(--s,1))]">
           {/* Left: text */}
           <div className="flex w-full min-w-0 max-w-xl flex-col items-center text-center lg:w-160 lg:max-w-none lg:items-start lg:text-left">
             {/* Availability badge */}
@@ -141,7 +141,7 @@ export default function Welcome({ show }) {
 
             <h1
               aria-label="Frontend Developer"
-              className="welcome-item mt-6 w-full text-center font-display text-[10.5vw] leading-[1.05] font-extrabold whitespace-nowrap sm:text-6xl lg:mt-10 lg:text-left lg:text-[92px] lg:leading-[1]"
+              className="welcome-item mt-6 w-full text-center font-display text-[10.5vw] leading-[1.05] font-extrabold whitespace-nowrap sm:text-6xl lg:mt-10 lg:text-left lg:text-[92px] lg:leading-none"
             >
               <HoverWord word="Frontend" hoverClass="hover:text-lime" />
               {/* Neon glow on Developer */}
@@ -152,7 +152,7 @@ export default function Welcome({ show }) {
 
             <div className="welcome-item mt-6 h-1.5 w-16 bg-lime lg:mt-10 lg:h-2 lg:w-20" />
 
-            <p className="welcome-item mt-6 max-w-[21rem] text-center font-mono text-sm leading-relaxed text-paper/70 sm:max-w-md lg:mt-10 lg:text-left">
+            <p className="welcome-item mt-6 max-w-84 text-center font-mono text-sm leading-relaxed text-paper/70 sm:max-w-md lg:mt-10 lg:text-left">
               Menciptakan website modern dengan tampilan clean, responsif, dan
               elegan. Mengubah ide dan desain menjadi pengalaman digital yang
               menarik dan mudah digunakan.

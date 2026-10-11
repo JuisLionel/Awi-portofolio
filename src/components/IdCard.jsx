@@ -20,7 +20,7 @@ export default function IdCard() {
               {/* PHOTO */}
               <div className="relative w-full overflow-hidden rounded-3xl">
                 <img
-                  src="/picture/photo.webp"
+                  src="/picture/id.webp"
                   alt="Lionel Juis Gerardo"
                   className="h-40 w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                 />

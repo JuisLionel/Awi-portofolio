@@ -11,6 +11,7 @@
  *   initialOpacity number – ignored; AOS always fades from 0 (kept for API compat)
  *   className   string
  */
+
 export default function AnimatedContent({
   children,
   className = "",

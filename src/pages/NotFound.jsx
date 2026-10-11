@@ -28,7 +28,7 @@ export default function NotFound() {
             className="pointer-events-none absolute inset-[-18%] bg-[radial-gradient(ellipse_at_center,rgba(87,180,46,0.24),transparent_68%)]"
           />
           <img
-            src="/picture/tv.png"
+            src="/picture/tv.webp"
             alt=""
             draggable={false}
             className="relative z-10 w-full opacity-90"

@@ -1,7 +1,7 @@
-export function startPixelTransition(onCovered) {
+export function startPixelTransition(onCovered, targetPath) {
   window.dispatchEvent(
     new CustomEvent("portfolio:pixel-transition", {
-      detail: { onCovered },
+      detail: { onCovered, targetPath },
     })
   );
 }
