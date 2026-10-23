@@ -104,7 +104,7 @@ function ProjectPreview({ project, images, onOpen }) {
       ref={tiltRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={resetTilt}
-      className="group relative aspect-video overflow-hidden rounded-3xl border border-white/25 bg-white/[0.06] shadow-[0_24px_70px_rgba(0,0,0,0.48)] ring-1 ring-white/10 transition-transform duration-200 ease-out will-change-transform"
+      className="group relative aspect-video overflow-hidden rounded-3xl border border-white/25 shadow-[0_24px_70px_rgba(0,0,0,0.48)] ring-1 ring-white/10 transition-transform duration-200 ease-out will-change-transform"
     >
       {content}
 
@@ -138,9 +138,10 @@ function ProjectPreview({ project, images, onOpen }) {
               moveImage(-1);
             }}
             aria-label="Previous project image"
-            className="absolute left-4 top-1/2 z-10 grid size-10 -translate-y-1/2 place-items-center rounded-full border border-white/20 bg-black/60 text-paper shadow-lg backdrop-blur-sm transition-[scale,color,border-color] hover:scale-110 hover:border-lime hover:text-lime active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime"
+            className="absolute left-4 top-1/2 z-10 grid size-10 -translate-y-1/2 place-items-center overflow-hidden rounded-full text-paper shadow-lg transition-[scale,color] hover:scale-110 hover:text-lime active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime"
           >
-            <ChevronLeft aria-hidden="true" className="size-5" />
+            <GlassSurface width="100%" height="100%" borderRadius={9999} className="pointer-events-none !absolute !inset-0" />
+            <ChevronLeft aria-hidden="true" className="relative z-10 size-5" />
           </button>
           <button
             type="button"
@@ -149,11 +150,19 @@ function ProjectPreview({ project, images, onOpen }) {
               moveImage(1);
             }}
             aria-label="Next project image"
-            className="absolute right-4 top-1/2 z-10 grid size-10 -translate-y-1/2 place-items-center rounded-full border border-white/20 bg-black/60 text-paper shadow-lg backdrop-blur-sm transition-[scale,color,border-color] hover:scale-110 hover:border-lime hover:text-lime active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime"
+            className="absolute right-4 top-1/2 z-10 grid size-10 -translate-y-1/2 place-items-center overflow-hidden rounded-full text-paper shadow-lg transition-[scale,color] hover:scale-110 hover:text-lime active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime"
           >
-            <ChevronRight aria-hidden="true" className="size-5" />
+            <GlassSurface width="100%" height="100%" borderRadius={9999} className="pointer-events-none !absolute !inset-0" />
+            <ChevronRight aria-hidden="true" className="relative z-10 size-5" />
           </button>
-          <div className="absolute inset-x-3 bottom-3 z-10 flex justify-center gap-2 rounded-full bg-black/45 px-3 py-2 backdrop-blur-sm">
+          <div className="absolute inset-x-3 bottom-3 z-10 flex justify-center gap-2 overflow-hidden rounded-full px-3 py-2">
+            <GlassSurface
+              width="100%"
+              height="100%"
+              borderRadius={9999}
+              backgroundOpacity={0.12}
+              className="pointer-events-none !absolute !inset-0"
+            />
             {images.map((image, index) => (
               <button
                 key={image}
@@ -164,7 +173,7 @@ function ProjectPreview({ project, images, onOpen }) {
                 }}
                 aria-label={`Show image ${index + 1}`}
                 aria-pressed={selectedImage === index}
-                className={`grid place-items-center rounded-full p-1 transition-[scale,background-color] ${
+                className={`relative z-10 grid place-items-center rounded-full p-1 transition-[scale,background-color] ${
                   selectedImage === index ? "scale-110" : "hover:scale-110"
                 }`}
               >
@@ -244,9 +253,10 @@ function Lightbox({ project, images, initialImage = 0, onClose }) {
         type="button"
         onClick={onClose}
         aria-label="Close preview"
-        className="absolute right-4 top-4 z-10 grid size-10 place-items-center rounded-full border border-white/20 bg-black/70 text-paper shadow-lg transition-[scale,color,border-color] duration-200 hover:scale-110 hover:border-lime hover:text-lime active:scale-95 focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-lime"
+        className="absolute right-4 top-4 z-10 grid size-10 place-items-center overflow-hidden rounded-full text-paper shadow-lg transition-[scale,color] duration-200 hover:scale-110 hover:text-lime active:scale-95 focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-lime"
       >
-        <X aria-hidden="true" className="size-4" />
+        <GlassSurface width="100%" height="100%" borderRadius={9999} className="pointer-events-none !absolute !inset-0" />
+        <X aria-hidden="true" className="relative z-10 size-4" />
       </button>
       <img
         ref={imgRef}
@@ -300,22 +310,29 @@ function PagerButton({ direction, project, onClick }) {
     <button
       type="button"
       onClick={onClick}
-      className={`group relative flex min-w-0 flex-1 items-center gap-3 overflow-hidden rounded-3xl border border-white/10 bg-white/5 p-4 text-left backdrop-blur-xl transition-[border-color,translate,scale] duration-200 hover:-translate-y-0.5 hover:border-lime/50 active:scale-[0.98] ${
+      className={`group relative flex min-w-0 flex-1 items-center gap-3 overflow-hidden rounded-3xl p-4 text-left transition-transform duration-200 hover:-translate-y-0.5 active:scale-[0.98] ${
         isNext ? "flex-row-reverse text-right" : ""
       }`}
     >
+      <GlassSurface
+        width="100%"
+        height="100%"
+        borderRadius={24}
+        backgroundOpacity={0.06}
+        className="pointer-events-none !absolute !inset-0"
+      />
       {isNext ? (
         <ChevronRight
           aria-hidden="true"
-          className="size-5 shrink-0 text-lime transition-[translate] duration-200 group-hover:translate-x-1"
+          className="relative z-10 size-5 shrink-0 text-lime transition-[translate] duration-200 group-hover:translate-x-1"
         />
       ) : (
         <ChevronLeft
           aria-hidden="true"
-          className="size-5 shrink-0 text-lime transition-[translate] duration-200 group-hover:-translate-x-1"
+          className="relative z-10 size-5 shrink-0 text-lime transition-[translate] duration-200 group-hover:-translate-x-1"
         />
       )}
-      <span className="min-w-0">
+      <span className="relative z-10 min-w-0">
         <span className="block font-mono text-[10px] uppercase tracking-[0.2em] text-paper/45">
           {isNext ? "Next project" : "Previous project"}
         </span>
@@ -555,8 +572,8 @@ export default function ProjectDetail() {
             <div className="mt-8 grid gap-4 sm:grid-cols-2">
               {project.challenge && (
                 <AnimatedContent distance={16} duration={0.55}>
-                  <SpotlightCard className="alert block h-full rounded-3xl border border-white/10 bg-white/6 p-5 text-paper shadow-[0_12px_40px_rgba(0,0,0,0.18)] backdrop-blur-xl transition-[translate,border-color] duration-300 hover:-translate-y-1 hover:border-lime/40">
-                    <GlassSurface className="pointer-events-none absolute inset-0 rounded-3xl" />
+                  <SpotlightCard className="block h-full rounded-3xl p-5 text-paper shadow-[0_12px_40px_rgba(0,0,0,0.18)] transition-transform duration-300 hover:-translate-y-1">
+                    <GlassSurface width="100%" height="100%" borderRadius={24} className="pointer-events-none !absolute !inset-0" />
                     <div className="relative z-10">
                       <h2 className="font-display text-lg">The challenge</h2>
                       <p className="mt-2 text-sm leading-relaxed text-paper/65">
@@ -569,8 +586,8 @@ export default function ProjectDetail() {
 
               {project.highlights?.length > 0 && (
                 <AnimatedContent distance={16} duration={0.55} delay={0.08}>
-                  <SpotlightCard className="alert block h-full rounded-3xl border border-white/10 bg-white/6 p-5 text-paper shadow-[0_12px_40px_rgba(0,0,0,0.18)] backdrop-blur-xl transition-[translate,border-color] duration-300 hover:-translate-y-1 hover:border-lime/40">
-                    <GlassSurface className="pointer-events-none absolute inset-0 rounded-3xl" />
+                  <SpotlightCard className="block h-full rounded-3xl p-5 text-paper shadow-[0_12px_40px_rgba(0,0,0,0.18)] transition-transform duration-300 hover:-translate-y-1">
+                    <GlassSurface width="100%" height="100%" borderRadius={24} className="pointer-events-none !absolute !inset-0" />
                     <div className="relative z-10">
                       <h2 className="font-display text-lg">What I built</h2>
                       <ul className="mt-2 space-y-2 text-sm text-paper/70 [&:hover>li:not(:hover)]:opacity-40">
@@ -599,7 +616,13 @@ export default function ProjectDetail() {
 
           <AnimatedContent className="lg:sticky lg:top-8" distance={18} duration={0.65} delay={0.1}>
             <SpotlightCard as="aside" className="rounded-3xl p-6">
-              <GlassSurface className="pointer-events-none absolute inset-0 rounded-3xl border border-white/15 bg-white/[0.07] shadow-[0_20px_60px_rgba(0,0,0,0.25)]" />
+              <GlassSurface
+                width="100%"
+                height="100%"
+                borderRadius={24}
+                backgroundOpacity={0.08}
+                className="pointer-events-none !absolute !inset-0 shadow-[0_20px_60px_rgba(0,0,0,0.25)]"
+              />
               <div className="relative z-10">
                 <h2 className="font-display text-xl">At a glance</h2>
                 {project.status && (
@@ -671,7 +694,7 @@ export default function ProjectDetail() {
                       href={project.repo_url}
                       target="_blank"
                       rel="noreferrer"
-                      className="btn btn-outline group relative w-full rounded-full border-white/20 bg-white/4 text-paper backdrop-blur-md
+                      className="btn btn-outline group relative w-full overflow-hidden rounded-full border-white/20 bg-transparent text-paper
                         shadow-[0_0_0_0_rgba(190,242,100,0)]
                         transition-[translate,scale,box-shadow,background-color,border-color,color] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]
                         hover:-translate-y-1 hover:scale-[1.03] hover:border-lime/40 hover:bg-white/10
@@ -679,6 +702,7 @@ export default function ProjectDetail() {
                           active:translate-y-0 active:scale-[0.97] active:bg-white/15 active:shadow-[0_4px_16px_-2px_rgba(190,242,100,0.2)] active:duration-150
                           motion-reduce:transition-none motion-reduce:hover:translate-y-0 motion-reduce:hover:scale-100"
                     >
+                      <GlassSurface width="100%" height="100%" borderRadius={9999} className="pointer-events-none !absolute !inset-0" />
                       {/* Border-only shine: gradient strip masked down to a 1px ring */}
                       <span
                         aria-hidden="true"
@@ -722,9 +746,10 @@ export default function ProjectDetail() {
                           key={item.slug}
                           type="button"
                           onClick={() => goTo(`/projects/${item.slug}`)}
-                          className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-3.5 text-left backdrop-blur-xl transition-[border-color,translate,scale] duration-200 hover:-translate-y-0.5 hover:border-lime/50 active:scale-[0.98]"
+                          className="group relative overflow-hidden rounded-2xl p-3.5 text-left transition-transform duration-200 hover:-translate-y-0.5 active:scale-[0.98]"
                         >
-                          <span className="flex items-center justify-between gap-2">
+                          <GlassSurface width="100%" height="100%" borderRadius={16} backgroundOpacity={0.06} className="pointer-events-none !absolute !inset-0" />
+                          <span className="relative z-10 flex items-center justify-between gap-2">
                             <span className="truncate font-display text-base text-paper transition-colors duration-200 group-hover:text-lime">
                               {item.title}
                             </span>
@@ -733,10 +758,10 @@ export default function ProjectDetail() {
                               className="size-4 shrink-0 text-lime opacity-0 transition-[translate,opacity] duration-200 group-hover:translate-x-0.5 group-hover:opacity-100"
                             />
                           </span>
-                          <span className="mt-0.5 block font-mono text-[10px] uppercase tracking-[0.15em] text-paper/45">
+                          <span className="relative z-10 mt-0.5 block font-mono text-[10px] uppercase tracking-[0.15em] text-paper/45">
                             {shared} shared {shared === 1 ? "tech" : "techs"}
                           </span>
-                          <span className="mt-2.5 flex flex-wrap gap-1.5">
+                          <span className="relative z-10 mt-2.5 flex flex-wrap gap-1.5">
                             {item.stack.slice(0, 3).map((tech) => {
                               const isShared = project.stack.includes(tech);
                               return (

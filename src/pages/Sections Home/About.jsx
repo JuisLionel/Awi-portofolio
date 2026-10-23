@@ -5,12 +5,15 @@ import {
     SiHtml5,
     SiCss,
     SiJavascript,
+    SiTypescript,
     SiReact,
     SiNextdotjs,
     SiTailwindcss,
+    SiVite,
     SiNodedotjs,
     SiExpress,
     SiPostgresql,
+    SiSupabase,
     SiGit,
     SiDocker,
     SiLinux,
@@ -21,6 +24,7 @@ import { FaArrowRight, FaDownload } from "react-icons/fa6";
 import Section from "../../components/sections";
 import AnimatedContent from "../../components/AnimatedContent";
 import DecryptedText from "../../components/DecryptedText";
+import GlassSurface from "../../components/GlassSurface";
 import Magnet from "../../components/Magnet";
 import { sections } from "../../section";
 
@@ -31,10 +35,8 @@ const DESIGN_H = 1080;
 
 const INFO = [
     { label: "Full Name", value: "Lionel Juis Gerardo" },
-    { label: "Date of Birth", value: "21 / 09 / 08" },
     { label: "Gender", value: "Male" },
     { label: "Religion", value: "Christian" },
-    { label: "Marital Status", value: "Not Married" },
     { label: "Hometown", value: "Pekanbaru, Indonesia" },
 ];
 
@@ -42,13 +44,15 @@ const SKILLS = [
     { name: "HTML", icon: SiHtml5, group: "Frontend" },
     { name: "CSS", icon: SiCss, group: "Frontend" },
     { name: "JavaScript", icon: SiJavascript, group: "Frontend" },
+    { name: "TypeScript", icon: SiTypescript, group: "Frontend" },
     { name: "React", icon: SiReact, group: "Frontend" },
     { name: "Tailwind CSS", icon: SiTailwindcss, group: "Frontend" },
+    { name: "Vite", icon: SiVite, group: "Frontend" },
     { name: "Node.js", icon: SiNodedotjs, group: "Backend" },
+    { name: "Express", icon: SiExpress, group: "Backend" },
     { name: "PostgreSQL", icon: SiPostgresql, group: "Backend" },
+    { name: "Supabase", icon: SiSupabase, group: "Backend" },
     { name: "Git", icon: SiGit, group: "Tools" },
-    { name: "Docker", icon: SiDocker, group: "Tools" },
-    { name: "Linux", icon: SiLinux, group: "Tools" },
     { name: "Figma", icon: SiFigma, group: "Tools" },
 ];
 
@@ -71,7 +75,6 @@ function useIsDesktop() {
     return matches;
 }
 
-/* Scale factor that fits the 1920x1080 design into the viewport */
 function useStageScale() {
     const calc = () =>
         typeof window === "undefined"
@@ -90,7 +93,6 @@ function useStageScale() {
     return scale;
 }
 
-/* Same scroll as the Navbar's go(id), using your sections list */
 function goToContact() {
     const contact = sections.find(({ label }) => label.toLowerCase() === "contact");
     const target = contact && document.getElementById(contact.id);
@@ -106,7 +108,6 @@ function goToContact() {
     });
 }
 
-/* Cursor position in the element's own (unscaled) coordinates */
 function setSpotlight(e) {
     const el = e.currentTarget;
     const r = el.getBoundingClientRect();
@@ -125,10 +126,7 @@ function Label({ children }) {
     );
 }
 
-/* Photo: daisyUI hover-3d + grayscale base + color revealed only around the cursor */
 function RevealPhoto({ src, alt }) {
-    // cursor position as a percentage of the (untilted) hover-3d wrapper;
-    // the CSS vars are inherited by the color layer below
     const move = (e) => {
         const el = e.currentTarget;
         const r = el.getBoundingClientRect();
@@ -205,16 +203,17 @@ function GlassPill({ name, icon: Icon, active }) {
     return (
         <button
             type="button"
-            className={`group relative inline-flex cursor-pointer items-center gap-2.5 rounded-full px-4 py-2 font-mono text-sm text-white
+            className={`group relative inline-flex cursor-pointer items-center gap-2.5 overflow-hidden rounded-full px-4 py-2 font-mono text-sm text-white
             transition-all duration-300 hover:-translate-y-1.5 hover:scale-105 lg:gap-3 lg:px-6 lg:py-3 lg:text-lg
             ${active ? "opacity-100" : "pointer-events-none scale-90 opacity-20 blur-[1px]"}`}
         >
-            {/* glass bar */}
-            <span className="absolute inset-0 rounded-full border border-white/25 bg-white/[0.07] backdrop-blur-[3px] backdrop-saturate-150 shadow-[inset_0_1px_0_rgba(255,255,255,0.6),inset_0_-1px_0_rgba(255,255,255,0.15),inset_0_0_18px_rgba(255,255,255,0.12),0_8px_32px_rgba(0,0,0,0.3)]" />
-            {/* sheen */}
-            <span className="pointer-events-none absolute inset-0 rounded-full bg-[linear-gradient(115deg,rgba(255,255,255,0.22)_0%,rgba(255,255,255,0.03)_30%,rgba(255,255,255,0)_60%,rgba(255,255,255,0.14)_100%)]" />
-            {/* lens (fades in on hover) */}
-            <span className="pointer-events-none absolute inset-0 rounded-full border border-white/30 bg-[linear-gradient(135deg,rgba(255,255,255,0.28)_0%,rgba(255,255,255,0.08)_50%,rgba(255,255,255,0.16)_100%)] opacity-0 shadow-[inset_2px_2px_4px_rgba(255,255,255,0.75),inset_-2px_-2px_4px_rgba(255,255,255,0.35),inset_0_0_12px_rgba(255,255,255,0.15),0_8px_24px_rgba(0,0,0,0.3)] transition-opacity duration-300 group-hover:opacity-100" />
+            <GlassSurface
+                width="100%"
+                height="100%"
+                borderRadius={9999}
+                backgroundOpacity={0.08}
+                className="pointer-events-none !absolute !inset-0"
+            />
 
             <Icon className="relative z-10 text-lg transition-transform duration-300 group-hover:rotate-12 group-hover:scale-125 lg:text-2xl" />
             <span className="relative z-10">{name}</span>
@@ -331,8 +330,8 @@ export default function About() {
                                             role="tab"
                                             onClick={() => setGroup(g)}
                                             className={`tab text-sm lg:text-base ${group === g
-                                                    ? "tab-active text-lime!"
-                                                    : "text-white/50 hover:text-white"
+                                                ? "tab-active text-lime!"
+                                                : "text-white/50 hover:text-white"
                                                 }`}
                                         >
                                             {g}

@@ -13,10 +13,21 @@ import { startPixelTransition } from "../../lib/pixelTransition";
 
 const MAX_VISIBLE_PROJECTS = 3;
 
+// Projects listed here appear first (in this order). Everything else keeps
+// its original order after them. Edit the slugs to change what leads.
+const FEATURED_ORDER = ["pt-central-invoicing", "lazismu-muda", "fashion-shop"];
+
 function ProjectCard({ project }) {
   const navigate = useNavigate();
   const linkRef = useRef(null);
   const destination = `/projects/${project.slug}`;
+
+  // Show the role (e.g. "Full Stack Developer") instead of a "completed"
+  // badge that repeats on every card. Only show status if it says something
+  // other than "completed".
+  const badge =
+    project.role ||
+    (project.status && project.status !== "completed" ? project.status : null);
 
   const handleClick = (event) => {
     if (
@@ -61,13 +72,13 @@ function ProjectCard({ project }) {
     >
       <div className="hover-3d group h-full w-full">
         {/* 1st child: no transition-* class, so DaisyUI's tilt easing is untouched */}
-        <div className="card relative h-full w-full overflow-hidden rounded-3xl border border-white/15 bg-white/[0.07] p-0 shadow-[0_20px_60px_rgba(0,0,0,0.25)] backdrop-blur-xl 2xl:rounded-[2rem]">
-          <GlassSurface className="pointer-events-none absolute inset-0 rounded-3xl" />
-
-          {/* Hover border lives on its own layer so it can have its own transition */}
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-0 rounded-3xl border border-lime/0 transition-[border-color] duration-300 ease-out group-hover:border-lime/50 2xl:rounded-[2rem]"
+        <div className="card relative h-full w-full overflow-hidden rounded-3xl p-0 shadow-[0_20px_60px_rgba(0,0,0,0.25)] 2xl:rounded-[2rem]">
+          <GlassSurface
+            width="100%"
+            height="100%"
+            borderRadius={24}
+            backgroundOpacity={0.08}
+            className="pointer-events-none !absolute !inset-0 2xl:rounded-[2rem]"
           />
 
           {/* Spotlight that follows the cursor */}
@@ -81,13 +92,15 @@ function ProjectCard({ project }) {
           />
 
           <div className="card-body relative flex h-full flex-col gap-5 p-5 sm:p-6 2xl:gap-7 2xl:p-9">
+            {/* Fixed aspect ratio + object-top so every thumbnail is cropped
+                the same way and shows the top of the page (the hero). */}
             <div className="grid aspect-video place-items-center overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-white/[0.1] to-black/40 font-display text-6xl text-lime/80 2xl:rounded-3xl 2xl:text-8xl">
               {project.image ? (
                 <img
                   src={project.image}
                   alt={`${project.title} preview`}
                   loading="lazy"
-                  className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-110"
+                  className="h-full w-full object-cover object-top transition-transform duration-500 ease-out group-hover:scale-105"
                 />
               ) : (
                 project.title.charAt(0).toUpperCase()
@@ -95,7 +108,7 @@ function ProjectCard({ project }) {
             </div>
 
             <div className="flex flex-1 flex-col gap-3 2xl:gap-4">
-              <div className="flex items-center justify-between gap-3">
+              <div className="flex items-start justify-between gap-3">
                 <h3 className="font-display text-xl text-paper 2xl:text-3xl">
                   {/* Shine sweeps across the title only while the card is hovered */}
                   <span className="relative inline-block">
@@ -110,16 +123,18 @@ function ProjectCard({ project }) {
                     </span>
                   </span>
                 </h3>
-                {project.status && (
+                {badge && (
                   <GlassPill
                     className="shrink-0"
-                    textClassName="px-3 py-1 text-xs text-paper/75"
+                    textClassName="whitespace-nowrap px-3 py-1 text-xs text-paper/85"
                   >
-                    {project.status}
+                    {badge}
                   </GlassPill>
                 )}
               </div>
-              <p className="text-sm leading-relaxed text-paper/65 2xl:text-base">
+
+              {/* line-clamp keeps card heights even when descriptions differ in length */}
+              <p className="line-clamp-4 text-sm leading-relaxed text-paper/80 2xl:text-base">
                 {project.description}
               </p>
 
@@ -127,14 +142,14 @@ function ProjectCard({ project }) {
                 {project.stack
                   .slice(0, project.stack.length > 5 ? 4 : 5)
                   .map((item) => (
-                  <GlassPill
-                    key={item}
-                    className="transition-colors duration-200 group-hover:border-lime/30"
-                    textClassName="px-4 py-1.5 text-sm text-paper/75 2xl:px-5 2xl:py-2 2xl:text-base"
-                  >
-                    {item}
-                  </GlassPill>
-                ))}
+                    <GlassPill
+                      key={item}
+                      className="transition-colors duration-200 group-hover:border-lime/30"
+                      textClassName="px-4 py-1.5 text-sm text-paper/85 2xl:px-5 2xl:py-2 2xl:text-base"
+                    >
+                      {item}
+                    </GlassPill>
+                  ))}
                 {project.stack.length > 5 && (
                   <GlassPill
                     className="border border-lime/30"
@@ -187,26 +202,33 @@ export default function Projects() {
     moved: false,
   });
   const suppressFilterClickRef = useRef(false);
-  const stacks = useMemo(
-    () => {
-      const stackCounts = new Map();
-      projectList.forEach((project) => {
-        project.stack.forEach((stack) => {
-          stackCounts.set(stack, (stackCounts.get(stack) ?? 0) + 1);
-        });
-      });
-      const mostUsedStacks = [...stackCounts]
-        .sort((first, second) => second[1] - first[1])
-        .map(([stack]) => stack);
 
-      return ["All", ...mostUsedStacks];
-    },
-    [projectList]
-  );
+  // Featured projects first; Array.sort is stable, so the rest keep their order.
+  const sortedProjects = useMemo(() => {
+    const rank = (slug) => {
+      const index = FEATURED_ORDER.indexOf(slug);
+      return index === -1 ? FEATURED_ORDER.length : index;
+    };
+    return [...projectList].sort((a, b) => rank(a.slug) - rank(b.slug));
+  }, [projectList]);
+
+  const stacks = useMemo(() => {
+    const stackCounts = new Map();
+    projectList.forEach((project) => {
+      project.stack.forEach((stack) => {
+        stackCounts.set(stack, (stackCounts.get(stack) ?? 0) + 1);
+      });
+    });
+    const mostUsedStacks = [...stackCounts]
+      .sort((first, second) => second[1] - first[1])
+      .map(([stack]) => stack);
+
+    return ["All", ...mostUsedStacks];
+  }, [projectList]);
 
   const visibleProjects = useMemo(() => {
     const normalizedQuery = query.trim().toLowerCase();
-    return projectList.filter((project) => {
+    return sortedProjects.filter((project) => {
       const matchesStack =
         selectedStacks.length === 0 ||
         selectedStacks.some((stack) => project.stack.includes(stack));
@@ -214,7 +236,7 @@ export default function Projects() {
         `${project.title} ${project.description} ${project.stack.join(" ")}`.toLowerCase();
       return matchesStack && searchableText.includes(normalizedQuery);
     });
-  }, [projectList, query, selectedStacks]);
+  }, [sortedProjects, query, selectedStacks]);
 
   const displayedProjects = showAllProjects
     ? visibleProjects
@@ -289,7 +311,7 @@ export default function Projects() {
             className="mt-2 font-display text-4xl text-paper 2xl:text-6xl"
           />
         </div>
-        <p className="max-w-md text-sm leading-relaxed text-paper/60 2xl:max-w-xl 2xl:text-base">
+        <p className="max-w-md text-sm leading-relaxed text-paper/75 2xl:max-w-xl 2xl:text-base">
           A closer look at the work, decisions, and tools behind each project.
         </p>
       </div>
@@ -302,23 +324,32 @@ export default function Projects() {
         threshold={0.15}
       >
         <div className="relative rounded-[2rem] p-3 sm:rounded-full sm:p-2.5 2xl:p-3">
-          <GlassSurface className="pointer-events-none absolute inset-0 rounded-[2rem] border border-white/10 bg-white/4 shadow-[0_10px_32px_rgba(0,0,0,0.16)] sm:rounded-full" />
+          <GlassSurface
+            width="100%"
+            height="100%"
+            borderRadius={32}
+            backgroundOpacity={0.05}
+            className="pointer-events-none !absolute !inset-0 rounded-[2rem] shadow-[0_10px_32px_rgba(0,0,0,0.16)] sm:rounded-full"
+          />
           <div className="relative flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between sm:gap-5 2xl:gap-7">
             <div className="relative min-w-0 flex-1">
+              {/* Chips now size to their text (no fixed 1/6 width, no truncate),
+                  so "Tailwind CSS" and "TypeScript" show in full. The row still
+                  scrolls/drags horizontally when there are many stacks. */}
               <div
                 ref={filterTrackRef}
                 role="group"
                 aria-label="Filter projects by technology"
                 onPointerDown={handleFilterPointerDown}
                 onClickCapture={handleFilterClickCapture}
-                className="flex w-full cursor-grab touch-pan-x flex-nowrap gap-2 overflow-x-auto px-1 py-1 active:cursor-grabbing sm:w-xl sm:flex-none [&::-webkit-scrollbar]:hidden"
+                className="flex w-full cursor-grab touch-pan-x flex-nowrap gap-2 overflow-x-auto px-1 py-1 active:cursor-grabbing [&::-webkit-scrollbar]:hidden"
                 style={{ scrollbarWidth: "none" }}
                 title="Drag or scroll horizontally to browse filter options"
               >
                 {stacks.map((stack, index) => (
                   <AnimatedContent
                     key={stack}
-                    className="min-w-0 shrink-0 sm:basis-[calc((100%-2.5rem)/6)]"
+                    className="shrink-0"
                     distance={8}
                     direction="horizontal"
                     duration={0.35}
@@ -342,23 +373,23 @@ export default function Projects() {
                         });
                         setShowAllProjects(false);
                       }}
-                      className="block w-full rounded-full transition-transform duration-200 active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime"
+                      className="block rounded-full transition-transform duration-200 active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime"
                     >
                       <GlassPill
-                        className={`w-full justify-center transition-colors duration-200 ${
+                        className={`justify-center transition-colors duration-200 ${
                           (stack === "All" && selectedStacks.length === 0) ||
                           selectedStacks.includes(stack)
                             ? "border border-lime bg-lime shadow-[0_0_8px_rgba(190,242,100,0.16)]"
                             : "border border-white/15 bg-transparent hover:border-lime/60"
                         }`}
-                        textClassName={`max-w-full px-3 py-1 text-xs transition-colors duration-200 sm:px-2 ${
+                        textClassName={`whitespace-nowrap px-4 py-1.5 text-sm transition-colors duration-200 ${
                           (stack === "All" && selectedStacks.length === 0) ||
                           selectedStacks.includes(stack)
                             ? "text-night"
-                            : "text-paper/75"
+                            : "text-paper/85"
                         }`}
                       >
-                        <span className="truncate">{stack}</span>
+                        {stack}
                       </GlassPill>
                     </button>
                   </AnimatedContent>
@@ -367,10 +398,16 @@ export default function Projects() {
             </div>
 
             <label className="relative block w-full shrink-0 rounded-full sm:w-64 2xl:w-80">
-              <GlassSurface className="pointer-events-none absolute inset-0 rounded-full border border-white/10 bg-white/4" />
+              <GlassSurface
+                width="100%"
+                height="100%"
+                borderRadius={9999}
+                backgroundOpacity={0.05}
+                className="pointer-events-none !absolute !inset-0"
+              />
               <Search
                 aria-hidden="true"
-                className="pointer-events-none absolute left-4 top-1/2 z-20 size-4 -translate-y-1/2 text-paper/45"
+                className="pointer-events-none absolute left-4 top-1/2 z-20 size-4 -translate-y-1/2 text-paper/65"
               />
               <input
                 type="search"
@@ -381,7 +418,7 @@ export default function Projects() {
                 }}
                 placeholder="Search projects"
                 aria-label="Search projects"
-                className="input input-sm relative z-10 h-10 min-h-0 w-full rounded-full border-transparent bg-transparent pl-11 text-paper shadow-none transition-shadow duration-300 placeholder:text-paper/45 focus:border-lime focus:bg-transparent focus:shadow-[0_0_0_4px_rgba(190,242,100,0.12)] 2xl:h-11"
+                className="input input-sm relative z-10 h-10 min-h-0 w-full rounded-full border-transparent bg-transparent pl-11 text-paper shadow-none transition-shadow duration-300 placeholder:text-paper/60 focus:border-lime focus:bg-transparent focus:shadow-[0_0_0_4px_rgba(190,242,100,0.12)] 2xl:h-11"
               />
             </label>
           </div>
@@ -391,7 +428,7 @@ export default function Projects() {
       {visibleProjects.length === 0 ? (
         <div className="mt-8 flex flex-1 items-center justify-center 2xl:mt-10">
           <AnimatedContent distance={30} duration={0.7} ease="power3.out">
-            <div className="flex flex-col items-center gap-4 text-center text-paper/55">
+            <div className="flex flex-col items-center gap-4 text-center text-paper/70">
               <svg
                 aria-hidden="true"
                 viewBox="0 0 256 256"
@@ -448,7 +485,7 @@ export default function Projects() {
                   strokeWidth="8"
                 />
               </svg>
-              <p className="text-sm">There are no projects.</p>
+              <p className="text-sm">No projects match your filters.</p>
             </div>
           </AnimatedContent>
         </div>

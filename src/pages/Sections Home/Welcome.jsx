@@ -47,7 +47,7 @@ export default function Welcome({ show }) {
     gsap.to(window, {
       scrollTo: {
         y: target ?? `+=${window.innerHeight}`,
-        autoKill: true, 
+        autoKill: true,
       },
       duration: 1.8,
       ease: "power2.inOut",
@@ -116,7 +116,7 @@ export default function Welcome({ show }) {
     <Section id="welcome">
       <div
         ref={welcomeRef}
-        className="relative min-h-screen w-full overflow-hidden text-paper opacity-0 lg:h-screen"
+        className="relative min-h-screen w-full overflow-x-clip overflow-y-visible text-paper opacity-0 lg:h-screen"
       >
         <div className="flex w-full flex-col items-center justify-center gap-16 px-6 pt-32 pb-24 lg:absolute lg:top-1/2 lg:left-1/2 lg:h-202.5 lg:w-360 lg:origin-center lg:flex-row lg:justify-between lg:gap-0 lg:px-20 lg:pt-14 lg:pb-0 lg:transform-[translate(-50%,-50%)_scale(var(--s,1))]">
           {/* Left: text */}
@@ -126,11 +126,10 @@ export default function Welcome({ show }) {
               <Magnetic>
                 <GlassPill textClassName="px-4 py-1.5 text-xs lg:px-5 lg:py-2">
                   <span
-                    className={`inline-block ${
-                      available
-                        ? "animate-[spin_6s_linear_infinite] text-lime"
-                        : "text-paper/40"
-                    }`}
+                    className={`inline-block ${available
+                      ? "animate-[spin_6s_linear_infinite] text-lime"
+                      : "text-paper/40"
+                      }`}
                   >
                     ✦
                   </span>
@@ -153,9 +152,8 @@ export default function Welcome({ show }) {
             <div className="welcome-item mt-6 h-1.5 w-16 bg-lime lg:mt-10 lg:h-2 lg:w-20" />
 
             <p className="welcome-item mt-6 max-w-84 text-center font-mono text-sm leading-relaxed text-paper/70 sm:max-w-md lg:mt-10 lg:text-left">
-              Menciptakan website modern dengan tampilan clean, responsif, dan
-              elegan. Mengubah ide dan desain menjadi pengalaman digital yang
-              menarik dan mudah digunakan.
+              I build web apps for real needs, from a company invoicing system to a donation reporting platform.
+              I focus on interfaces that are clean, responsive, and easy to use, with React and TypeScript.
             </p>
 
             {/* Tech chips with liquid glass */}
@@ -176,7 +174,7 @@ export default function Welcome({ show }) {
           </div>
 
           {/* Right: ID card */}
-          <div className="welcome-item flex items-center justify-center py-8 lg:scale-90 lg:py-0">
+          <div className="welcome-item flex items-center justify-center py-8 lg:py-0">
             <IdCard />
           </div>
 

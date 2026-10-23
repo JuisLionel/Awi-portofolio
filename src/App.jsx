@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Routes, Route, useLocation, useNavigationType } from 'react-router'
 
-
 import Intro from "./components/Intro";
 import PixelTransition from "./components/PixelTransition";
 

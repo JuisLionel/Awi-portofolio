@@ -170,8 +170,14 @@ export default function Contact() {
 
                         {hasContactDetails && (
                         <AnimatedContent distance={40} duration={0.9} ease="power3.out" delay={0.2}>
-                            <div className="relative overflow-hidden rounded-3xl border border-white/15 bg-white/[0.07] p-5 shadow-[0_20px_60px_rgba(0,0,0,0.25)] backdrop-blur-xl sm:p-6 2xl:rounded-[2rem] 2xl:p-8">
-                                <GlassSurface className="pointer-events-none absolute inset-0 rounded-3xl" />
+                            <div className="relative overflow-hidden rounded-3xl p-5 shadow-[0_20px_60px_rgba(0,0,0,0.25)] sm:p-6 2xl:rounded-[2rem] 2xl:p-8">
+                                <GlassSurface
+                                    width="100%"
+                                    height="100%"
+                                    borderRadius={24}
+                                    backgroundOpacity={0.08}
+                                    className="pointer-events-none !absolute !inset-0 2xl:rounded-[2rem]"
+                                />
                                 <div className="relative">
                                     {email && <InfoRow
                                         Icon={Mail}
