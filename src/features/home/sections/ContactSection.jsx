@@ -1,15 +1,14 @@
-// src/pages/Sections Home/Contact.jsx
 import { useState } from "react";
 import { Link } from "react-router";
 import { ArrowUp, Check, Copy, Mail, MapPin, Phone } from "lucide-react";
 import { FaFacebookF, FaGithub, FaInstagram, FaLinkedinIn } from "react-icons/fa6";
 
-import Section from "../../components/sections";
-import GlassSurface from "../../components/GlassSurface";
-import AnimatedContent from "../../components/AnimatedContent";
-import GlassPill from "../../components/GlassPill";
-import Magnetic from "../../components/Magnetic";
-import { useProfile } from "../../../Data/profile";
+import Section from "@/components/Section";
+import GlassSurface from "@/components/GlassSurface";
+import AnimatedContent from "@/components/AnimatedContent";
+import GlassPill from "@/components/GlassPill";
+import Magnetic from "@/components/Magnetic";
+import { useProfile } from "@/data/profile";
 
 const SOCIAL_ICONS = {
     facebook: FaFacebookF,

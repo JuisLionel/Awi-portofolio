@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { Routes, Route, useLocation, useNavigationType } from 'react-router'
 
-import Intro from "./components/Intro";
-import PixelTransition from "./components/PixelTransition";
+import Intro from "@/components/Intro";
+import PixelTransition from "@/components/PixelTransition";
 
-import Home from "./pages/Home";
-import Secrets from "./pages/Secret";
-import NotFound from "./pages/NotFound";
-import ProjectDetail from "./pages/ProjectDetail";
+import HomePage from "@/features/home/HomePage";
+import Secrets from "@/pages/Secret";
+import NotFound from "@/pages/NotFound";
+import ProjectDetail from "@/pages/ProjectDetail";
 
 
 export default function App() {
@@ -49,7 +49,7 @@ export default function App() {
       <PixelTransition />
 
       <Routes>
-        <Route path="/" element={<Home show={done || isReturningToSection} scrollTo={scrollTo} />} />
+        <Route path="/" element={<HomePage show={done || isReturningToSection} scrollTo={scrollTo} />} />
         <Route path="/projects/:slug" element={<ProjectDetail />} />
         <Route path="/secret" element={<Secrets />} />
         <Route path="*" element={<NotFound />} />

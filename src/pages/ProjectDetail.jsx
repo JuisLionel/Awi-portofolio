@@ -2,12 +2,12 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { Check, ChevronLeft, ChevronRight, Link2, Maximize2, X } from "lucide-react";
 
-import GlassSurface from "../components/GlassSurface";
-import GlassPill from "../components/GlassPill";
-import AnimatedContent from "../components/AnimatedContent";
-import NotFound from "./NotFound";
-import { useProjects } from "../../Data/projects";
-import { startPixelTransition } from "../lib/pixelTransition";
+import GlassSurface from "@/components/GlassSurface";
+import GlassPill from "@/components/GlassPill";
+import AnimatedContent from "@/components/AnimatedContent";
+import NotFound from "@/pages/NotFound";
+import { useProjects } from "@/data/projects";
+import { startPixelTransition } from "@/lib/pixelTransition";
 
 /* ------------------------------------------------------------------ */
 /* Small interactive helpers                                           */
@@ -350,12 +350,24 @@ function PagerButton({ direction, project, onClick }) {
 
 export default function ProjectDetail() {
   const { slug } = useParams();
+  const { projects: projectList, loading } = useProjects();
+
+  return (
+    <ProjectDetailPage
+      key={slug}
+      slug={slug}
+      projectList={projectList}
+      loading={loading}
+    />
+  );
+}
+
+function ProjectDetailPage({ slug, projectList, loading }) {
   const navigate = useNavigate();
   const progressRef = useRef(null);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxImage, setLightboxImage] = useState(0);
   const [copied, setCopied] = useState(false);
-  const { projects: projectList, loading } = useProjects();
 
   const index = projectList.findIndex((item) => item.slug === slug);
   const project = index === -1 ? null : projectList[index];
@@ -407,11 +419,9 @@ export default function ProjectDetail() {
     }
   };
 
-  // Fresh start whenever the project changes (prev/next/related).
+  // The keyed page component resets its local state when the project changes.
   useEffect(() => {
     window.scrollTo(0, 0);
-    setLightboxOpen(false);
-    setCopied(false);
   }, [slug]);
 
   useEffect(() => {

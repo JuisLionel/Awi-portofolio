@@ -20,9 +20,6 @@ export default function AnimatedContent({
   duration = 0.7,
   delay = 0,
   threshold = 0.1,
-  // kept for API compatibility, unused by AOS
-  ease,
-  initialOpacity,
 }) {
   const aosName = direction === "horizontal" ? "fade-right" : "fade-up";
 

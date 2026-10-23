@@ -2,14 +2,14 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { Search } from "lucide-react";
 
-import GlassSurface from "../../components/GlassSurface";
-import BlurText from "../../components/BlurText";
-import AnimatedContent from "../../components/AnimatedContent";
-import GlassPill from "../../components/GlassPill";
-import Magnet from "../../components/Magnet";
-import ShinyText from "../../components/ShinyText";
-import { useProjects } from "../../../Data/projects";
-import { startPixelTransition } from "../../lib/pixelTransition";
+import GlassSurface from "@/components/GlassSurface";
+import BlurText from "@/components/BlurText";
+import AnimatedContent from "@/components/AnimatedContent";
+import GlassPill from "@/components/GlassPill";
+import Magnet from "@/components/Magnet";
+import ShinyText from "@/components/ShinyText";
+import { useProjects } from "@/data/projects";
+import { startPixelTransition } from "@/lib/pixelTransition";
 
 const MAX_VISIBLE_PROJECTS = 3;
 

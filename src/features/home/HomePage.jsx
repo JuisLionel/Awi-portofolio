@@ -1,14 +1,14 @@
 import { useEffect, useLayoutEffect, useState } from "react";
 import { useLocation } from "react-router";
-import { sections } from "../section";
+import { sections } from "@/config/sections";
 
-import Navbar from "../components/navbar";
-import ClickSpark from "../components/ClickSpark";
+import Navbar from "@/components/Navbar";
+import ClickSpark from "@/components/ClickSpark";
 
-import Welcome from "./Sections Home/Welcome";
-import About from "./Sections Home/About";
-import Projects from "./Sections Home/projects";
-import Contact from "./Sections Home/Contact";
+import WelcomeSection from "./sections/WelcomeSection";
+import AboutSection from "./sections/AboutSection";
+import ProjectsSection from "./sections/ProjectsSection";
+import ContactSection from "./sections/ContactSection";
 
 export default function Home({ show, scrollTo }) {
   const [active, setActive] = useState(sections[0].id);
@@ -71,10 +71,10 @@ export default function Home({ show, scrollTo }) {
 
         <div className="portfolio-background relative z-0">
           <main>
-            <Welcome show={show} />
-            <About />
-            <Projects />
-            <Contact />
+            <WelcomeSection show={show} />
+            <AboutSection />
+            <ProjectsSection />
+            <ContactSection />
           </main>
         </div>
       </ClickSpark>

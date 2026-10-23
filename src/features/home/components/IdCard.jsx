@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { useProfile } from "../../Data/profile";
+import { useSyncExternalStore } from "react";
+import { useProfile } from "@/data/profile";
 
 const rows = [
   ["ID Number", "AWI-DEV-001"],
@@ -12,20 +12,22 @@ const rows = [
 // modes) can drop parts of the card. So we only turn it on where it works.
 const TILT_QUERY = "(hover: hover) and (pointer: fine) and (min-width: 768px)";
 
+function subscribeToTilt(onChange) {
+  const mediaQuery = window.matchMedia(TILT_QUERY);
+  mediaQuery.addEventListener("change", onChange);
+  return () => mediaQuery.removeEventListener("change", onChange);
+}
+
+function getTiltSnapshot() {
+  return window.matchMedia(TILT_QUERY).matches;
+}
+
 function useTilt() {
-  const [enabled, setEnabled] = useState(() =>
-    typeof window === "undefined" ? false : window.matchMedia(TILT_QUERY).matches
+  return useSyncExternalStore(
+    subscribeToTilt,
+    getTiltSnapshot,
+    () => false
   );
-
-  useEffect(() => {
-    const mq = window.matchMedia(TILT_QUERY);
-    const onChange = (event) => setEnabled(event.matches);
-    setEnabled(mq.matches);
-    mq.addEventListener("change", onChange);
-    return () => mq.removeEventListener("change", onChange);
-  }, []);
-
-  return enabled;
 }
 
 export default function IdCard() {

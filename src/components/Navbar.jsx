@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { useGSAP } from "@gsap/react";
-import { sections } from "../section";
+import { sections } from "@/config/sections";
 
 gsap.registerPlugin(ScrollToPlugin);
 

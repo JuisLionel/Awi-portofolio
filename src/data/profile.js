@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { supabase } from "../src/lib/supabase";
+import { supabase } from "@/lib/supabase";
 
 export const profile = {
   available: true,

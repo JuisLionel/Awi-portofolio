@@ -21,10 +21,7 @@ const Magnet = ({
 
   useEffect(() => {
     // Skip on touch devices or when explicitly disabled.
-    if (disabled || isTouchDevice) {
-      setPosition({ x: 0, y: 0 });
-      return;
-    }
+    if (disabled || isTouchDevice) return;
 
     const handleMouseMove = e => {
       if (!magnetRef.current) return;
@@ -51,7 +48,9 @@ const Magnet = ({
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, [padding, disabled, magnetStrength]);
 
-  const transitionStyle = isActive ? activeTransition : inactiveTransition;
+  const enabled = !disabled && !isTouchDevice;
+  const visiblePosition = enabled ? position : { x: 0, y: 0 };
+  const transitionStyle = enabled && isActive ? activeTransition : inactiveTransition;
 
   return (
     <div
@@ -63,11 +62,11 @@ const Magnet = ({
       <div
         className={innerClassName}
         style={{
-          transform: `translate3d(${position.x}px, ${position.y}px, 0)`,
+          transform: `translate3d(${visiblePosition.x}px, ${visiblePosition.y}px, 0)`,
           // Only hint will-change while the effect is active so we don't hold
           // a compositing layer open permanently for every Magnet on the page.
           transition: transitionStyle,
-          willChange: isActive ? 'transform' : 'auto',
+          willChange: enabled && isActive ? 'transform' : 'auto',
         }}
       >
         {children}

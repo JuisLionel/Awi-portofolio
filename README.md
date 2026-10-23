@@ -22,7 +22,18 @@ VITE_SUPABASE_URL=
 VITE_SUPABASE_ANON_KEY=
 ```
 
-Fill in the URL and anon key from your Supabase project's API settings. The Supabase `profile` table stores the availability flag, email, phone, country, and social links. The badge labels remain defined locally in `Data/profile.js`. Project titles, descriptions, images, and detail content are loaded from the `projects` table. The schema seeds the Login and Registration, To-Do List, and Typing Test projects from the provided repositories.
+Fill in the URL and anon key from your Supabase project's API settings. The Supabase `profile` table stores the availability flag, email, phone, country, and social links. The badge labels remain defined locally in `src/data/profile.js`. Project titles, descriptions, images, and detail content are loaded from the `projects` table. The schema seeds the Login and Registration, To-Do List, and Typing Test projects from the provided repositories.
+
+## Project structure
+
+- `src/app` contains the application shell and route configuration.
+- `src/pages` contains route-level pages.
+- `src/features/home` contains the homepage composition and its sections.
+- `src/components` contains reusable UI and animation components.
+- `src/data` contains profile and project data access.
+- `src/config` contains shared site configuration.
+- `src/lib` contains shared utilities and service clients.
+- `src/styles` contains global styles.
 
 ## Included schema
 

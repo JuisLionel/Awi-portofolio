@@ -2,11 +2,11 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 
-import Section from "../../components/sections";
-import IdCard from "../../components/IdCard";
-import GlassPill from "../../components/GlassPill";
-import Magnetic from "../../components/Magnetic";
-import { useProfile } from "../../../Data/profile";
+import Section from "@/components/Section";
+import IdCard from "@/features/home/components/IdCard";
+import GlassPill from "@/components/GlassPill";
+import Magnetic from "@/components/Magnetic";
+import { useProfile } from "@/data/profile";
 
 gsap.registerPlugin(useGSAP);
 

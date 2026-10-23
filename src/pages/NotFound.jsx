@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import AnimatedContent from "../components/AnimatedContent";
+import AnimatedContent from "@/components/AnimatedContent";
 
 const glow =
   "[text-shadow:0_0_12px_rgba(255,255,255,0.95),0_0_40px_rgba(255,255,255,0.55),0_0_90px_rgba(255,255,255,0.3)]";

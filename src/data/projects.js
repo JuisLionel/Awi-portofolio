@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router";
 
-import { supabase } from "../src/lib/supabase";
+import { supabase } from "@/lib/supabase";
 
 export async function fetchProjects() {
   if (!supabase) {

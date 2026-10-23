@@ -1,4 +1,3 @@
-import { MdSkipNext, MdSkipPrevious, MdPause } from "react-icons/md";
 import { IoIosArrowBack } from "react-icons/io";
 
 import { Link } from "react-router";
