@@ -16,6 +16,7 @@ import {
     SiSupabase,
     SiGit,
     SiFigma,
+    SiNextdotjs
 } from "react-icons/si";
 import { FaArrowRight, FaCode, FaDownload } from "react-icons/fa6";
 
@@ -31,18 +32,12 @@ import { startPixelTransition } from "@/lib/pixelTransition";
 
 gsap.registerPlugin(ScrollToPlugin);
 
-/* ------------------------------------------------------------------ */
-/* Static content                                                       */
-/* ------------------------------------------------------------------ */
 
 const NAME = "Lionel Juis Gerardo";
 const MAX_WORK = 3;
 
-// Same idea as Projects.jsx: these slugs lead, everything else follows.
-const FEATURED_ORDER = ["pt-central-invoicing", "lazismu-muda", "fashion-shop"];
+const FEATURED_ORDER = ["pt-central-invoicing", "fashion-shop"];
 
-// Tools come from the `stack` arrays in Supabase. These maps only decide how
-// a tool is grouped and which icon it gets. Unknown tools still show up.
 const GROUP_OF = {
     HTML: "Frontend",
     CSS: "Frontend",
@@ -59,6 +54,7 @@ const GROUP_OF = {
     Supabase: "Backend & data",
     Git: "Workflow",
     Figma: "Workflow",
+    "Next.js": "Frontend"
 };
 
 const ICON_OF = {
@@ -75,9 +71,9 @@ const ICON_OF = {
     Supabase: SiSupabase,
     Git: SiGit,
     Figma: SiFigma,
+    "Next.js": SiNextdotjs,
 };
 
-// Tools you use that don't appear in any project's stack.
 const EXTRA_TOOLS = ["Git", "Figma"];
 
 const GROUP_ORDER = ["Frontend", "Backend & data", "Workflow", "Other"];
@@ -101,7 +97,6 @@ function goTo(label) {
     });
 }
 
-/* Section label with a trailing line (same as the rest of the site) */
 function Label({ children }) {
     return (
         <div className="flex items-center gap-4 font-mono text-xs tracking-[0.2em] text-lime sm:text-sm lg:gap-5 lg:tracking-[0.25em]">
@@ -111,10 +106,6 @@ function Label({ children }) {
     );
 }
 
-/*
- * Grayscale photo that shows its colour around the cursor. Touch screens have
- * no cursor, so there the photo is just shown in colour.
- */
 function RevealPhoto({ src, alt }) {
     const move = (e) => {
         const el = e.currentTarget;
@@ -129,12 +120,13 @@ function RevealPhoto({ src, alt }) {
     return (
         <figure
             onMouseMove={move}
+            style={{ width: "min(100%, max(15rem, calc((100vh - 26rem) * 0.8 + 1.5rem)))" }}
             className="group relative border border-white/25 bg-night-2 p-2.5 lg:p-3"
         >
             <span className="absolute left-0 top-5 z-10 h-20 w-0.5 bg-lime lg:top-6 lg:h-32" />
             <span className="absolute bottom-2.5 right-2.5 z-10 h-4 w-4 border-b-2 border-r-2 border-lime lg:bottom-3 lg:right-3 lg:h-5 lg:w-5" />
 
-            <div className="relative aspect-4/5 w-full overflow-hidden lg:max-h-[calc(100vh-27rem)] lg:min-h-64">
+            <div className="relative aspect-4/5 w-full overflow-hidden">
                 <img
                     src={src}
                     alt={alt}
@@ -162,14 +154,14 @@ function InfoRow({ label, value }) {
     return (
         <div
             onMouseMove={setSpotlight}
-            className="group relative flex items-start gap-4 overflow-hidden border-b border-white/10 px-2 py-3 transition-colors duration-300 hover:border-lime/50 lg:gap-5 lg:px-3
+            className="group relative flex items-start gap-4 overflow-hidden border-b border-white/10 px-2 py-2.5 transition-colors duration-300 hover:border-lime/50 lg:gap-5 lg:px-3
             before:pointer-events-none before:absolute before:inset-0 before:opacity-0 before:transition-opacity before:duration-300
             before:bg-[radial-gradient(240px_circle_at_var(--x)_var(--y),rgba(198,244,50,0.12),transparent_70%)] hover:before:opacity-100"
         >
             <span className="mt-2.5 h-0.5 w-5 shrink-0 bg-lime transition-all duration-300 group-hover:w-9" />
-            <div className="font-mono">
+            <div className="min-w-0 font-mono">
                 <p className="text-xs tracking-[0.2em] text-white/65 lg:text-sm">{label}</p>
-                <p className="mt-1 text-base text-white/90 lg:text-xl">
+                <p className="mt-1 wrap-break-word text-base text-white/90 xl:text-lg">
                     <DecryptedText
                         text={value}
                         speed={40}
@@ -182,7 +174,6 @@ function InfoRow({ label, value }) {
     );
 }
 
-/* Same glass card language as the Projects page, in a wide layout */
 function WorkCard({ project }) {
     const navigate = useNavigate();
     const linkRef = useRef(null);
@@ -230,7 +221,7 @@ function WorkCard({ project }) {
                     height="100%"
                     borderRadius={24}
                     backgroundOpacity={0.08}
-                    className="pointer-events-none !absolute !inset-0"
+                    className="pointer-events-none absolute! inset-0!"
                 />
                 <div
                     aria-hidden="true"
@@ -246,7 +237,7 @@ function WorkCard({ project }) {
                 />
 
                 <div className="relative grid gap-5 p-5 sm:grid-cols-[13rem_1fr] sm:p-6 lg:grid-cols-[15rem_1fr]">
-                    <div className="grid aspect-video place-items-center overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-white/[0.1] to-black/40 font-display text-5xl text-lime/80 sm:aspect-auto sm:min-h-32">
+                    <div className="grid aspect-video place-items-center overflow-hidden rounded-2xl border border-white/10 bg-linear-to-br from-white/10 to-black/40 font-display text-5xl text-lime/80 sm:aspect-auto sm:min-h-32">
                         {project.image ? (
                             <img
                                 src={project.image}
@@ -315,7 +306,7 @@ function SkillPill({ name, count }) {
                 height="100%"
                 borderRadius={9999}
                 backgroundOpacity={0.08}
-                className="pointer-events-none !absolute !inset-0"
+                className="pointer-events-none absolute! inset-0!"
             />
             <Icon
                 aria-hidden="true"
@@ -377,10 +368,9 @@ export default function About() {
     return (
         <Section id="about">
             <AnimatedContent className="w-full" distance={18} duration={0.65}>
-                <div className="mx-auto w-full max-w-6xl px-5 pb-24 pt-28 text-white sm:px-8 lg:pt-36 2xl:max-w-[1600px] 2xl:px-8">
+                <div className="mx-auto w-full max-w-7xl px-5 pb-24 pt-28 text-white sm:px-8 lg:pt-36 2xl:max-w-[1600px] 2xl:px-8">
                     <div className="grid gap-14 lg:grid-cols-12 lg:gap-16">
-                        {/* Left: photo + details */}
-                        <aside className="mx-auto w-full max-w-sm lg:sticky lg:top-28 lg:col-span-4 lg:mx-0 lg:max-h-[calc(100vh-8rem)] lg:max-w-none lg:self-start lg:overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                        <aside className="mx-auto w-full max-w-sm lg:sticky lg:top-24 lg:col-span-4 lg:mx-0 lg:max-w-none lg:self-start">
                             <RevealPhoto src="/picture/img.webp" alt={NAME} />
                             <p className="mt-4 text-lg font-semibold">{NAME}</p>
                             <p className="mt-1 font-mono text-xs tracking-[0.25em] text-white/65 lg:text-sm">
@@ -398,7 +388,7 @@ export default function About() {
                         <div className="lg:col-span-8">
                             <Label>ABOUT ME</Label>
 
-                            <h2 className="mt-6 font-display text-4xl font-extrabold leading-[1] sm:text-5xl lg:mt-8 lg:text-6xl 2xl:text-7xl">
+                            <h2 className="mt-6 font-display text-4xl font-extrabold leading-none sm:text-5xl lg:mt-8 lg:text-6xl 2xl:text-7xl">
                                 I build web apps
                                 <br />
                                 <span className="text-lime transition-[text-shadow] duration-500 [text-shadow:0_0_24px_rgba(198,244,50,0.55),0_0_70px_rgba(198,244,50,0.3)] hover:[text-shadow:0_0_30px_rgba(198,244,50,0.8),0_0_90px_rgba(198,244,50,0.5)]">
@@ -409,15 +399,13 @@ export default function About() {
 
                             <div className="mt-7 max-w-[62ch] space-y-5 font-mono text-base leading-7 text-white/80 lg:text-lg lg:leading-8">
                                 <p>
-                                    I&apos;m Lionel, a frontend developer. I started building for
-                                    the web in school and began shipping for real clients before
-                                    I graduated: an invoicing system for a company and a donation
-                                    reporting site for LazisMu.
+                                    I&apos;m Lionel, a student developer in Pekanbaru. I build web apps
+                                    with React, TypeScript. One of my projects are used by
+                                    real organizations: an invoicing system for PT Central.
                                 </p>
                                 <p>
-                                    I care most about interfaces that are clear and quick to use,
-                                    and I&apos;m looking for a team or a client where I can keep
-                                    building that kind of work.
+                                    I&apos;m looking for a full-time role or freelance projects where I
+                                    can keep building useful products.
                                 </p>
                             </div>
 
@@ -477,7 +465,6 @@ export default function About() {
                                 )}
                             </div>
 
-                            {/* Skills (counted from Supabase stacks) */}
                             <div className="mt-20">
                                 <Label>SKILLS &amp; TECHNOLOGIES</Label>
                                 <dl className="mt-6">

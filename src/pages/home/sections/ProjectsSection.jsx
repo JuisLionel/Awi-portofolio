@@ -13,8 +13,6 @@ import { startPixelTransition } from "@/lib/pixelTransition";
 
 const MAX_VISIBLE_PROJECTS = 3;
 
-// Projects listed here appear first (in this order). Everything else keeps
-// its original order after them. Edit the slugs to change what leads.
 const FEATURED_ORDER = ["pt-central-invoicing", "lazismu-muda", "fashion-shop"];
 
 function ProjectCard({ project }) {
@@ -22,9 +20,6 @@ function ProjectCard({ project }) {
   const linkRef = useRef(null);
   const destination = `/projects/${project.slug}`;
 
-  // Show the role (e.g. "Full Stack Developer") instead of a "completed"
-  // badge that repeats on every card. Only show status if it says something
-  // other than "completed".
   const badge =
     project.role ||
     (project.status && project.status !== "completed" ? project.status : null);
@@ -51,7 +46,6 @@ function ProjectCard({ project }) {
     );
   };
 
-  // Ref is on the Link because it never tilts, so the coordinates stay stable.
   const handleMouseMove = (event) => {
     const el = linkRef.current;
     if (!el || event.pointerType === "touch") return;
@@ -71,17 +65,22 @@ function ProjectCard({ project }) {
       className="block h-full w-full rounded-3xl focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-lime 2xl:rounded-[2rem]"
     >
       <div className="hover-3d group h-full w-full">
-        {/* 1st child: no transition-* class, so DaisyUI's tilt easing is untouched */}
-        <div className="card relative h-full w-full overflow-hidden rounded-3xl p-0 shadow-[0_20px_60px_rgba(0,0,0,0.25)] 2xl:rounded-[2rem]">
+        <div className="card relative h-full w-full overflow-hidden rounded-3xl border border-white/20 bg-linear-to-br from-white/[0.12] via-white/[0.04] to-white/[0.02] p-0 shadow-[inset_0_1px_0_rgba(255,255,255,0.35),inset_0_-1px_0_rgba(255,255,255,0.06),0_10px_30px_rgba(0,0,0,0.15)] 2xl:rounded-[2rem]">
           <GlassSurface
             width="100%"
             height="100%"
             borderRadius={24}
-            backgroundOpacity={0.08}
-            className="pointer-events-none !absolute !inset-0 2xl:rounded-[2rem]"
+            backgroundOpacity={0.1}
+            blur={16}
+            saturation={1.4}
+            className="pointer-events-none absolute! inset-0! 2xl:rounded-[2rem]"
           />
 
-          {/* Spotlight that follows the cursor */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-x-0 top-0 h-1/2 bg-linear-to-b from-white/9 to-transparent"
+          />
+
           <div
             aria-hidden="true"
             className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
@@ -92,9 +91,7 @@ function ProjectCard({ project }) {
           />
 
           <div className="card-body relative flex h-full flex-col gap-5 p-5 sm:p-6 2xl:gap-7 2xl:p-9">
-            {/* Fixed aspect ratio + object-top so every thumbnail is cropped
-                the same way and shows the top of the page (the hero). */}
-            <div className="grid aspect-video place-items-center overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-white/[0.1] to-black/40 font-display text-6xl text-lime/80 2xl:rounded-3xl 2xl:text-8xl">
+            <div className="grid aspect-video place-items-center overflow-hidden rounded-2xl border border-white/10 bg-linear-to-br from-white/10 to-black/40 font-display text-6xl text-lime/80 2xl:rounded-3xl 2xl:text-8xl">
               {project.image ? (
                 <img
                   src={project.image}
@@ -296,8 +293,19 @@ export default function Projects() {
   return (
     <section
       id="projects"
-      className="mx-auto flex min-h-screen w-full max-w-6xl flex-col px-4 py-20 2xl:max-w-[1600px] 2xl:px-8 2xl:py-28"
+      className="relative isolate mx-auto flex min-h-screen w-full max-w-6xl flex-col px-4 py-20 2xl:max-w-[1600px] 2xl:px-8 2xl:py-28"
     >
+      {/* Soft colour behind the cards. Frosted glass only looks like glass when
+          there is something behind it to blur; a flat black page gives it nothing. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 -z-10"
+      >
+        <div className="absolute left-[8%] top-[38%] h-72 w-72 rounded-full bg-lime/15 blur-3xl" />
+        <div className="absolute right-[10%] top-[48%] h-80 w-80 rounded-full bg-sky-400/10 blur-3xl" />
+        <div className="absolute bottom-[8%] left-[42%] h-64 w-64 rounded-full bg-fuchsia-400/10 blur-3xl" />
+      </div>
+
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <p className="font-mono text-xs uppercase tracking-[0.25em] text-lime">
@@ -329,7 +337,7 @@ export default function Projects() {
             height="100%"
             borderRadius={32}
             backgroundOpacity={0.05}
-            className="pointer-events-none !absolute !inset-0 rounded-[2rem] shadow-[0_10px_32px_rgba(0,0,0,0.16)] sm:rounded-full"
+            className="pointer-events-none absolute! inset-0! rounded-[2rem] shadow-[0_10px_32px_rgba(0,0,0,0.16)] sm:rounded-full"
           />
           <div className="relative flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between sm:gap-5 2xl:gap-7">
             <div className="relative min-w-0 flex-1">
@@ -376,18 +384,16 @@ export default function Projects() {
                       className="block rounded-full transition-transform duration-200 active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime"
                     >
                       <GlassPill
-                        className={`justify-center transition-colors duration-200 ${
-                          (stack === "All" && selectedStacks.length === 0) ||
-                          selectedStacks.includes(stack)
+                        className={`justify-center transition-colors duration-200 ${(stack === "All" && selectedStacks.length === 0) ||
+                            selectedStacks.includes(stack)
                             ? "border border-lime bg-lime shadow-[0_0_8px_rgba(190,242,100,0.16)]"
                             : "border border-white/15 bg-transparent hover:border-lime/60"
-                        }`}
-                        textClassName={`whitespace-nowrap px-4 py-1.5 text-sm transition-colors duration-200 ${
-                          (stack === "All" && selectedStacks.length === 0) ||
-                          selectedStacks.includes(stack)
+                          }`}
+                        textClassName={`whitespace-nowrap px-4 py-1.5 text-sm transition-colors duration-200 ${(stack === "All" && selectedStacks.length === 0) ||
+                            selectedStacks.includes(stack)
                             ? "text-night"
                             : "text-paper/85"
-                        }`}
+                          }`}
                       >
                         {stack}
                       </GlassPill>
@@ -403,7 +409,7 @@ export default function Projects() {
                 height="100%"
                 borderRadius={9999}
                 backgroundOpacity={0.05}
-                className="pointer-events-none !absolute !inset-0"
+                className="pointer-events-none absolute! inset-0!"
               />
               <Search
                 aria-hidden="true"

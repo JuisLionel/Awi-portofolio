@@ -13,7 +13,6 @@ AOS.init({
   easing: 'ease-out-cubic',
   once: false,
   offset: 60,
-  // Respect the OS "reduce motion" accessibility setting.
   disable: window.matchMedia('(prefers-reduced-motion: reduce)').matches,
 })
 

@@ -3,7 +3,7 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 
 import Section from "@/components/Section";
-import IdCard from "@/features/home/components/IdCard";
+import IdCard from "@/pages/home/components/IdCard";
 import GlassPill from "@/components/GlassPill";
 import Magnetic from "@/components/Magnetic";
 import { useProfile } from "@/data/profile";

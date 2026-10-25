@@ -4,7 +4,7 @@ import { Routes, Route, useLocation, useNavigationType } from 'react-router'
 import Intro from "@/components/Intro";
 import PixelTransition from "@/components/PixelTransition";
 
-import HomePage from "@/features/home/HomePage";
+import HomePage from "@/pages/home/HomePage";
 import Secrets from "@/pages/Secret";
 import NotFound from "@/pages/NotFound";
 import ProjectDetail from "@/pages/ProjectDetail";
