@@ -17,7 +17,6 @@ const SOCIAL_ICONS = {
     linkedin: FaLinkedinIn,
 };
 
-// Heading word that lifts and tilts when hovered
 function Word({ children, highlight = false }) {
     return (
         <span
@@ -29,7 +28,6 @@ function Word({ children, highlight = false }) {
     );
 }
 
-// One row inside the glass panel: lime sweep on hover + optional copy button
 function InfoRow({ Icon, children, href, copyValue, copied, onCopy, trailing }) {
     const content = (
         <span className="relative z-10 flex min-w-0 items-center gap-3">
@@ -111,15 +109,14 @@ export default function Contact() {
                     </AnimatedContent>
 
                     <div className={`grid flex-1 items-center gap-12 py-10 2xl:gap-20 ${hasContactDetails ? "lg:grid-cols-[1.25fr_0.75fr]" : ""}`}>
-                        {/* Left: badge + heading + CTA */}
                         <div className="flex flex-col items-start gap-7 2xl:gap-10">
                             <AnimatedContent distance={18} duration={0.65} delay={0.05}>
                                 <Magnetic>
                                     <GlassPill textClassName="px-4 py-1.5 text-xs lg:px-5 lg:py-2">
                                         <span
                                             className={`inline-block ${available
-                                                    ? "animate-[spin_6s_linear_infinite] text-lime"
-                                                    : "text-paper/40"
+                                                ? "animate-[spin_6s_linear_infinite] text-lime"
+                                                : "text-paper/40"
                                                 }`}
                                         >
                                             ✦
@@ -168,63 +165,59 @@ export default function Contact() {
                         </div>
 
                         {hasContactDetails && (
-                        <AnimatedContent distance={40} duration={0.9} ease="power3.out" delay={0.2}>
-                            <div className="relative overflow-hidden rounded-3xl p-5 shadow-[0_20px_60px_rgba(0,0,0,0.25)] sm:p-6 2xl:rounded-[2rem] 2xl:p-8">
-                                <GlassSurface
-                                    width="100%"
-                                    height="100%"
-                                    borderRadius={24}
-                                    backgroundOpacity={0.08}
-                                    className="pointer-events-none !absolute !inset-0 2xl:rounded-[2rem]"
-                                />
-                                <div className="relative">
-                                    {email && <InfoRow
-                                        Icon={Mail}
-                                        href={`mailto:${email}`}
-                                        copyValue={email}
-                                        copied={copiedValue === email}
-                                        onCopy={copy}
-                                    >
-                                        {email}
-                                    </InfoRow>}
-                                    {phone && <InfoRow
-                                        Icon={Phone}
-                                        href={`tel:${phone.replace(/\s/g, "")}`}
-                                        copyValue={phone}
-                                        copied={copiedValue === phone}
-                                        onCopy={copy}
-                                    >
-                                        {phone}
-                                    </InfoRow>}
-                                    {country && <InfoRow Icon={MapPin}>{country}</InfoRow>}
+                            <AnimatedContent distance={40} duration={0.9} ease="power3.out" delay={0.2}>
+                                <div className="relative overflow-hidden rounded-3xl p-5 sm:p-6 2xl:rounded-[2rem] 2xl:p-8">
+                                    <GlassSurface
+                                        saturate={1.2}
+                                        className="pointer-events-none absolute! inset-0! rounded-3xl border border-white/10 bg-white/4 shadow-[inset_0_1px_0_rgba(255,255,255,0.12)] 2xl:rounded-[2rem]"
+                                    />
+                                    <div className="relative">
+                                        {email && <InfoRow
+                                            Icon={Mail}
+                                            href={`mailto:${email}`}
+                                            copyValue={email}
+                                            copied={copiedValue === email}
+                                            onCopy={copy}
+                                        >
+                                            {email}
+                                        </InfoRow>}
+                                        {phone && <InfoRow
+                                            Icon={Phone}
+                                            href={`tel:${phone.replace(/\s/g, "")}`}
+                                            copyValue={phone}
+                                            copied={copiedValue === phone}
+                                            onCopy={copy}
+                                        >
+                                            {phone}
+                                        </InfoRow>}
+                                        {country && <InfoRow Icon={MapPin}>{country}</InfoRow>}
 
-                                    <div className="mt-5 flex flex-wrap gap-3">
-                                        {socials.map(({ label, href }) => {
-                                            const Icon = SOCIAL_ICONS[label?.toLowerCase()];
-                                            return (
-                                            <Magnetic key={label}>
-                                                <a
-                                                    href={href}
-                                                    target="_blank"
-                                                    rel="noreferrer"
-                                                    className="inline-block transition-transform duration-200 active:scale-95"
-                                                >
-                                                    <GlassPill textClassName="px-4 py-1.5 text-xs lg:px-5 lg:py-2">
-                                                        {Icon && <Icon aria-hidden="true" className="size-4" />}
-                                                        {label}
-                                                    </GlassPill>
-                                                </a>
-                                            </Magnetic>
-                                            );
-                                        })}
+                                        <div className="mt-5 flex flex-wrap gap-3">
+                                            {socials.map(({ label, href }) => {
+                                                const Icon = SOCIAL_ICONS[label?.toLowerCase()];
+                                                return (
+                                                    <Magnetic key={label}>
+                                                        <a
+                                                            href={href}
+                                                            target="_blank"
+                                                            rel="noreferrer"
+                                                            className="inline-block transition-transform duration-200 active:scale-95"
+                                                        >
+                                                            <GlassPill textClassName="px-4 py-1.5 text-xs lg:px-5 lg:py-2">
+                                                                {Icon && <Icon aria-hidden="true" className="size-4" />}
+                                                                {label}
+                                                            </GlassPill>
+                                                        </a>
+                                                    </Magnetic>
+                                                );
+                                            })}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </AnimatedContent>
+                            </AnimatedContent>
                         )}
                     </div>
 
-                    {/* Bottom bar */}
                     <AnimatedContent distance={18} duration={0.65} delay={0.3}>
                         <div className="flex items-center justify-between gap-4 border-t border-white/10 pt-5 font-mono text-xs uppercase tracking-[0.2em] text-paper/45">
                             <span>

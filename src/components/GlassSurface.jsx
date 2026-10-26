@@ -3,8 +3,8 @@ import { useId } from "react";
 export default function GlassSurface({
   className = "",
   innerRef,
-  blur = 2,        // blur strength (px)
-  saturate = 1.8,  // vibrancy boost
+  blur = 2,        
+  saturate = 1.8,  
   brightness = 1.1,
 }) {
   useId(); 
