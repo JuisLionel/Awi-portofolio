@@ -32,7 +32,6 @@ import { startPixelTransition } from "@/lib/pixelTransition";
 
 gsap.registerPlugin(ScrollToPlugin);
 
-
 const NAME = "Lionel Juis Gerardo";
 const MAX_WORK = 3;
 
@@ -78,10 +77,6 @@ const EXTRA_TOOLS = ["Git", "Figma"];
 
 const GROUP_ORDER = ["Frontend", "Backend & data", "Workflow", "Other"];
 
-/* ------------------------------------------------------------------ */
-/* Helpers                                                              */
-/* ------------------------------------------------------------------ */
-
 function goTo(label) {
     const match = sections.find((s) => s.label.toLowerCase() === label);
     const target = match && document.getElementById(match.id);
@@ -120,8 +115,7 @@ function RevealPhoto({ src, alt }) {
     return (
         <figure
             onMouseMove={move}
-            style={{ width: "min(100%, max(15rem, calc((100vh - 26rem) * 0.8 + 1.5rem)))" }}
-            className="group relative border border-white/25 bg-night-2 p-2.5 lg:p-3"
+            className="group relative w-full border border-white/25 bg-night-2 p-2.5 lg:w-[min(100%,max(15rem,calc((100vh_-_26rem)_*_0.8_+_1.5rem)))] lg:p-3"
         >
             <span className="absolute left-0 top-5 z-10 h-20 w-0.5 bg-lime lg:top-6 lg:h-32" />
             <span className="absolute bottom-2.5 right-2.5 z-10 h-4 w-4 border-b-2 border-r-2 border-lime lg:bottom-3 lg:right-3 lg:h-5 lg:w-5" />
@@ -213,7 +207,7 @@ function WorkCard({ project }) {
             to={destination}
             onClick={handleClick}
             onMouseMove={handleMouseMove}
-            className="group block rounded-3xl focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-lime"
+            className="group block min-w-0 rounded-3xl focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-lime"
         >
             <div className="relative overflow-hidden rounded-3xl border border-white/15 shadow-[0_20px_60px_rgba(0,0,0,0.25)]">
                 <GlassSurface
@@ -236,7 +230,7 @@ function WorkCard({ project }) {
                     }}
                 />
 
-                <div className="relative grid gap-5 p-5 sm:grid-cols-[13rem_1fr] sm:p-6 lg:grid-cols-[15rem_1fr]">
+                <div className="relative grid grid-cols-1 gap-5 p-5 sm:grid-cols-[13rem_minmax(0,1fr)] sm:p-6 lg:grid-cols-[15rem_minmax(0,1fr)]">
                     <div className="grid aspect-video place-items-center overflow-hidden rounded-2xl border border-white/10 bg-linear-to-br from-white/10 to-black/40 font-display text-5xl text-lime/80 sm:aspect-auto sm:min-h-32">
                         {project.image ? (
                             <img
@@ -252,7 +246,7 @@ function WorkCard({ project }) {
 
                     <div className="flex min-w-0 flex-col gap-3">
                         <div className="flex flex-wrap items-start justify-between gap-x-3 gap-y-2">
-                            <h4 className="font-display text-xl text-white lg:text-2xl">
+                            <h4 className="min-w-0 wrap-break-word font-display text-xl text-white lg:text-2xl">
                                 {project.title}
                             </h4>
                             {project.role && (
@@ -317,10 +311,7 @@ function SkillPill({ name, count }) {
     );
 }
 
-/* ------------------------------------------------------------------ */
-
 export default function About() {
-    // Same hook the Projects page uses, so both pages always agree.
     const { projects = [] } = useProjects();
 
     const featured = useMemo(() => {
@@ -333,8 +324,6 @@ export default function About() {
             .slice(0, MAX_WORK);
     }, [projects]);
 
-    // Tools are counted from every project's stack, so adding a project in
-    // Supabase updates this list automatically.
     const toolGroups = useMemo(() => {
         const counts = new Map();
         projects.forEach((p) =>
@@ -368,9 +357,9 @@ export default function About() {
     return (
         <Section id="about">
             <AnimatedContent className="w-full" distance={18} duration={0.65}>
-                <div className="mx-auto w-full max-w-7xl px-5 pb-24 pt-28 text-white sm:px-8 lg:pt-36 2xl:max-w-[1600px] 2xl:px-8">
-                    <div className="grid gap-14 lg:grid-cols-12 lg:gap-16">
-                        <aside className="mx-auto w-full max-w-sm lg:sticky lg:top-24 lg:col-span-4 lg:mx-0 lg:max-w-none lg:self-start">
+                <div className="mx-auto w-full max-w-7xl overflow-x-clip px-5 pb-24 pt-28 text-white sm:px-8 lg:pt-36 2xl:max-w-[1600px] 2xl:px-8">
+                    <div className="grid grid-cols-1 gap-14 lg:grid-cols-12 lg:gap-16">
+                        <aside className="mx-auto w-full min-w-0 max-w-none sm:max-w-md lg:sticky lg:top-24 lg:col-span-4 lg:mx-0 lg:max-w-none lg:self-start">
                             <RevealPhoto src="/picture/img.webp" alt={NAME} />
                             <p className="mt-4 text-lg font-semibold">{NAME}</p>
                             <p className="mt-1 font-mono text-xs tracking-[0.25em] text-white/65 lg:text-sm">
@@ -384,11 +373,10 @@ export default function About() {
                             </div>
                         </aside>
 
-                        {/* Right: story, work, tools, focus */}
-                        <div className="lg:col-span-8">
+                        <div className="min-w-0 lg:col-span-8">
                             <Label>ABOUT ME</Label>
 
-                            <h2 className="mt-6 font-display text-4xl font-extrabold leading-none sm:text-5xl lg:mt-8 lg:text-6xl 2xl:text-7xl">
+                            <h2 className="mt-6 wrap-break-word font-display text-3xl font-extrabold leading-none min-[400px]:text-4xl sm:text-5xl lg:mt-8 lg:text-6xl 2xl:text-7xl">
                                 I build web apps
                                 <br />
                                 <span className="text-lime transition-[text-shadow] duration-500 [text-shadow:0_0_24px_rgba(198,244,50,0.55),0_0_70px_rgba(198,244,50,0.3)] hover:[text-shadow:0_0_30px_rgba(198,244,50,0.8),0_0_90px_rgba(198,244,50,0.5)]">
@@ -397,10 +385,10 @@ export default function About() {
                             </h2>
                             <span className="mt-6 block h-1.5 w-16 bg-lime lg:h-2 lg:w-20" />
 
-                            <div className="mt-7 max-w-[62ch] space-y-5 font-mono text-base leading-7 text-white/80 lg:text-lg lg:leading-8">
+                            <div className="mt-7 max-w-[62ch] space-y-5 wrap-break-word font-mono text-base leading-7 text-white/80 lg:text-lg lg:leading-8">
                                 <p>
                                     I&apos;m Lionel, a student developer in Pekanbaru. I build web apps
-                                    with React, TypeScript. One of my projects are used by
+                                    with React and TypeScript. One of my projects is used by
                                     real organizations: an invoicing system for PT Central.
                                 </p>
                                 <p>
@@ -441,7 +429,6 @@ export default function About() {
                                 </a>
                             </div>
 
-                            {/* Work (from Supabase) */}
                             <div className="mt-20">
                                 <Label>SELECTED WORK</Label>
                                 <div className="mt-6 flex flex-col gap-5">
@@ -471,12 +458,12 @@ export default function About() {
                                     {toolGroups.map(([group, items]) => (
                                         <div
                                             key={group}
-                                            className="grid gap-3 border-t border-white/10 py-5 last:border-b sm:grid-cols-[10rem_1fr] sm:gap-8"
+                                            className="grid grid-cols-1 gap-3 border-t border-white/10 py-5 last:border-b sm:grid-cols-[10rem_minmax(0,1fr)] sm:gap-8"
                                         >
                                             <dt className="font-mono text-sm text-white/70 lg:text-base">
                                                 {group}
                                             </dt>
-                                            <dd className="flex flex-wrap gap-3">
+                                            <dd className="flex min-w-0 flex-wrap gap-3">
                                                 {items.map((item) => (
                                                     <SkillPill key={item.name} {...item} />
                                                 ))}
@@ -486,7 +473,6 @@ export default function About() {
                                 </dl>
                             </div>
 
-                            {/* Focus */}
                             <div className="mt-20">
                                 <Label>CURRENT FOCUS</Label>
                                 <div className="mt-6 flex gap-4">
@@ -494,7 +480,7 @@ export default function About() {
                                         <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-lime opacity-75" />
                                         <span className="relative inline-flex h-full w-full rounded-full bg-lime" />
                                     </span>
-                                    <p className="max-w-[62ch] font-mono text-base leading-7 text-white/80 lg:text-lg lg:leading-8">
+                                    <p className="min-w-0 max-w-[62ch] wrap-break-word font-mono text-base leading-7 text-white/80 lg:text-lg lg:leading-8">
                                         Getting stronger at TypeScript and backend work, and building
                                         projects that people actually use.
                                     </p>
