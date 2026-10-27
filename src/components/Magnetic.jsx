@@ -4,7 +4,6 @@ import { useGSAP } from "@gsap/react";
 
 gsap.registerPlugin(useGSAP);
 
-// Leans toward the cursor while hovered, settles back on leave
 export default function Magnetic({ children, strength = 0.2 }) {
   const wrapperRef = useRef(null);
   const contentRef = useRef(null);
