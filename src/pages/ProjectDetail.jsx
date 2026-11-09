@@ -8,6 +8,8 @@ import AnimatedContent from "@/components/AnimatedContent";
 import NotFound from "@/pages/NotFound";
 import { useProjects } from "@/data/projects";
 import { startPixelTransition } from "@/lib/pixelTransition";
+import { useLanguage } from "@/context/useLanguage";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 /* ------------------------------------------------------------------ */
 /* Small interactive helpers                                           */
@@ -305,6 +307,7 @@ function Lightbox({ project, images, initialImage = 0, onClose }) {
 }
 
 function PagerButton({ direction, project, onClick }) {
+  const { t } = useLanguage();
   const isNext = direction === "next";
   return (
     <button
@@ -334,7 +337,7 @@ function PagerButton({ direction, project, onClick }) {
       )}
       <span className="relative z-10 min-w-0">
         <span className="block font-mono text-[10px] uppercase tracking-[0.2em] text-paper/45">
-          {isNext ? "Next project" : "Previous project"}
+          {isNext ? t("projectPage", "next") : t("projectPage", "previous")}
         </span>
         <span className="mt-1 block truncate font-display text-lg text-paper">
           {project.title}
@@ -364,6 +367,7 @@ export default function ProjectDetail() {
 
 function ProjectDetailPage({ slug, projectList, loading }) {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const progressRef = useRef(null);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxImage, setLightboxImage] = useState(0);
@@ -491,7 +495,7 @@ function ProjectDetailPage({ slug, projectList, loading }) {
     return (
       <main className="portfolio-background grid min-h-screen place-items-center px-4 text-paper">
         <p role="status" className="font-mono text-sm text-paper/60">
-          Loading project…
+          {t("projectPage", "loading")}
         </p>
       </main>
     );
@@ -526,35 +530,38 @@ function ProjectDetailPage({ slug, projectList, loading }) {
             className="group rounded-full transition-[translate,scale] duration-200 hover:-translate-y-0.5 active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-lime"
           >
             <GlassPill textClassName="inline-flex items-center gap-1.5 px-4 py-1.5 text-xs text-paper/80 transition-colors duration-200 group-hover:text-lime">
-              <span aria-hidden="true">←</span> Back to projects
+              <span aria-hidden="true">←</span> {t("projectPage", "back")}
             </GlassPill>
           </button>
 
-          <button
-            type="button"
-            onClick={copyLink}
-            aria-live="polite"
-            className="group rounded-full transition-[translate,scale] duration-200 hover:-translate-y-0.5 active:scale-95 focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-lime"
-          >
-            <GlassPill textClassName="inline-flex items-center gap-1.5 px-4 py-1.5 text-xs text-paper/80 transition-colors duration-200 group-hover:text-lime">
-              {copied ? (
-                <>
-                  <Check aria-hidden="true" className="size-4 text-lime" /> Link copied
-                </>
-              ) : (
-                <>
-                  <Link2 aria-hidden="true" className="size-4" /> Copy link
-                </>
-              )}
-            </GlassPill>
-          </button>
+          <div className="flex items-center gap-2">
+            <LanguageSwitcher />
+            <button
+              type="button"
+              onClick={copyLink}
+              aria-live="polite"
+              className="group rounded-full transition-[translate,scale] duration-200 hover:-translate-y-0.5 active:scale-95 focus-visible:outline focus-visible:outline-offset-4 focus-visible:outline-lime"
+            >
+              <GlassPill textClassName="inline-flex items-center gap-1.5 px-4 py-1.5 text-xs text-paper/80 transition-colors duration-200 group-hover:text-lime">
+                {copied ? (
+                  <>
+                    <Check aria-hidden="true" className="size-4 text-lime" /> {t("projectPage", "copiedLink")}
+                  </>
+                ) : (
+                  <>
+                    <Link2 aria-hidden="true" className="size-4" /> {t("projectPage", "copyLink")}
+                  </>
+                )}
+              </GlassPill>
+            </button>
+          </div>
         </div>
 
         <div className="mt-8 grid gap-8 lg:grid-cols-[1.4fr_0.8fr] lg:items-start">
           <section className="min-w-0">
             <AnimatedContent distance={18} duration={0.65}>
               <p className="font-mono text-xs uppercase tracking-[0.25em] text-lime">
-                Project details
+                {t("projectPage", "details")}
               </p>
               <h1 className="mt-3 font-display text-4xl font-bold sm:text-6xl">
                 {project.title}
@@ -585,7 +592,7 @@ function ProjectDetailPage({ slug, projectList, loading }) {
                   <SpotlightCard className="block h-full rounded-3xl p-5 text-paper shadow-[0_12px_40px_rgba(0,0,0,0.18)] transition-transform duration-300 hover:-translate-y-1">
                     <GlassSurface width="100%" height="100%" borderRadius={24} className="pointer-events-none !absolute !inset-0" />
                     <div className="relative z-10">
-                      <h2 className="font-display text-lg">The challenge</h2>
+                      <h2 className="font-display text-lg">{t("projectPage", "challenge")}</h2>
                       <p className="mt-2 text-sm leading-relaxed text-paper/65">
                         {project.challenge}
                       </p>
@@ -599,7 +606,7 @@ function ProjectDetailPage({ slug, projectList, loading }) {
                   <SpotlightCard className="block h-full rounded-3xl p-5 text-paper shadow-[0_12px_40px_rgba(0,0,0,0.18)] transition-transform duration-300 hover:-translate-y-1">
                     <GlassSurface width="100%" height="100%" borderRadius={24} className="pointer-events-none !absolute !inset-0" />
                     <div className="relative z-10">
-                      <h2 className="font-display text-lg">What I built</h2>
+                      <h2 className="font-display text-lg">{t("projectPage", "built")}</h2>
                       <ul className="mt-2 space-y-2 text-sm text-paper/70 [&:hover>li:not(:hover)]:opacity-40">
                         {project.highlights.map((highlight) => (
                           <li
@@ -634,17 +641,17 @@ function ProjectDetailPage({ slug, projectList, loading }) {
                 className="pointer-events-none !absolute !inset-0 shadow-[0_20px_60px_rgba(0,0,0,0.25)]"
               />
               <div className="relative z-10">
-                <h2 className="font-display text-xl">At a glance</h2>
+                <h2 className="font-display text-xl">{t("projectPage", "glance")}</h2>
                 {project.status && (
                   <p className="mt-2 text-sm text-paper/55">
-                    Status: <span className="text-lime">{project.status}</span>
+                    {t("projectPage", "status")} <span className="text-lime">{project.status}</span>
                   </p>
                 )}
 
                 {/* Tools & technologies (static labels) */}
                 <div className="mt-8 border-t border-white/10 pt-6">
                   <h3 className="font-mono text-xs uppercase tracking-[0.2em] text-paper/50">
-                    Tools &amp; technologies
+                    {t("projectPage", "tools")}
                   </h3>
                   <ul className="mt-4 flex flex-wrap gap-2.5">
                     {project.stack.map((item) => (
@@ -685,7 +692,7 @@ function ProjectDetailPage({ slug, projectList, loading }) {
                         </span>
 
                         <span className="relative z-10 inline-flex items-center gap-1.5">
-                          Visit site
+                          {t("projectPage", "visit")}
                           <span
                             aria-hidden="true"
                             className="inline-block transition-[translate,scale] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]
@@ -729,7 +736,7 @@ function ProjectDetailPage({ slug, projectList, loading }) {
                       </span>
 
                       <span className="relative z-10 inline-flex items-center gap-1.5">
-                        Source code
+                        {t("projectPage", "source")}
                         <span
                           aria-hidden="true"
                           className="inline-block transition-[translate,scale] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]
@@ -748,7 +755,7 @@ function ProjectDetailPage({ slug, projectList, loading }) {
                 {relatedProjects.length > 0 && (
                   <div className="mt-8 border-t border-white/10 pt-6">
                     <h3 className="font-mono text-xs uppercase tracking-[0.2em] text-paper/50">
-                      Related projects
+                      {t("projectPage", "related")}
                     </h3>
                     <div className="mt-4 flex flex-col gap-2.5">
                       {relatedProjects.map(({ item, shared }) => (
@@ -769,7 +776,9 @@ function ProjectDetailPage({ slug, projectList, loading }) {
                             />
                           </span>
                           <span className="relative z-10 mt-0.5 block font-mono text-[10px] uppercase tracking-[0.15em] text-paper/45">
-                            {shared} shared {shared === 1 ? "tech" : "techs"}
+                            {shared} {shared === 1
+                              ? t("projectPage", "sharedTech")
+                              : t("projectPage", "sharedTechPlural")}
                           </span>
                           <span className="relative z-10 mt-2.5 flex flex-wrap gap-1.5">
                             {item.stack.slice(0, 3).map((tech) => {
@@ -819,7 +828,7 @@ function ProjectDetailPage({ slug, projectList, loading }) {
                 />
               </div>
               <p className="mt-3 hidden text-center font-mono text-[10px] uppercase tracking-[0.2em] text-paper/35 sm:block">
-                Tip: use ← → arrow keys to switch projects
+                {t("projectPage", "tip")}
               </p>
             </AnimatedContent>
           </div>

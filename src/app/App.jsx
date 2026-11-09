@@ -8,6 +8,7 @@ import HomePage from "@/pages/home/HomePage";
 import Secrets from "@/pages/Secret";
 import NotFound from "@/pages/NotFound";
 import ProjectDetail from "@/pages/ProjectDetail";
+import { LanguageProvider } from "@/context/LanguageContext.jsx";
 
 
 export default function App() {
@@ -44,7 +45,7 @@ export default function App() {
   }, [showIntro]);
 
   return (
-    <>
+    <LanguageProvider>
       {showIntro && <Intro onDone={() => setDone(true)} />}
       <PixelTransition />
 
@@ -54,6 +55,6 @@ export default function App() {
         <Route path="/secret" element={<Secrets />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
-    </>
+    </LanguageProvider>
   );
 }

@@ -8,6 +8,7 @@ import GlassPill from "@/components/GlassPill";
 import Magnet from "@/components/Magnet";
 import ProjectCard from "@/pages/home/components/ProjectCard";
 import { useProjects } from "@/data/projects";
+import { useLanguage } from "@/context/useLanguage";
 
 const MAX_VISIBLE_PROJECTS = 3;
 const CHIPS_PER_PAGE = 6;
@@ -33,6 +34,7 @@ const FEATURED_ORDER = ["pt-central-invoicing", "lazismu-muda", "fashion-shop"];
 
 export default function Projects() {
   const { projects: projectList } = useProjects();
+  const { t } = useLanguage();
   const [query, setQuery] = useState("");
   const [selectedStacks, setSelectedStacks] = useState([]);
   const [showAllProjects, setShowAllProjects] = useState(false);
@@ -198,10 +200,10 @@ export default function Projects() {
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <p className="font-mono text-xs uppercase tracking-[0.25em] text-lime">
-            Selected work
+            {t("projects", "selectedWork")}
           </p>
           <BlurText
-            text="Projects"
+            text={t("projects", "title")}
             delay={0}
             animateBy="letters"
             direction="top"
@@ -209,7 +211,7 @@ export default function Projects() {
           />
         </div>
         <p className="max-w-md text-sm leading-relaxed text-paper/75 2xl:max-w-xl 2xl:text-base">
-          A closer look at the work, decisions, and tools behind each project.
+          {t("projects", "description")}
         </p>
       </div>
 
@@ -237,7 +239,7 @@ export default function Projects() {
               <div
                 ref={filterViewportRef}
                 role="group"
-                aria-label="Filter projects by technology"
+                aria-label={t("projects", "filter")}
                 onPointerDown={handleFilterPointerDown}
                 onClickCapture={handleFilterClickCapture}
                 className="max-w-full cursor-grab touch-pan-y select-none overflow-hidden py-1 active:cursor-grabbing"
@@ -251,7 +253,7 @@ export default function Projects() {
                     ? "none"
                     : "width 450ms cubic-bezier(0.22, 1, 0.36, 1)",
                 }}
-                title="Drag to see more filter options"
+                title={t("projects", "drag")}
               >
                 <div
                   ref={filterTrackRef}
@@ -319,7 +321,7 @@ export default function Projects() {
                               textClassName={`whitespace-nowrap px-4 py-1.5 text-sm transition-colors duration-200 ${isActive ? "text-night" : "text-paper/85"
                                 }`}
                             >
-                              {stack}
+                              {stack === "All" ? t("projects", "all") : stack}
                             </GlassPill>
                           </button>
                         </AnimatedContent>
@@ -346,8 +348,8 @@ export default function Projects() {
                   setQuery(event.target.value);
                   setShowAllProjects(false);
                 }}
-                placeholder="Search projects"
-                aria-label="Search projects"
+                placeholder={t("projects", "search")}
+                aria-label={t("projects", "search")}
                 className="input input-sm relative z-10 h-10 min-h-0 w-full rounded-full border-transparent bg-transparent pl-11 text-paper shadow-none transition-shadow duration-300 placeholder:text-paper/60 focus:border-lime focus:bg-transparent focus:shadow-[0_0_0_4px_rgba(190,242,100,0.12)] 2xl:h-11"
               />
             </label>
@@ -359,7 +361,7 @@ export default function Projects() {
         <div className="mt-8 flex flex-1 items-center justify-center 2xl:mt-10">
           <AnimatedContent distance={30} duration={0.7} ease="power3.out">
             <div className="flex flex-col items-center gap-4 text-center text-paper/70">
-              <p className="text-sm">No projects match your filters.</p>
+              <p className="text-sm">{t("projects", "empty")}</p>
             </div>
           </AnimatedContent>
         </div>
@@ -398,7 +400,7 @@ export default function Projects() {
                   className="border border-white/20 bg-white/6 transition-colors duration-200 hover:border-lime hover:bg-lime"
                   textClassName="px-8 py-2 text-paper transition-colors duration-200 hover:text-night"
                 >
-                  {showAllProjects ? "Show less" : "Show more"}
+                  {showAllProjects ? t("projects", "showLess") : t("projects", "showMore")}
                 </GlassPill>
               </button>
             </Magnet>

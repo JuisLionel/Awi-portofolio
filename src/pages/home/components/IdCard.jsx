@@ -1,11 +1,6 @@
 import { useSyncExternalStore } from "react";
 import { useProfile } from "@/data/profile";
-
-const rows = [
-  ["ID Number", "AWI-DEV-001"],
-  ["Specialty", "Web / UI"],
-  ["Base", "Pekanbaru, ID"],
-];
+import { useLanguage } from "@/context/useLanguage";
 
 // The 3D tilt only makes sense with a mouse on a bigger screen. On phones there
 // is no hover, and DaisyUI's hover-3d (preserve-3d + overflow-hidden + blend
@@ -31,8 +26,14 @@ function useTilt() {
 }
 
 export default function IdCard() {
-  const { available, labels } = useProfile();
+  const { available } = useProfile();
+  const { t } = useLanguage();
   const tilt = useTilt();
+  const rows = [
+    [t("card", "id"), "AWI-DEV-001"],
+    [t("card", "specialty"), "Web / UI"],
+    [t("card", "base"), "Pekanbaru, ID"],
+  ];
 
   const card = (
     <div className="card isolate relative h-112 w-96 overflow-hidden rounded-4xl bg-paper font-sans text-night ring-1 ring-black/10 shadow-[0_2px_2px_rgba(0,0,0,0.5),0_18px_30px_-10px_rgba(0,0,0,0.7),0_50px_90px_-30px_rgba(0,0,0,0.8)]">
@@ -55,7 +56,7 @@ export default function IdCard() {
                   }`}
               />
               <span className="font-mono text-[11px] font-bold tracking-wide whitespace-nowrap text-night uppercase">
-                {available ? labels.card.on : labels.card.off}
+                {available ? t("status", "availableShort") : t("status", "unavailableShort")}
               </span>
             </div>
           </div>

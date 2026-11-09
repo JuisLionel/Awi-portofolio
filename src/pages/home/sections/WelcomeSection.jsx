@@ -7,6 +7,7 @@ import IdCard from "@/pages/home/components/IdCard";
 import GlassPill from "@/components/GlassPill";
 import Magnetic from "@/components/Magnetic";
 import { useProfile } from "@/data/profile";
+import { useLanguage } from "@/context/useLanguage";
 
 gsap.registerPlugin(useGSAP);
 
@@ -40,7 +41,8 @@ function HoverWord({ word, hoverClass }) {
 
 export default function Welcome({ show }) {
   const welcomeRef = useRef(null);
-  const { available, labels } = useProfile();
+  const { available } = useProfile();
+  const { t } = useLanguage();
 
   const scrollToAbout = () => {
     const target = document.getElementById("about");
@@ -133,27 +135,26 @@ export default function Welcome({ show }) {
                   >
                     ✦
                   </span>
-                  {available ? labels.badge.on : labels.badge.off}
+                  {available ? t("status", "available") : t("status", "unavailable")}
                 </GlassPill>
               </Magnetic>
             </div>
 
             <h1
-              aria-label="Frontend Developer"
+              aria-label={t("welcome", "role")}
               className="welcome-item mt-6 w-full text-center font-display text-[10.5vw] leading-[1.05] font-extrabold whitespace-nowrap sm:text-6xl lg:mt-10 lg:text-left lg:text-[92px] lg:leading-none"
             >
-              <HoverWord word="Frontend" hoverClass="hover:text-lime" />
+              <HoverWord word={t("welcome", "titleFirst")} hoverClass="hover:text-lime" />
               {/* Neon glow on Developer */}
               <span className="neon-text block text-lime [text-shadow:0_0_6px_rgba(198,244,50,0.9),0_0_20px_rgba(198,244,50,0.6),0_0_44px_rgba(198,244,50,0.4)]">
-                <HoverWord word="Developer" hoverClass="hover:text-paper" />
+                <HoverWord word={t("welcome", "titleSecond")} hoverClass="hover:text-paper" />
               </span>
             </h1>
 
             <div className="welcome-item mt-6 h-1.5 w-16 bg-lime lg:mt-10 lg:h-2 lg:w-20" />
 
             <p className="welcome-item mt-6 max-w-84 text-center font-mono text-sm leading-relaxed text-paper/70 sm:max-w-md lg:mt-10 lg:text-left">
-              I build web apps for real needs, from a company invoicing system to a donation reporting platform.
-              I focus on interfaces that are clean, responsive, and easy to use, with React and TypeScript.
+              {t("welcome", "description")}
             </p>
 
             {/* Tech chips with liquid glass */}
@@ -168,8 +169,8 @@ export default function Welcome({ show }) {
             </div>
 
             <div className="welcome-item mt-8 flex flex-col items-center gap-2 text-center font-mono text-xs text-paper/50 sm:flex-row sm:gap-6 lg:mt-12 lg:text-[11px]">
-              <span>↓ explore my work below</span>
-              <span>↗ open to full-time &amp; freelance opportunities</span>
+              <span>{t("welcome", "explore")}</span>
+              <span>{t("welcome", "opportunities")}</span>
             </div>
           </div>
 
@@ -182,11 +183,11 @@ export default function Welcome({ show }) {
           <button
             type="button"
             onClick={scrollToAbout}
-            aria-label="Scroll to About section"
+            aria-label={t("welcome", "scrollAbout")}
             className="welcome-item group absolute bottom-6 left-1/2 hidden -translate-x-1/2 cursor-pointer flex-col items-center gap-1 font-mono text-xs text-paper/50 transition-colors duration-300 hover:text-lime focus-visible:text-lime focus-visible:outline-none lg:bottom-8 lg:flex"
           >
             <span className="transition-all duration-300 group-hover:tracking-[0.3em] group-hover:[text-shadow:0_0_12px_rgba(198,244,50,0.8)]">
-              Scroll
+              {t("welcome", "scroll")}
             </span>
             <span className="animate-bounce text-base leading-none transition-[text-shadow,scale] duration-300 group-hover:scale-125 group-hover:[text-shadow:0_0_12px_rgba(198,244,50,0.8)] group-active:scale-95">
               ↓

@@ -22,7 +22,28 @@ VITE_SUPABASE_URL=
 VITE_SUPABASE_ANON_KEY=
 ```
 
-Fill in the URL and anon key from your Supabase project's API settings. The Supabase `profile` table stores the availability flag, email, phone, country, and social links. The badge labels remain defined locally in `src/data/profile.js`. Project titles, descriptions, images, and detail content are loaded from the `projects` table. The schema seeds the Login and Registration, To-Do List, and Typing Test projects from the provided repositories.
+Fill in the URL and anon key from your Supabase project's API settings. The Supabase `profile` table stores the availability flag, email, phone, country, and social links. Project titles, descriptions, images, and detail content are loaded from the `projects` table.
+
+## Languages
+
+The interface supports English and Indonesian. The selected language is saved in the browser. Supabase project rows can provide Indonesian versions in the `translations` JSONB column, using language code `id`; untranslated fields fall back to the existing project columns (English).
+
+For an existing Supabase database, run `supabase/translations.sql` in the SQL Editor. It adds the `translations` column and fills translations for the current portfolio project slugs without changing their other fields. For a fresh database, `supabase/schema.sql` creates the column and includes translated sample projects.
+
+For new project rows, use this structure:
+
+```json
+{
+  "id": {
+    "title": "Judul proyek",
+    "description": "Deskripsi proyek",
+    "role": "Peran",
+    "challenge": "Tantangan",
+    "highlights": ["Sorotan proyek"],
+    "status": "Selesai"
+  }
+}
+```
 
 ## Project structure
 

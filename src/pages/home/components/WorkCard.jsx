@@ -4,8 +4,10 @@ import { Link, useNavigate } from "react-router";
 import GlassPill from "@/components/GlassPill";
 import GlassSurface from "@/components/GlassSurface";
 import { startPixelTransition } from "@/lib/pixelTransition";
+import { useLanguage } from "@/context/useLanguage";
 
 export default function WorkCard({ project }) {
+    const { t } = useLanguage();
     const navigate = useNavigate();
     const linkRef = useRef(null);
     const destination = `/projects/${project.slug}`;
@@ -114,7 +116,7 @@ export default function WorkCard({ project }) {
                                     className="border border-lime/30"
                                     textClassName="px-3 py-1 text-xs text-lime lg:text-sm"
                                 >
-                                    +{stack.length - 4} more
+                                    +{stack.length - 4} {t("projects", "more")}
                                 </GlassPill>
                             )}
                         </div>

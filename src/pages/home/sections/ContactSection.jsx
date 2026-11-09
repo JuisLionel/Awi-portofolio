@@ -9,6 +9,7 @@ import AnimatedContent from "@/components/AnimatedContent";
 import GlassPill from "@/components/GlassPill";
 import Magnetic from "@/components/Magnetic";
 import { useProfile } from "@/data/profile";
+import { useLanguage } from "@/context/useLanguage";
 
 const SOCIAL_ICONS = {
     facebook: FaFacebookF,
@@ -28,7 +29,7 @@ function Word({ children, highlight = false }) {
     );
 }
 
-function InfoRow({ Icon, children, href, copyValue, copied, onCopy, trailing }) {
+function InfoRow({ Icon, children, href, copyValue, copied, onCopy, trailing, copyLabel, copiedLabel }) {
     const content = (
         <span className="relative z-10 flex min-w-0 items-center gap-3">
             <Icon aria-hidden="true" className="size-4 shrink-0 text-lime" />
@@ -54,18 +55,18 @@ function InfoRow({ Icon, children, href, copyValue, copied, onCopy, trailing }) 
                 <button
                     type="button"
                     onClick={() => onCopy(copyValue)}
-                    aria-label={`Copy ${copyValue}`}
+                    aria-label={`${copyLabel} ${copyValue}`}
                     aria-live="polite"
                     className="relative z-10 shrink-0 transition-[opacity,transform] duration-200 active:scale-95 sm:opacity-0 sm:group-hover:opacity-100 sm:focus-visible:opacity-100"
                 >
                     <GlassPill textClassName="px-2.5 py-1 text-[10px] uppercase tracking-widest">
                         {copied ? (
                             <>
-                                <Check aria-hidden="true" className="size-3 text-lime" /> Copied
+                                <Check aria-hidden="true" className="size-3 text-lime" /> {copiedLabel}
                             </>
                         ) : (
                             <>
-                                <Copy aria-hidden="true" className="size-3" /> Copy
+                                <Copy aria-hidden="true" className="size-3" /> {copyLabel}
                             </>
                         )}
                     </GlassPill>
@@ -82,8 +83,9 @@ function InfoRow({ Icon, children, href, copyValue, copied, onCopy, trailing }) 
 
 export default function Contact() {
     const [copiedValue, setCopiedValue] = useState(null);
+    const { t } = useLanguage();
     const profile = useProfile();
-    const { available, labels } = profile;
+    const { available } = profile;
     const { email, phone, country } = profile;
     const socials = Array.isArray(profile.socials) ? profile.socials : [];
     const hasContactDetails = Boolean(email || phone || country || socials.length > 0);
@@ -104,7 +106,7 @@ export default function Contact() {
                 <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-6xl flex-col px-4 py-20 2xl:max-w-[1600px] 2xl:px-8 2xl:py-28">
                     <AnimatedContent distance={18} duration={0.65}>
                         <p className="font-mono text-xs uppercase tracking-[0.25em] text-lime">
-                            Contact
+                            {t("contact", "title")}
                         </p>
                     </AnimatedContent>
 
@@ -121,7 +123,7 @@ export default function Contact() {
                                         >
                                             ✦
                                         </span>
-                                        {available ? labels.badge.on : labels.badge.off}
+                                        {available ? t("status", "available") : t("status", "unavailable")}
                                     </GlassPill>
                                 </Magnetic>
                             </AnimatedContent>
@@ -129,19 +131,18 @@ export default function Contact() {
                             <AnimatedContent distance={40} duration={0.9} ease="power3.out" delay={0.1}>
                                 <h2 className="font-display text-[clamp(2.25rem,11vw,3rem)] font-extrabold leading-[0.98] tracking-tight text-paper sm:text-8xl 2xl:text-[10rem]">
                                     <span className="block">
-                                        <Word>Let&apos;s</Word>
-                                        <Word>work</Word>
+                                        <Word>{t("contact", "lets")}</Word>
+                                        <Word>{t("contact", "work")}</Word>
                                     </span>
                                     <span className="mt-2 block">
-                                        <Word highlight>together.</Word>
+                                        <Word highlight>{t("contact", "together")}</Word>
                                     </span>
                                 </h2>
                             </AnimatedContent>
 
                             <AnimatedContent distance={18} duration={0.65} delay={0.2}>
                                 <p className="max-w-lg text-base leading-relaxed text-paper/65 2xl:max-w-2xl 2xl:text-lg">
-                                    Have a project in mind, a role to fill, or just want to say hi? Drop me
-                                    a message and I&apos;ll get back to you as soon as I can.
+                                    {t("contact", "description")}
                                 </p>
                             </AnimatedContent>
 
@@ -156,7 +157,7 @@ export default function Contact() {
                                                 className="border border-lime bg-lime"
                                                 textClassName="px-8 py-2 text-night"
                                             >
-                                                Say hello <span aria-hidden="true">↗</span>
+                                                {t("contact", "sayHello")} <span aria-hidden="true">↗</span>
                                             </GlassPill>
                                         </a>
                                     </Magnetic>
@@ -178,6 +179,8 @@ export default function Contact() {
                                             copyValue={email}
                                             copied={copiedValue === email}
                                             onCopy={copy}
+                                            copyLabel={t("contact", "copy")}
+                                            copiedLabel={t("contact", "copied")}
                                         >
                                             {email}
                                         </InfoRow>}
@@ -187,6 +190,8 @@ export default function Contact() {
                                             copyValue={phone}
                                             copied={copiedValue === phone}
                                             onCopy={copy}
+                                            copyLabel={t("contact", "copy")}
+                                            copiedLabel={t("contact", "copied")}
                                         >
                                             {phone}
                                         </InfoRow>}
@@ -221,14 +226,14 @@ export default function Contact() {
                     <AnimatedContent distance={18} duration={0.65} delay={0.3}>
                         <div className="flex items-center justify-between gap-4 border-t border-white/10 pt-5 font-mono text-xs uppercase tracking-[0.2em] text-paper/45">
                             <span>
-                                © {new Date().getFullYear()} All rights reserved.
+                                © {new Date().getFullYear()} {t("contact", "copyright")}
                             </span>
                             <button
                                 type="button"
                                 onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
                                 className="inline-flex items-center gap-1.5 uppercase tracking-[0.2em] text-lime/65 transition-colors duration-200 hover:text-lime"
                             >
-                                Back to top
+                                {t("contact", "backToTop")}
                                 <ArrowUp aria-hidden="true" className="size-3.5" />
                             </button>
                         </div>

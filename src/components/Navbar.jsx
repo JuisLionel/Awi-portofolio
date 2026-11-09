@@ -3,6 +3,8 @@ import gsap from "gsap";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { useGSAP } from "@gsap/react";
 import { sections } from "@/config/sections";
+import { useLanguage } from "@/context/useLanguage";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 gsap.registerPlugin(ScrollToPlugin);
 
@@ -14,6 +16,13 @@ export default function Navbar({ show, active }) {
   const scrolling = useRef(false);
   const HOVER_DURATION = 0.95;
   const [open, setOpen] = useState(false);
+  const { language, t } = useLanguage();
+  const sectionLabels = {
+    welcome: t("nav", "home"),
+    about: t("nav", "about"),
+    projects: t("nav", "projects"),
+    contact: t("nav", "contact"),
+  };
 
   const moveLens = (id, scale = 1, duration = 0.45) => {
     const el = tabs.current[id];
@@ -43,7 +52,7 @@ export default function Navbar({ show, active }) {
     if (hovering.current || scrolling.current) return;
     moveLens(active, 1.12);
     gsap.to(lens.current, { scale: 1, duration: 0.35, delay: 0.2 });
-  }, [active]);
+  }, [active, language]);
 
   useEffect(() => {
     const onResize = () => {
@@ -121,7 +130,7 @@ export default function Navbar({ show, active }) {
             className="pointer-events-none absolute left-0 top-0 h-full w-24 rounded-full border border-white/30 bg-[linear-gradient(135deg,rgba(255,255,255,0.28)_0%,rgba(255,255,255,0.08)_50%,rgba(255,255,255,0.16)_100%)] shadow-[inset_2px_2px_4px_rgba(255,255,255,0.75),inset_-2px_-2px_4px_rgba(255,255,255,0.35),inset_0_0_12px_rgba(255,255,255,0.15),0_8px_24px_rgba(0,0,0,0.3)]"
           />
 
-          {sections.map(({ id, label }) => (
+          {sections.map(({ id }) => (
             <li key={id}>
               <button
                 ref={(el) => (tabs.current[id] = el)}
@@ -133,22 +142,25 @@ export default function Navbar({ show, active }) {
                 }}
                 className="relative z-10 block cursor-pointer px-5 py-2.5"
               >
-                {label}
+                {sectionLabels[id]}
               </button>
             </li>
           ))}
         </ul>
 
-        {/* hamburger (phone) */}
-        <button
-          onClick={() => setOpen((o) => !o)}
-          aria-label="Toggle menu"
-          className="relative z-10 flex h-9 w-9 cursor-pointer items-center justify-center md:hidden"
-        >
-          <span className={`absolute h-0.5 w-5 rounded bg-current transition-all duration-300 ${open ? "rotate-45" : "-translate-y-1.5"}`} />
-          <span className={`absolute h-0.5 w-5 rounded bg-current transition-all duration-300 ${open ? "opacity-0" : "opacity-100"}`} />
-          <span className={`absolute h-0.5 w-5 rounded bg-current transition-all duration-300 ${open ? "-rotate-45" : "translate-y-1.5"}`} />
-        </button>
+        <div className="relative z-10 flex items-center gap-2">
+          <div className="md:block"><LanguageSwitcher /></div>
+          <button
+            onClick={() => setOpen((o) => !o)}
+            aria-label={t("nav", "menu")}
+            aria-expanded={open}
+            className="relative flex h-9 w-9 cursor-pointer items-center justify-center md:hidden"
+          >
+            <span className={`absolute h-0.5 w-5 rounded bg-current transition-all duration-300 ${open ? "rotate-45" : "-translate-y-1.5"}`} />
+            <span className={`absolute h-0.5 w-5 rounded bg-current transition-all duration-300 ${open ? "opacity-0" : "opacity-100"}`} />
+            <span className={`absolute h-0.5 w-5 rounded bg-current transition-all duration-300 ${open ? "-rotate-45" : "translate-y-1.5"}`} />
+          </button>
+        </div>
       </div>
 
       {/* phone menu */}
@@ -163,14 +175,14 @@ export default function Navbar({ show, active }) {
           className="pointer-events-none absolute inset-0 rounded-3xl bg-[linear-gradient(115deg,rgba(255,255,255,0.22)_0%,rgba(255,255,255,0.03)_30%,rgba(255,255,255,0)_60%,rgba(255,255,255,0.14)_100%)]"
         />
         <ul className="relative flex flex-col p-2 text-base font-medium">
-          {sections.map(({ id, label }) => (
+          {sections.map(({ id }) => (
             <li key={id}>
               <button
                 onClick={() => go(id)}
                 className={`w-full cursor-pointer rounded-2xl px-4 py-3 text-left transition-colors ${active === id ? "bg-white/15" : ""
                   }`}
               >
-                {label}
+                {sectionLabels[id]}
               </button>
             </li>
           ))}

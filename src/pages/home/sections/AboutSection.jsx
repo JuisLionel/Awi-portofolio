@@ -27,6 +27,7 @@ import Magnet from "@/components/Magnet";
 import WorkCard from "@/pages/home/components/WorkCard";
 import { sections } from "@/config/sections";
 import { useProjects } from "@/data/projects";
+import { useLanguage } from "@/context/useLanguage";
 
 gsap.registerPlugin(ScrollToPlugin);
 
@@ -191,6 +192,7 @@ function SkillPill({ name, count }) {
 
 export default function About() {
     const { projects = [] } = useProjects();
+    const { t } = useLanguage();
 
     const featured = useMemo(() => {
         const rank = (slug) => {
@@ -225,10 +227,10 @@ export default function About() {
     }, [projects]);
 
     const info = [
-        { label: "BASED IN", value: "Pekanbaru, Indonesia" },
-        { label: "OPEN TO", value: "Full-time and freelance" },
+        { label: t("about", "basedIn"), value: "Pekanbaru, Indonesia" },
+        { label: t("about", "openTo"), value: t("about", "opportunities") },
         ...(projects.length
-            ? [{ label: "PROJECTS", value: `${projects.length} built so far` }]
+            ? [{ label: t("about", "projects"), value: `${projects.length} ${t("about", "builtSoFar")}` }]
             : []),
     ];
 
@@ -241,7 +243,7 @@ export default function About() {
                             <RevealPhoto src="/picture/img.webp" alt={NAME} />
                             <p className="mt-4 text-lg font-semibold">{NAME}</p>
                             <p className="mt-1 font-mono text-xs tracking-[0.25em] text-white/65 lg:text-sm">
-                                STUDENT / DEVELOPER
+                                {t("about", "student")}
                             </p>
 
                             <div className="mt-6">
@@ -252,26 +254,23 @@ export default function About() {
                         </aside>
 
                         <div className="min-w-0 lg:col-span-8">
-                            <Label>ABOUT ME</Label>
+                            <Label>{t("about", "heading")}</Label>
 
                             <h2 className="mt-6 wrap-break-word font-display text-3xl font-extrabold leading-none min-[400px]:text-4xl sm:text-5xl lg:mt-8 lg:text-6xl 2xl:text-7xl">
-                                I build web apps
+                                {t("about", "headline")}
                                 <br />
                                 <span className="text-lime transition-[text-shadow] duration-500 [text-shadow:0_0_24px_rgba(198,244,50,0.55),0_0_70px_rgba(198,244,50,0.3)] hover:[text-shadow:0_0_30px_rgba(198,244,50,0.8),0_0_90px_rgba(198,244,50,0.5)]">
-                                    for real organizations.
+                                    {t("about", "highlight")}
                                 </span>
                             </h2>
                             <span className="mt-6 block h-1.5 w-16 bg-lime lg:h-2 lg:w-20" />
 
                             <div className="mt-7 max-w-[62ch] space-y-5 wrap-break-word font-mono text-base leading-7 text-white/80 lg:text-lg lg:leading-8">
                                 <p>
-                                    I&apos;m Lionel, a student developer in Pekanbaru. I build web apps
-                                    with React and TypeScript. One of my projects is used by
-                                    real organizations: an invoicing system for PT Central.
+                                    {t("about", "introduction")}
                                 </p>
                                 <p>
-                                    I&apos;m looking for a full-time role or freelance projects where I
-                                    can keep building useful products.
+                                    {t("about", "lookingFor")}
                                 </p>
                             </div>
 
@@ -286,7 +285,7 @@ export default function About() {
                                         onClick={() => goTo("contact")}
                                         className="group inline-flex cursor-pointer items-center gap-3 rounded-full bg-lime px-6 py-3 font-mono text-sm tracking-widest text-night transition-transform duration-150 active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-lime lg:text-base"
                                     >
-                                        LET&apos;S CONNECT
+                                        {t("about", "connect")}
                                         <FaArrowRight
                                             aria-hidden="true"
                                             className="transition-transform duration-300 group-hover:translate-x-1.5"
@@ -299,7 +298,7 @@ export default function About() {
                                     download="Lionel-Juis-Gerardo-CV.pdf"
                                     className="group inline-flex items-center gap-3 rounded-full border border-white/25 px-6 py-3 font-mono text-sm tracking-widest text-white transition-colors duration-200 hover:border-lime hover:text-lime focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-lime lg:text-base"
                                 >
-                                    DOWNLOAD CV
+                                    {t("about", "downloadCv")}
                                     <FaDownload
                                         aria-hidden="true"
                                         className="transition-transform duration-300 group-hover:translate-y-1"
@@ -308,7 +307,7 @@ export default function About() {
                             </div>
 
                             <div className="mt-20">
-                                <Label>SELECTED WORK</Label>
+                                <Label>{t("about", "selectedWork")}</Label>
                                 <div className="mt-6 flex flex-col gap-5">
                                     {featured.map((project) => (
                                         <WorkCard key={project.slug} project={project} />
@@ -321,7 +320,7 @@ export default function About() {
                                         onClick={() => goTo("projects")}
                                         className="group mt-6 inline-flex cursor-pointer items-center gap-3 font-mono text-sm tracking-widest text-lime lg:text-base"
                                     >
-                                        SEE ALL {projects.length} PROJECTS
+                                        {t("about", "seeAll")} {projects.length} {t("nav", "projects")}
                                         <FaArrowRight
                                             aria-hidden="true"
                                             className="transition-transform duration-300 group-hover:translate-x-2"
@@ -331,7 +330,7 @@ export default function About() {
                             </div>
 
                             <div className="mt-20">
-                                <Label>SKILLS &amp; TECHNOLOGIES</Label>
+                                <Label>{t("about", "skills")}</Label>
                                 <dl className="mt-6">
                                     {toolGroups.map(([group, items]) => (
                                         <div
@@ -339,7 +338,7 @@ export default function About() {
                                             className="grid grid-cols-1 gap-3 border-t border-white/10 py-5 last:border-b sm:grid-cols-[10rem_minmax(0,1fr)] sm:gap-8"
                                         >
                                             <dt className="font-mono text-sm text-white/70 lg:text-base">
-                                                {group}
+                                                {t("about", "skillGroups")[group]}
                                             </dt>
                                             <dd className="flex min-w-0 flex-wrap gap-3">
                                                 {items.map((item) => (
@@ -352,15 +351,14 @@ export default function About() {
                             </div>
 
                             <div className="mt-20">
-                                <Label>CURRENT FOCUS</Label>
+                                <Label>{t("about", "currentFocus")}</Label>
                                 <div className="mt-6 flex gap-4">
                                     <span className="relative mt-2 flex h-2.5 w-2.5 shrink-0 lg:h-3 lg:w-3">
                                         <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-lime opacity-75" />
                                         <span className="relative inline-flex h-full w-full rounded-full bg-lime" />
                                     </span>
                                     <p className="min-w-0 max-w-[62ch] wrap-break-word font-mono text-base leading-7 text-white/80 lg:text-lg lg:leading-8">
-                                        Getting stronger at TypeScript and backend work, and building
-                                        projects that people actually use.
+                                        {t("about", "focusText")}
                                     </p>
                                 </div>
                             </div>

@@ -38,6 +38,7 @@ create table if not exists public.projects (
   live_url text,
   repo_url text,
   status text not null default 'Live',
+  translations jsonb not null default '{}'::jsonb,
   sort_order integer not null default 0,
   created_at timestamptz not null default now()
 );
@@ -45,7 +46,11 @@ create table if not exists public.projects (
 alter table public.projects
   add column if not exists images text[] not null default '{}',
   add column if not exists live_url text,
-  add column if not exists repo_url text;
+  add column if not exists repo_url text,
+  add column if not exists translations jsonb not null default '{}'::jsonb;
+
+comment on column public.projects.translations is
+  'Localized project fields keyed by language code, for example {"id":{"title":"..."}}.';
 
 alter table public.projects enable row level security;
 
@@ -96,6 +101,7 @@ insert into public.projects (
   live_url,
   repo_url,
   status,
+  translations,
   sort_order
 )
 values
@@ -115,6 +121,20 @@ values
     null,
     'https://github.com/JuisLionel/Login-and-Registration',
     'Completed',
+    '{
+      "id": {
+        "title": "Login dan Pendaftaran",
+        "description": "Halaman login dan pendaftaran React untuk mempelajari local storage browser dan alur formulir akun dasar.",
+        "role": "Proyek pribadi",
+        "challenge": "Proyek ini mempelajari cara menyimpan dan membaca data pendaftaran dengan local storage browser. Ini adalah demo pembelajaran, bukan autentikasi untuk produksi.",
+        "highlights": [
+          "Membuat antarmuka halaman login dan pendaftaran",
+          "Berlatih menyimpan dan membaca data dengan local storage",
+          "Menambahkan layar pratinjau login dan pendaftaran terpisah"
+        ],
+        "status": "Selesai"
+      }
+    }'::jsonb,
     1
   ),
   (
@@ -134,6 +154,21 @@ values
     null,
     'https://github.com/JuisLionel/Todo_list',
     'Completed',
+    '{
+      "id": {
+        "title": "Daftar Tugas",
+        "description": "Pengelola tugas berbasis PERN untuk membuat, mengedit, menyelesaikan, dan menghapus tugas dengan penyimpanan PostgreSQL.",
+        "role": "Proyek pribadi",
+        "challenge": "Aplikasi menghubungkan antarmuka React ke backend Express dan Node.js yang menggunakan PostgreSQL untuk menyimpan data tugas secara persisten.",
+        "highlights": [
+          "Menambahkan dan mengedit tugas",
+          "Menandai tugas selesai atau belum selesai",
+          "Menghapus tugas",
+          "Menyimpan data tugas di PostgreSQL"
+        ],
+        "status": "Selesai"
+      }
+    }'::jsonb,
     2
   ),
   (
@@ -152,6 +187,20 @@ values
     'https://typing-test-eight-zeta.vercel.app/',
     'https://github.com/JuisLionel/TypingTest',
     'Completed',
+    '{
+      "id": {
+        "title": "Tes Mengetik",
+        "description": "Aplikasi latihan mengetik yang dapat disesuaikan dengan umpan balik langsung, statistik kecepatan dan akurasi, tema, serta jumlah kata.",
+        "role": "Proyek pribadi",
+        "challenge": "Aplikasi melacak performa mengetik secara langsung sambil menjaga sesi latihan tetap fleksibel dan ringan.",
+        "highlights": [
+          "Berlatih mengetik dengan tampilan kata demi kata",
+          "Melacak kata per menit, karakter per menit, dan akurasi",
+          "Mengganti tema dan memilih jumlah kata dalam sesi"
+        ],
+        "status": "Selesai"
+      }
+    }'::jsonb,
     3
   )
 on conflict (slug) do update set
@@ -165,4 +214,5 @@ on conflict (slug) do update set
   live_url = excluded.live_url,
   repo_url = excluded.repo_url,
   status = excluded.status,
+  translations = excluded.translations,
   sort_order = excluded.sort_order;

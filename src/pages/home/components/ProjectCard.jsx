@@ -5,8 +5,10 @@ import GlassPill from "@/components/GlassPill";
 import GlassSurface from "@/components/GlassSurface";
 import ShinyText from "@/components/ShinyText";
 import { startPixelTransition } from "@/lib/pixelTransition";
+import { useLanguage } from "@/context/useLanguage";
 
 export default function ProjectCard({ project }) {
+  const { t } = useLanguage();
   const navigate = useNavigate();
   const linkRef = useRef(null);
   const destination = `/projects/${project.slug}`;
@@ -151,7 +153,7 @@ export default function ProjectCard({ project }) {
               className="w-full border border-white/20 bg-white/10 transition-colors duration-200 group-hover:border-lime group-hover:bg-lime 2xl:py-1"
               textClassName="w-full justify-center px-4 py-2 text-sm text-paper transition-colors duration-200 group-hover:text-night 2xl:text-base"
             >
-              View project details
+              {t("projects", "viewDetails")}
               <span
                 aria-hidden="true"
                 className="inline-block transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"

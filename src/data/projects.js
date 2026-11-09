@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router";
 
 import { supabase } from "@/lib/supabase";
+import { useLanguage } from "@/context/useLanguage";
 
 export async function fetchProjects() {
   if (!supabase) {
@@ -23,6 +24,7 @@ export async function fetchProjects() {
 
 export function useProjects() {
   const location = useLocation();
+  const { language } = useLanguage();
   const [projectList, setProjectList] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -56,7 +58,22 @@ export function useProjects() {
     );
   }, [loading, location.pathname]);
 
-  return { projects: projectList, loading };
+  const localizedProjects = projectList.map((project) => {
+    const translation = project.translations?.[language];
+    if (!translation) return project;
+
+    return {
+      ...project,
+      title: translation.title || project.title,
+      description: translation.description || project.description,
+      role: translation.role || project.role,
+      challenge: translation.challenge || project.challenge,
+      highlights: translation.highlights || project.highlights,
+      status: translation.status || project.status,
+    };
+  });
+
+  return { projects: localizedProjects, loading };
 }
 
 export const projects = [];
