@@ -43,7 +43,7 @@ function SpotlightCard({ as: Tag = "div", className = "", children }) {
       />
       {children}
     </Tag>
-  );
+  );c
 }
 
 /* ------------------------------------------------------------------ */
@@ -586,21 +586,7 @@ function ProjectDetailPage({ slug, projectList, loading }) {
               />
             </AnimatedContent>
 
-            <div className="mt-8 grid gap-4 sm:grid-cols-2">
-              {project.challenge && (
-                <AnimatedContent distance={16} duration={0.55}>
-                  <SpotlightCard className="block h-full rounded-3xl p-5 text-paper shadow-[0_12px_40px_rgba(0,0,0,0.18)] transition-transform duration-300 hover:-translate-y-1">
-                    <GlassSurface width="100%" height="100%" borderRadius={24} className="pointer-events-none !absolute !inset-0" />
-                    <div className="relative z-10">
-                      <h2 className="font-display text-lg">{t("projectPage", "challenge")}</h2>
-                      <p className="mt-2 text-sm leading-relaxed text-paper/65">
-                        {project.challenge}
-                      </p>
-                    </div>
-                  </SpotlightCard>
-                </AnimatedContent>
-              )}
-
+            <div className="mt-8 grid gap-4">
               {project.highlights?.length > 0 && (
                 <AnimatedContent distance={16} duration={0.55} delay={0.08}>
                   <SpotlightCard className="block h-full rounded-3xl p-5 text-paper shadow-[0_12px_40px_rgba(0,0,0,0.18)] transition-transform duration-300 hover:-translate-y-1">

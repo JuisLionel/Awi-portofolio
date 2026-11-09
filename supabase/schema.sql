@@ -30,7 +30,6 @@ create table if not exists public.projects (
   title text not null,
   description text,
   role text,
-  challenge text,
   highlights jsonb not null default '[]'::jsonb,
   stack text[] not null default '{}',
   image text,
@@ -94,7 +93,6 @@ insert into public.projects (
   title,
   description,
   role,
-  challenge,
   highlights,
   stack,
   image,
@@ -110,7 +108,6 @@ values
     'Login and Registration',
     'A React login and registration page created to explore browser local storage and basic account form flows.',
     'Personal project',
-    'The project explores saving and reading registration data with browser local storage. It is a learning demo, not production-grade authentication.',
     '[
       "Created login and registration page interfaces",
       "Practiced persisting and reading data with local storage",
@@ -126,7 +123,6 @@ values
         "title": "Login dan Pendaftaran",
         "description": "Halaman login dan pendaftaran React untuk mempelajari local storage browser dan alur formulir akun dasar.",
         "role": "Proyek pribadi",
-        "challenge": "Proyek ini mempelajari cara menyimpan dan membaca data pendaftaran dengan local storage browser. Ini adalah demo pembelajaran, bukan autentikasi untuk produksi.",
         "highlights": [
           "Membuat antarmuka halaman login dan pendaftaran",
           "Berlatih menyimpan dan membaca data dengan local storage",
@@ -142,7 +138,6 @@ values
     'To-Do List',
     'A PERN-stack task manager for creating, editing, completing, and deleting tasks with PostgreSQL persistence.',
     'Personal project',
-    'The app connects a React interface to an Express and Node.js backend backed by PostgreSQL for persistent task data.',
     '[
       "Add and edit tasks",
       "Mark tasks complete or incomplete",
@@ -159,7 +154,6 @@ values
         "title": "Daftar Tugas",
         "description": "Pengelola tugas berbasis PERN untuk membuat, mengedit, menyelesaikan, dan menghapus tugas dengan penyimpanan PostgreSQL.",
         "role": "Proyek pribadi",
-        "challenge": "Aplikasi menghubungkan antarmuka React ke backend Express dan Node.js yang menggunakan PostgreSQL untuk menyimpan data tugas secara persisten.",
         "highlights": [
           "Menambahkan dan mengedit tugas",
           "Menandai tugas selesai atau belum selesai",
@@ -176,7 +170,6 @@ values
     'Typing Test',
     'A customizable typing practice app with live typing feedback, speed and accuracy statistics, themes, and adjustable word counts.',
     'Personal project',
-    'The app tracks typing performance in real time while keeping practice sessions customizable and lightweight.',
     '[
       "Practice typing with word-by-word rendering",
       "Track words per minute, characters per minute, and accuracy",
@@ -192,7 +185,6 @@ values
         "title": "Tes Mengetik",
         "description": "Aplikasi latihan mengetik yang dapat disesuaikan dengan umpan balik langsung, statistik kecepatan dan akurasi, tema, serta jumlah kata.",
         "role": "Proyek pribadi",
-        "challenge": "Aplikasi melacak performa mengetik secara langsung sambil menjaga sesi latihan tetap fleksibel dan ringan.",
         "highlights": [
           "Berlatih mengetik dengan tampilan kata demi kata",
           "Melacak kata per menit, karakter per menit, dan akurasi",
@@ -207,7 +199,6 @@ on conflict (slug) do update set
   title = excluded.title,
   description = excluded.description,
   role = excluded.role,
-  challenge = excluded.challenge,
   highlights = excluded.highlights,
   stack = excluded.stack,
   image = excluded.image,

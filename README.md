@@ -30,6 +30,8 @@ The interface supports English and Indonesian. The selected language is saved in
 
 For an existing Supabase database, run `supabase/translations.sql` in the SQL Editor. It adds the `translations` column and fills translations for the current portfolio project slugs without changing their other fields. For a fresh database, `supabase/schema.sql` creates the column and includes translated sample projects.
 
+The project detail page does not use a challenge field. For an existing database, run `supabase/remove-project-challenge.sql` in the Supabase SQL Editor to permanently drop `public.projects.challenge` and remove localized challenge entries from `translations`.
+
 For new project rows, use this structure:
 
 ```json
@@ -38,7 +40,6 @@ For new project rows, use this structure:
     "title": "Judul proyek",
     "description": "Deskripsi proyek",
     "role": "Peran",
-    "challenge": "Tantangan",
     "highlights": ["Sorotan proyek"],
     "status": "Selesai"
   }

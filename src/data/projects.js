@@ -67,7 +67,6 @@ export function useProjects() {
       title: translation.title || project.title,
       description: translation.description || project.description,
       role: translation.role || project.role,
-      challenge: translation.challenge || project.challenge,
       highlights: translation.highlights || project.highlights,
       status: translation.status || project.status,
     };
