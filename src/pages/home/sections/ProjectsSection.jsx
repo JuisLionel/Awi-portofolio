@@ -10,7 +10,7 @@ import ProjectCard from "@/pages/home/components/ProjectCard";
 import { useProjects } from "@/data/projects";
 import { useLanguage } from "@/context/useLanguage";
 
-const MAX_VISIBLE_PROJECTS = 3;
+const MAX_VISIBLE_PROJECTS = 6;
 const CHIPS_PER_PAGE = 6;
 const EDGE_FADE = 32;
 
